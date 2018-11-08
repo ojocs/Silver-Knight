@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Teleport and Movement Tester</title>
+    <script type="text/javascript" src="phaser.min.js"></script>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        //make a simple world and simple player, test/prototype movement mechanics and dynamics
+        var game = new Phaser.Game(1330, 600, Phaser.AUTO, '', {
+            preload: preload,
+            create: create,
+            update: update
+        });
+
+        function preload() {
+            game.load.image('star', 'assets/Silver Knight 8-Bit.png');
+            game.load.image('platform', 'assets/platform.png');
+            game.load.image('background', 'assets/game_background_3.jpg');
+            game.load.image('boss', 'assets/viking_idle0001.png');
+            //    game.load.spritesheet('boss', 'assets/axe bandit run.png', 80, 80);
+        }
+
+        var platforms;
+        var player;
+        var move;
+        var ground;
+
+        var antiGroundStuck;
+        //blinking
+        var blink;
+        var blinkDist = 20;
+        var blinkTick;
+        var blinkTimer;
+
+        //for momentum
+        var speed;
+        var drag = 10;
+        var vertSpeed;
+
+        var health = 1000;
+        var healthText;
+        var gameOver;
+        var bossMovingLeft = false;
+        var change = game.rnd.integerInRange(1, 3);
+
+        //boss
+        var bossDistThreshold = 30;
+        var bossSpeed = 100;
+
+        function create() {
+            //for right now 9/27/2018 use arcade physics, experiment with other types later
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+
+            //background image
+            game.add.image(0, 0, 'background');
+
+            platforms = game.add.group();
+            platforms.enableBody = true;
+
+            ground = platforms.create(0, game.world.height - 30, 'platform');
+            ground.body.immovable = true;
+            ground.scale.setTo(4, 2);
+            var platf1 = platforms.create(400, 400, 'platform');
+            platf1.body.immovable = true;
+            //for now 9/27/2018 make 2 immovable but maybe experiment later with falling platforms
+            var platf2 = platforms.create(-50, 200, 'platform');
+            platf2.body.immovable = true;
+
+            //make player
+            teleport(10, 10);
+
+            //make boss
+            //    boss = game.add.sprite(40, 100, 'boss');
+            //    boss.scale.x = 5.0;
+            //    boss.scale.y = 5.0;
+            //    boss.animations.add('walk');
+            //    boss.animations.play('walk', 50, true)
+            //    game.add.tween(boss).to({ x: game.width }, 10000, Phaser.Easing.Linear.None, true);
+
+            boss = game.add.sprite(40, 100, 'boss')
+            game.physics.arcade.enable(boss);
+            boss.body.gravity.y = 400;
+            boss.body.collideWorldBounds = true;
+            //for orientation aka face direction of player
+            boss.anchor.setTo(0.5, 0.5);
+            //this.game.time.events.loop(2000, function() {  this.game.add.tween(boss).to({x: this.game.world.randomX, y: this.game.world.randomY}, 1750, Phaser.Easing.Quadratic.InOut, true);}, this)
+            //timer for boss attacks
+            //game.time.events.loop(5000, stomp());
+
+            //display health 
+            healthText = game.add.text(16, 16, 'Health: 1000', {
+                fontSize: '32px',
+                fill: '#000'
+            });
+
+            //momentum
+            speed = 0;
+            vertSpeed = 0;
+            blinkTick = 5;
+            //blinkTimer = game.time.create(false);
+
+            //regular movement, WASD keys
+            move = game.input.keyboard.addKeys({
+                'upW': Phaser.KeyCode.W,
+                'downS': Phaser.KeyCode.S,
+                'leftA': Phaser.KeyCode.A,
+                'rightD': Phaser.KeyCode.D
+            });
+
+            //blink, SPACEBAR
+            blink = game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+
+            //teleport, mouse and click
+            game.input.mouse.capture = true;
+
+            //to prevent getting stuck in the ground
+            antiGroundStuck = player.body.height + ground.body.height + player.body.height / 16;
+
+            //bossDistThreshold = boss.body.width/2;
+            //Attack, F key
+
+            //blinkTimer.start();
+        }
+
+        function update() {
+            //for teleport/blink
+            player.visible = true;
+            var hitPlatform = game.physics.arcade.collide(player, platforms);
+            var bossPlatform = game.physics.arcade.collide(boss, platforms);
+
+            //------------------BOSS--------------------------//
+            //check if player overlaps with boss
+            game.physics.arcade.overlap(player, boss, hitBoss, null, this);
+
+            var distanceFromBoss = boss.body.center.x - player.body.x;
+            //move boss---------//make boss move towards you - slowly and constantly
+            if (distanceFromBoss > bossDistThreshold) {
+                boss.body.velocity.x = -bossSpeed;
+                boss.scale.x = -1; //orientaion
+            } else if (distanceFromBoss < (-1 * bossDistThreshold)) {
+                boss.body.velocity.x = bossSpeed;
+                boss.scale.x = 1; //orientaion
+            } else {
+                boss.body.velocity.x = 0;
+            }
+            var heightFromBoss = boss.body.y - player.body.y;
+            //if player is above boss jump once to attack
+            if (heightFromBoss > 0) {
+                boss.body.velocity.y = -100;
+            }
+
+            //make boss stomp and shake ground long range - every 2 seconds, lasts 2 seconds
+
+
+            //make boss swing attack at close range - every second, lasts 2 seconds
+
+
+            //------------------END BOSS--------------------------//
+
+            //------------------REGULAR MOVEMENT--------------------------//
+
+            //vertical momentum
+            vertSpeed = player.body.velocity.y;
+            if (player.body.touching.down && hitPlatform) {
+                vertSpeed = 0;
+            }
+
+            //horizontal momentum kept and slowed down with drag
+            if (speed > 0) {
+                player.body.velocity.x = Math.abs(speed - drag);
+            } else if (speed < 0) {
+                player.body.velocity.x = speed + drag;
+            } else { //speed == 0
+                player.body.velocity.x = 0;
+            }
+
+            //moving left/right
+            if (move.leftA.isDown) {
+                player.body.velocity.x = -200;
+            } else if (move.rightD.isDown) {
+                player.body.velocity.x = 200;
+            }
+            //jump
+            if (move.upW.isDown && player.body.touching.down) { // && hitPlatform){
+                player.body.velocity.y = -220;
+            }
+
+            //stop moving left/right
+            if (move.downS.isDown && player.body.touching.down) {
+                player.body.velocity.x = 0;
+            }
+            //keeps momentum
+            speed = player.body.velocity.x;
+            //------------------END REGULAR MOVEMENT--------------------------//
+
+            //------------------- //TELEPORTING//-----------------------//
+
+            //Cursor teleport with mouse and left click
+            if (game.input.activePointer.leftButton.isDown) {
+                cursorTele();
+            }
+
+            //Blink teleport - click SPACEBAR to blink in direction you're currently moving. Do nothing if not moving
+            if (blink.isDown)
+            //&& (blinkTick > 0))
+            //&& (blinkTimer > 0))
+            {
+                blinkTele();
+            }
+            //--------------------------END TELEPORTING--------------------//
+
+
+        }
+
+
+        function cursorTele() {
+            var newX = game.input.activePointer.x;
+            var newY = game.input.activePointer.y;
+            //to prevent getting stuck in ground
+            if (newY >= game.world.height - antiGroundStuck)
+                newY = game.world.height - antiGroundStuck;
+            player.kill();
+            teleport(newX, newY);
+        }
+
+
+        function blinkTele() {
+            var newX = player.body.x;
+            var newY = player.body.y;
+            //if moving right add 10 to current pos
+            if (move.rightD.isDown) {
+                newX += blinkDist;
+            }
+            //else subtract 10
+            else if (move.leftA.isDown) {
+                newX -= blinkDist;
+            }
+
+            //if moving up subtract 10 to current pos
+            if (move.upW.isDown) {
+                newY -= blinkDist;
+            }
+            //else add 10
+            else if (move.downS.isDown) {
+                newY += blinkDist;
+                //check to not go below ground. Account for height of world and height of ground
+                if (newY >= game.world.height - antiGroundStuck)
+                    newY = game.world.height - antiGroundStuck; //above or exactly at ground height
+            }
+
+            //        blinkTick--;
+
+            //reset timer and tick if out of ticks
+            //if(){
+            //player.body.y = 300;
+            //            this.blinkTimer.destroy();
+            //            blinkTimer = game.time.create(false);
+            //            blinkTimer.start();
+            //            blinkTick = 5;
+            //      }
+            player.kill();
+            teleport(newX, newY);
+        }
+
+
+        function hitBoss(boss, player) {
+            health -= 10;
+            healthText.text = 'Health: ' + health;
+            if (health <= 0) {
+                gameOver = game.add.text(150, 250, 'GAME OVER', {
+                    fontSize: '90px',
+                    fill: '#000'
+                });
+                healthText.text = ''
+            }
+
+        }
+
+
+        function teleport(newX, newY) {
+            player = game.add.sprite(newX, newY, 'star');
+            player.scale.setTo(.1, .1);
+            game.physics.arcade.enable(player);
+            //a little bounce not a lot
+            player.body.bounce.y = 0.1;
+            player.body.gravity.y = 330;
+            player.body.collideWorldBounds = true;
+            //for teleporting to look like teleporting and not a dash
+            player.visible = false;
+            game.time.events.add(Phaser.Time.SECOND, update, this);
+        }
+    </script>
+
+</body>
+
+</html>
