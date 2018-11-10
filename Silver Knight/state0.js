@@ -34,7 +34,7 @@ var giantHurtTimer = 0;
 
 var platforms, ledge;
 
-var hitPlatform, lineCollide, onPlatform;
+var hitPlatform, groundCollide, onPlatform;
 
 var debug;
 
@@ -61,7 +61,7 @@ function create() {
     platforms = game.add.group();
     platforms.enableBody = true;
     // Here we create the ground.
-    ground = game.add.sprite(0, game.world.height - 64, 'ground');
+    ground = platforms.create(0, game.world.height - 64, 'ground');
     //  Scale it to fit the width of the game 
     ground.scale.setTo(8, 2);
     //  This stops it from falling away when you jump on it
@@ -148,7 +148,7 @@ function update() {
     
     //----Environment collisions----//
     hitPlatform = game.physics.arcade.collide(knight, platforms);
-    lineCollide = game.physics.arcade.collide(knight, ground);
+    groundCollide = game.physics.arcade.collide(knight, ground);
     onPlatform = game.physics.arcade.overlap(knight, platforms);
     
     //To prevent falling through platforms when you teleport to one, seems unfair if not
@@ -174,7 +174,7 @@ function update() {
     //--------------END GIANT AI-----------------------------//
     
     //Call knight's update
-    updateKnight(distanceFromBoss, lineCollide);
+    updateKnight(distanceFromBoss, groundCollide);
 
     //Debugging
     //debugF();    

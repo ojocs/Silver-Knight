@@ -48,7 +48,7 @@ var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni;
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
 
 //Attack
-var attack, canAttack, attackTimer;
+var attack;
 
 // Momentum
 var speed, drag = 100, walkSpeed = 600;
@@ -105,9 +105,8 @@ function createKnight(level){
     //So hitbox won't be active unless knight is attacking
     knightBox.body.enable = false;
     
-    //To play attacking animation completely and to not spam attack
+    //To play attacking animation completely
     knight.attacking = false;
-    canAttack = true, attackTimer = 0;
     
     knight.body.collideWorldBounds = true;
     knight.animations.add('stand', [1, 2], 5);
@@ -173,7 +172,7 @@ function createKnight(level){
 }
 
 //Call in update
-function updateKnight(currentDistanceFromBoss, lineCollide){
+function updateKnight(currentDistanceFromBoss, ground){
     distanceFromBoss = currentDistanceFromBoss;
     
     //Button Tints: Buttons tint when hovered over
@@ -191,17 +190,14 @@ function updateKnight(currentDistanceFromBoss, lineCollide){
         hurt();
         // teleport timer
         teleTimers();
-        //attack timer
-        attackTimerFunc();
     //------END TIMERS------//
         
     
         var knightOrientation = knight.scale.x;
     
         //Attack
-        if(attack.isDown && !knight.teleporting && canAttack){
+        if(attack.downDuration(1) && !knight.teleporting){
             attackFunc();
-            canAttack = false;
         }
     
     //------------------MOVEMENT--------------------------//   
@@ -210,10 +206,14 @@ function updateKnight(currentDistanceFromBoss, lineCollide){
         teleControls();
     
         //Normal Movement
-        movement(knightOrientation, hitPlatform, lineCollide);
+        movement(knightOrientation, hitPlatform, ground);
 
         //Speed and drag
         speedF();
+        
+        //Get out of the ground if in it accidentally (blinking)
+        if(knight.body.y >= game.world.height)
+            knight.body.y = game.world.height - 1;
     //------------------END MOVEMENT--------------------------//
     
     //--------------SOUNDS-----------------------------//
@@ -237,7 +237,7 @@ function updateKnight(currentDistanceFromBoss, lineCollide){
 
 
 //WASD movement
-function movement(knightOrientation, hitPlatform, lineCollide){
+function movement(knightOrientation, hitPlatform, ground){
     var magicKnightPivotNumber = 114;//cause it's some random number that works
     //So animations work properly and one doesn't stop the other
     if(!knight.attacking && !knight.teleporting){    
@@ -263,7 +263,7 @@ function movement(knightOrientation, hitPlatform, lineCollide){
         var touchGround = knight.body.y === (game.world.height - knight.body.height);
 
     //Jump
-        if (moveBinds.upW.isDown && (knight.body.touching.down || touchGround || lineCollide)) {
+        if (moveBinds.upW.isDown && (knight.body.touching.down || touchGround || ground)) {
             knight.body.velocity.y = -1000;
         }
 
@@ -346,17 +346,6 @@ function teleTimers(){
     }
 }
 
-//Attack timer, so attack isn't spammed
-function attackTimerFunc() {
-    if(!canAttack)
-        attackTimer += 1;
-    //Can attack after 50 update counts
-    if(attackTimer === 50){
-        canAttack = true;
-        attackTimer = 0;
-    }
-}
-
 //Long teleportation
 function cursorTele() {//Get center of knight to wherever mouse clicks
     canTele = false;
@@ -382,7 +371,7 @@ function teleControls(){
     
     //Controls for blinking and long teleporting
     if (canBlink && blink.isDown &&//VV These for blinking in current direction VV
-        (moveBinds.leftA.isDown || moveBinds.rightD.isDown || moveBinds.upW.isDown || (moveBinds.downS.isDown && (knight.body.y > (game.world.height - knight.body.height)) ))) {
+        (moveBinds.leftA.isDown || moveBinds.rightD.isDown || moveBinds.upW.isDown || moveBinds.downS.isDown)) {
         knight.teleporting = true;
         knight.animations.play('teleport');
         blinkTele();
