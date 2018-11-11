@@ -20,9 +20,9 @@ function preloadKnight(){
     game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
     
     //Audio
-//    game.load.audio('teleAudio', 'assets/audio/Teleport Sound 5.wav');
-//    game.load.audio('teleAudio2', 'assets/audio/Teleport Sound.wav');    
-//    game.load.audio('swordHitAudio', 'assets/audio/Sword3.wav');
+    game.load.audio('teleAudio', 'assets/audio/Teleport Sound 5.wav');
+    game.load.audio('teleAudio2', 'assets/audio/Teleport Sound.wav');    
+    game.load.audio('swordHitAudio', 'assets/audio/Sword3.wav');
 }
 
 //Knight, has most if not all player/user input code
@@ -153,8 +153,8 @@ function createKnight(level){
     game.camera.follow(knight);
     
     //Sounds
-//    teleAudio = game.add.audio('teleAudio'), teleAudio2 = game.add.audio('teleAudio2');
-//    swordHitAudio = game.add.audio('swordHitAudio');
+    teleAudio = game.add.audio('teleAudio'), teleAudio2 = game.add.audio('teleAudio2');
+    swordHitAudio = game.add.audio('swordHitAudio');
     
     //Exit Button
     var exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
@@ -217,18 +217,18 @@ function updateKnight(currentDistanceFromBoss, ground){
     //------------------END MOVEMENT--------------------------//
     
     //--------------SOUNDS-----------------------------//
-//    //Teleport
-//    if(knight.teleporting && (canBlink || canTele)){
-//        teleAudio.play();
-//        teleAudio2.play();
-//        //wooshAudio.play();
-//    }
-//    
-//    //Sword hit
-//    if(knight.attacking){
-//        if(!giant.hurtOnce)
-//        swordHitAudio.play();
-//    }
+    //Teleport
+    if(knight.teleporting && (canBlink || canTele)){
+        teleAudio.play();
+        teleAudio2.play();
+        //wooshAudio.play();
+    }
+    
+    //Sword hit
+    if(knight.attacking){
+        if(!giant.hurtOnce)
+        swordHitAudio.play();
+    }
     
     //--------------END SOUNDS-----------------------------//
     }
