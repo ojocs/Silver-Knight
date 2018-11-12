@@ -4,7 +4,7 @@ function preloadKnight(){
     game.load.image('heart', 'assets/knight/heart 100.png');
     game.load.image('half_heart', 'assets/knight/half heart 100.png');
     game.load.spritesheet('timer', 'assets/Timer Spritesheet.png', 100, 100);
-    game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 100, 100);
+    game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 150, 150);
     
     //Buttons
     game.load.image('pauseMenu', 'assets/knight/Pause Menu.png');
@@ -42,7 +42,7 @@ var moveBinds;
 var ground;
 
 //Blink Variables
-var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni;
+var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni, blink1, blink2;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -83,7 +83,11 @@ function createKnight(level){
     timerSprite.visibile = true;
     
     //blink displays
-    
+    blink1 = game.add.sprite(470, 10, 'blinkDisplay');
+    blink1.visible = true;
+    blink2 = game.add.sprite(585, 10, 'blinkDisplay');
+    blink2.visible = true;
+    blink3 = game.add.sprite(700, 10, 'blinkDisplay');
     
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
@@ -343,6 +347,9 @@ function teleTimers(){
     } else if(blinkTimer === 270 && blinkCount === 0) {//Used up all blinks
         canBlink = true;
         blinkCount = 3;
+        blink1.visible = true;
+        blink2.visible = true;
+        blink3.visible = true;
     }
 }
 
@@ -406,6 +413,16 @@ function blinkTele() {
     blinkCount--;
     canBlink = false;
     blinkTimer = 0;
+    
+    //displays blink icons
+    if (blinkCount == 2) {
+        blink3.visible = false;
+    } else if (blinkCount == 1) {
+        blink2.visible = false;
+    } else if (blinkCount == 0) {
+        blink1.visible = false;
+    }
+    
     var newX = knight.body.x;
     var newY = knight.body.y;
     //if moving right add 10 to current pos
