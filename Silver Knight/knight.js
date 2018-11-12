@@ -20,9 +20,11 @@ function preloadKnight(){
     game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
     
     //Audio
-    game.load.audio('teleAudio', 'assets/audio/Teleport Sound 5.wav');
-    game.load.audio('teleAudio2', 'assets/audio/Teleport Sound.wav');    
-    game.load.audio('swordHitAudio', 'assets/audio/Sword3.wav');
+    game.load.audio('teleAudio', 'assets/audio/knight audio/Teleport Sound 5.wav');
+    game.load.audio('teleAudio2', 'assets/audio/knight audio/Teleport Sound.wav');    
+    game.load.audio('swordHitAudio', 'assets/audio/knight audio/Sword3.wav');
+    game.load.audio('swordSlash', 'assets/audio/knight audio/Sword Slash 1.wav');
+    game.load.audio('knightStep', 'assets/audio/knight audio/Knight Step 1.wav');
 }
 
 //Knight, has most if not all player/user input code
@@ -54,14 +56,16 @@ var attack;
 var speed, drag = 100, walkSpeed = 600;
 
 //Sounds
-var teleAudio, teleAudio2, wooshAudio, swordHitAudio;
+var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
 
 //Boss related variables.
-var distanceFromBoss, livesTaken;
+var distanceFromBoss, livesTaken, bossHurtOnce;
 
 //Call in create
 function createKnight(level){
+    //Boss stuff (placeholders really)
     distanceFromBoss = 0;
+    bossHurtOnce = false;
     
     //For use in victory and restart functions
     currentLvl = level;
@@ -158,7 +162,9 @@ function createKnight(level){
     
     //Sounds
     teleAudio = game.add.audio('teleAudio'), teleAudio2 = game.add.audio('teleAudio2');
-    swordHitAudio = game.add.audio('swordHitAudio');
+    swordHitAudio = game.add.audio('swordHitAudio'), swordSlash = game.add.audio('swordSlash');
+    knightStepSound = game.add.audio('knightStep');
+    // For BG music: Add like: music = game.add.audio('theme',1,true); and to play: key, volume, loop music.play('',0,1,true);
     
     //Exit Button
     var exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
@@ -177,6 +183,7 @@ function createKnight(level){
 
 //Call in update
 function updateKnight(currentDistanceFromBoss, ground){
+    //Boss stuff
     distanceFromBoss = currentDistanceFromBoss;
     
     //Button Tints: Buttons tint when hovered over
@@ -230,15 +237,16 @@ function updateKnight(currentDistanceFromBoss, ground){
     
     //Sword hit
     if(knight.attacking){
-        if(!giant.hurtOnce)
-        swordHitAudio.play();
+        //Slash sound always
+        swordSlash.play();
+        //Clink sound only if hit boss
+        if(!bossHurtOnce)
+            swordHitAudio.play();
     }
     
     //--------------END SOUNDS-----------------------------//
     }
 }
-
-
 
 //WASD movement
 function movement(knightOrientation, hitPlatform, ground){
@@ -252,14 +260,14 @@ function movement(knightOrientation, hitPlatform, ground){
             if(knightOrientation != knight.scale.x){//Pivot turning
                 knight.body.x -= knight.body.width + magicKnightPivotNumber;
             }
-            knight.animations.play('walk');
+            knight.animations.play('walk'), knightStepSound.play();
         } else if (moveBinds.rightD.isDown) {
             knight.body.velocity.x = walkSpeed;
             knight.scale.setTo(1, 1); //Knight faces right
             if(knightOrientation != knight.scale.x){//Pivot turning
                 knight.body.x += knight.body.width + magicKnightPivotNumber;
             }
-            knight.animations.play('walk');
+            knight.animations.play('walk'), knightStepSound.play();
         } else if(knight.body.velocity.x == 0){
             knight.animations.play('stand');
         }

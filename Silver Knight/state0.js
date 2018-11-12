@@ -6,10 +6,15 @@ var state0 = {
 
 function preload() {
     preloadKnight();
+    //Giant's preload
     game.load.spritesheet('giant', 'assets/state0/Giant Spritesheet.png', 497, 630);
-    game.load.image('background', 'assets/state0/Level 1 Background.png');
     game.load.image('evil_heart', 'Assets/Evil Heart 100.png');
     game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100.png');
+    //Giant sounds
+    game.load.audio('stompThud', 'assets/audio/giant audio/stomp 1.wav');
+    game.load.audio('bossStep', 'assets/audio/giant audio/Boss Step 2.wav');
+    //Level preload
+    game.load.image('background', 'assets/state0/Level 1 Background.png');
     game.load.image('ground', 'assets/state0/Platform 1.1.png');
 }
 
@@ -22,11 +27,11 @@ var giantHitboxes;
 var swingBox1, swingBox2, swingBox3;
 
 //Giant Variables
-var giant;
-var giantSpeed = 150;
-var giantMoves;
+var giant, giantSpeed = 150, giantMoves;
 var bossStompTime = 5, bossTurnTimer;
 var thresholdFromBossWalk = 300;
+//Giant sounds
+var stompThud, bossStep;
 
 var bossHealth = 10;//Giant has health by points. Dies at 0
 //var change = game.rnd.integerInRange(1, 3);
@@ -126,11 +131,19 @@ function create() {
  
     // giant health display
     bossHealth = 10;
+    evilHeart1Half = game.add.image(1890, 10, 'evil_half_heart');
     evilHeart1 = game.add.image(1890, 10, 'evil_heart');
+    evilHeart2Half = game.add.image(1775, 10, 'evil_half_heart');
     evilHeart2 = game.add.image(1775, 10, 'evil_heart');
+    evilHeart3Half = game.add.image(1660, 10, 'evil_half_heart');
     evilHeart3 = game.add.image(1660, 10, 'evil_heart');
+    evilHeart4Half = game.add.image(1545, 10, 'evil_half_heart');
     evilHeart4 = game.add.image(1545, 10, 'evil_heart');
+    evilHeart5Half = game.add.image(1430, 10, 'evil_half_heart');
     evilHeart5 = game.add.image(1430, 10, 'evil_heart');
+    
+    //Giant Audio
+    stompThud = game.add.audio('stompThud'), bossStep = game.add.audio('bossStep', 15);
      
     createKnight(1);
     
@@ -242,6 +255,8 @@ function giantStomp(){
     });
     stompTimer.start();
     if(giant.stomping) {
+        //Thud sound
+        stompThud.play();
         // You can set your own intensity and duration
         game.camera.shake(0.05, 100);
         // knight touching ground or platform
@@ -307,11 +322,11 @@ function giantAI(distanceFromBoss){
     else if (!giant.turning && !giant.swinging && !giant.stomping && distanceFromBoss > thresholdFromBossWalk) {
         giant.body.velocity.x = -100;
         giantTurn(1, bossOrientation);
-        giant.animations.play('walk');
+        giant.animations.play('walk'), bossStep.play();
     } else if (!giant.turning && !giant.swinging && !giant.stomping && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
         giant.body.velocity.x = 100;
         giantTurn(-1, bossOrientation);
-        giant.animations.play('walk');
+        giant.animations.play('walk'), bossStep.play();
     }
     
 }
@@ -323,7 +338,7 @@ function giantHurt(){
         giantHurtTimer += 1;
     }
     if(giantHurtTimer === 30){
-        giant.hurtOnce = true;
+        giant.hurtOnce = true, bossHurtOnce = true;
         giantHurtTimer = 0;
     } 
 }
@@ -331,7 +346,7 @@ function giantHurt(){
 //Boss loses health
 function giantDamage(){
     if(giant.hurtOnce){
-        giant.hurtOnce = false;
+        giant.hurtOnce = false, bossHurtOnce = false;
         bossHealth -= 1;
         
         //Make giant slide in direction of knight hit
@@ -342,29 +357,24 @@ function giantDamage(){
         
         if (bossHealth == 9) {
             evilHeart5.kill();
-            evilHeart5 = game.add.image(1430, 10, 'evil_half_heart');
         } else if (bossHealth == 8) {
-            evilHeart5.kill();
+            evilHeart5Half.kill();
         } else if (bossHealth == 7) {
             evilHeart4.kill();
-            evilHeart4 = game.add.image(1545, 10, 'evil_half_heart');
         } else if (bossHealth == 6) {
-            evilHeart4.kill();
+            evilHeart4Half.kill();
         } else if (bossHealth == 5) {
             evilHeart3.kill();
-            evilHeart3 = game.add.image(1660, 10, 'evil_half_heart');
         } else if (bossHealth == 4) {
-            evilHeart3.kill();
+            evilHeart3Half.kill();
         } else if (bossHealth == 3) {
             evilHeart2.kill();
-            evilHeart2 = game.add.image(1775, 10, 'evil_half_heart');
         } else if (bossHealth == 2) {
-            evilHeart2.kill();
+            evilHeart2Half.kill();
         } else if (bossHealth == 1) {
             evilHeart1.kill();
-            evilHeart1 = game.add.image(1890, 10, 'evil_half_heart');
         } else if (bossHealth <= 0) {
-            evilHeart1.kill();
+            evilHeart1Half.kill();
             // add in animation when boss dies
             giant.kill();
             victory();

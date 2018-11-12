@@ -116,6 +116,8 @@ function create(){
     
     //create knight
     createKnight(0);
+    //To prevent uneeded sword clink
+    bossHurtOnce = true;
 }
  
 function update() {
