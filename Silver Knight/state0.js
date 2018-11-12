@@ -148,7 +148,8 @@ function update() {
     
     //----Environment collisions----//
     hitPlatform = game.physics.arcade.collide(knight, platforms);
-    groundCollide = game.physics.arcade.collide(knight, ground);
+    //Complicated but actually works unlike arcade.collide for  some reason. Also 4 is random number that helps get it perfect
+    groundCollide = (knight.body.y + knight.body.height) === (game.world.height - platforms.antiStuck - 4);
     onPlatform = game.physics.arcade.overlap(knight, platforms);
     
     //To prevent falling through platforms when you teleport to one, seems unfair if not
@@ -243,9 +244,10 @@ function giantStomp(){
     if(giant.stomping) {
         // You can set your own intensity and duration
         game.camera.shake(0.05, 100);
-        // knight touching ground
+        // knight touching ground or platform
         if (knight.body.touching.down) {
-            livesTaken = 1;
+            //If touching ground, decrement life by 1, else only make him stagger
+            livesTaken = groundCollide ? 1 : 0;
             knightDamage();
         }
     }
@@ -374,7 +376,7 @@ function giantDamage(){
 
 function debugF(){
     //var distanceFromBoss = (giant.body.center.x - knight.body.center.x);
-    debug.text = 'Health '+health;
+    debug.text = 'Livestaken '+livesTaken;
     
     game.debug.body(knight);
     game.debug.body(knightBox);
