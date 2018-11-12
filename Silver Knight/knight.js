@@ -83,11 +83,14 @@ function createKnight(level){
     timerSprite.visibile = true;
     
     //blink displays
-    blink1 = game.add.sprite(470, 10, 'blinkDisplay');
+    blink1 = game.add.sprite(450, -25, 'blinkDisplay');
+    blink1.scale.setTo(.75,.75);
     blink1.visible = true;
-    blink2 = game.add.sprite(585, 10, 'blinkDisplay');
+    blink2 = game.add.sprite(545, -25, 'blinkDisplay');
+    blink2.scale.setTo(.75,.75);
     blink2.visible = true;
-    blink3 = game.add.sprite(700, 10, 'blinkDisplay');
+    blink3 = game.add.sprite(640, -25, 'blinkDisplay');
+    blink3.scale.setTo(.75,.75);
     
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
