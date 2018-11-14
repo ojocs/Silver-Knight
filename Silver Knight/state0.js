@@ -6,10 +6,9 @@ var state0 = {
 
 function preload() {
     preloadKnight();
+    preloadBoss();
     //Giant's preload
     game.load.spritesheet('giant', 'assets/state0/Giant Spritesheet.png', 497, 630);
-    game.load.image('evil_heart', 'Assets/Evil Heart 100.png');
-    game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100.png');
     //Giant sounds
     game.load.audio('stompThud', 'assets/audio/giant audio/stomp 1.wav');
     game.load.audio('bossStep', 'assets/audio/giant audio/Boss Step 2.wav');
@@ -22,21 +21,13 @@ var demo = {},
     centerX = 2000 / 2,
     centerY = 1000 / 2;
 
-//Hitboxes for giant
-var giantHitboxes;
+//Hitboxes for giant's club
 var swingBox1, swingBox2, swingBox3;
 
-//Giant Variables
-var giant, giantSpeed = 150, giantMoves;
-var bossStompTime = 5, bossTurnTimer;
-var thresholdFromBossWalk = 300;
 //Giant sounds
 var stompThud, bossStep;
 
-var bossHealth = 10;//Giant has health by points. Dies at 0
 //var change = game.rnd.integerInRange(1, 3);
-var giantHurtTimer = 0;
-
 var platforms, ledge;
 
 var hitPlatform, groundCollide, onPlatform;
@@ -55,12 +46,6 @@ function create() {
 
     //Load Background
     var background = game.add.sprite(0, 0, 'background');
-
-    //Make hitboxes for weapons
-    hitboxes = game.add.group();
-    hitboxes.enableBody = true;
-    giantHitboxes = game.add.group();
-    giantHitboxes.enableBody = true;
 
     //  The platforms group contains the ground and the ledges we can jump on
     platforms = game.add.group();
@@ -85,63 +70,50 @@ function create() {
     ledge.body.immovable = true;
     
     //Add Giant
-    giant = game.add.sprite(centerX, centerY + 120, 'giant');
-    giant.anchor.setTo(0.8, 0.5);
-    game.physics.enable(giant);
-    giant.hurtOnce = false;
-    giant.body.gravity.y = 400;
-    giant.frame = 1;
+    createBoss();
+    boss = game.add.sprite(centerX, centerY + 120, 'giant');
+    boss.speed = 140, boss.health = 10;
+    boss.anchor.setTo(0.8, 0.5);
+    game.physics.enable(boss);
+    boss.body.gravity.y = 400;
+    boss.frame = 1;
     //Adjust size of sprite's body, aka built in hitbox
-    giant.body.setSize(200, 520, 280, 170);//520 y1
+    boss.body.setSize(200, 520, 280, 170);
+    boss.body.collideWorldBounds = true;
     
-    giant.turning = false;
-    bossTurnTimer = 30; 
+    boss.turning = false, bossTurnTimer = 30;
     
     //Make hitBoxes for club
-    giant.addChild(giantHitboxes);
-    swingBox1 = giantHitboxes.create(0, 0, null);
+    boss.addChild(bossHitboxes);
+    swingBox1 = bossHitboxes.create(0, 0, null);
     swingBox1.anchor.setTo(0.5, 0.5);
     //So hitbox won't be active unless giant is swinging
     swingBox1.body.enable = false;
 
-    swingBox2 = giantHitboxes.create(0, 0, null);
+    swingBox2 = bossHitboxes.create(0, 0, null);
     swingBox2.anchor.setTo(0.5, 0.5);
     //So hitbox won't be active unless giant is swinging
     swingBox2.body.enable = false;
 
-    swingBox3 = giantHitboxes.create(0, 0, null);
+    swingBox3 = bossHitboxes.create(0, 0, null);
     swingBox3.anchor.setTo(0.5, 0.5);
     //So hitbox won't be active unless giant is swinging
     swingBox3.body.enable = false;
     
-    giant.newScaleX = 1;
-    giant.body.collideWorldBounds = true;
-    giant.animations.add('walk', [1, 2, 3, 4], 3);
+    boss.newScaleX = 1;
+    boss.animations.add('walk', [1, 2, 3, 4], 3);
     
     //Stomping
-    giant.stomping = false;
-    giant.stompAni = giant.animations.add('stomp', [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 23, 23, 23, 23], 12);
-    giant.stompAni.onComplete.add(function(){
-        giant.stomping = false;
+    boss.attack2 = false;
+    boss.stompAni = boss.animations.add('stomp', [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 23, 23, 23, 23], 12);
+    boss.stompAni.onComplete.add(function(){
+        boss.attack2 = false;
     });
         
     //Swinging club
-    giant.swinging = false;
-    giant.swingAni = giant.animations.add('swing', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], 16);
+    boss.attack1 = false;
+    boss.swingAni = boss.animations.add('swing', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], 16);
  
-    // giant health display
-    bossHealth = 10;
-    evilHeart1Half = game.add.image(1890, 10, 'evil_half_heart');
-    evilHeart1 = game.add.image(1890, 10, 'evil_heart');
-    evilHeart2Half = game.add.image(1775, 10, 'evil_half_heart');
-    evilHeart2 = game.add.image(1775, 10, 'evil_heart');
-    evilHeart3Half = game.add.image(1660, 10, 'evil_half_heart');
-    evilHeart3 = game.add.image(1660, 10, 'evil_heart');
-    evilHeart4Half = game.add.image(1545, 10, 'evil_half_heart');
-    evilHeart4 = game.add.image(1545, 10, 'evil_heart');
-    evilHeart5Half = game.add.image(1430, 10, 'evil_half_heart');
-    evilHeart5 = game.add.image(1430, 10, 'evil_heart');
-    
     //Giant Audio
     stompThud = game.add.audio('stompThud'), bossStep = game.add.audio('bossStep', 15);
      
@@ -155,10 +127,7 @@ function create() {
         fontSize: '50px', fill: '#000' });
 }
 
-function update() {
-    //Giant hurt timer
-    giantHurt();
-    
+function update() {    
     //----Environment collisions----//
     hitPlatform = game.physics.arcade.collide(knight, platforms);
     //Complicated but actually works unlike arcade.collide for  some reason. Also 4 is random number that helps get it perfect
@@ -172,20 +141,17 @@ function update() {
     }
     
     //---Character collisions----//
-    //Giant loses health when hit by sword
-    game.physics.arcade.overlap(giant, knightBox, giantDamage, null, this);
     //Knight loses health when hit by club
-    if(!giant.turning){
+    if(!boss.turning){
         livesTaken = 2;
-        game.physics.arcade.overlap(giantHitboxes, knight, knightDamage, null, this);
+        game.physics.arcade.overlap(bossHitboxes, knight, knightDamage, null, this);
     }
     
-    //--------------GIANT AI-----------------------------//
-    var distanceFromBoss = giant.body.center.x - knight.body.center.x;
-    if(giant.alive)
-        giantAI(distanceFromBoss);
+    var distanceFromBoss = boss.body.center.x - knight.body.center.x;
     
-    //--------------END GIANT AI-----------------------------//
+    //--------------GIANT AI-----------------------------//
+    if(boss.alive)
+        updateBoss(distanceFromBoss);    
     
     //Call knight's update
     updateKnight(distanceFromBoss, groundCollide);
@@ -196,8 +162,8 @@ function update() {
 
 //Giant swinging attack
 function giantSwing(bossOrientation){
-    giant.swinging = true;
-    giant.animations.play('swing');
+    boss.attack1 = true;
+    boss.animations.play('swing');
     var giantBoxTimer = game.time.create(true);
     //Coordiantes for hitboxes
     var x1L = [300, 300, 300], x1R = [300, 300, 300];
@@ -238,23 +204,23 @@ function giantSwing(bossOrientation){
         swingBox3.body.setSize(0, 0, 0, 0);
     });
     giantBoxTimer.add(1800, function(){
-        giant.swinging = false;
+        boss.attack1 = false;
     });
     giantBoxTimer.start();
 }
 
 //Giant Stomp, make ground/platforms hurt knight & camera shake
 function giantStomp(){
-    giant.animations.play('stomp');
+    boss.animations.play('stomp');
     var stompTimer = game.time.create(true);
     stompTimer.add(900, function (){
-        giant.stomping = true;
+        boss.attack2 = true;
     });
     stompTimer.add(1200, function(){
-        giant.stomping = false;
+        boss.attack2 = false;
     });
     stompTimer.start();
-    if(giant.stomping) {
+    if(boss.attack2) {
         //Thud sound
         stompThud.play();
         // You can set your own intensity and duration
@@ -268,129 +234,13 @@ function giantStomp(){
     }
 }
 
-//Giant turn's left or right, a pause is added when turning
-function giantTurn(scaleX, bossOrientation){
-    if(bossOrientation != scaleX){//Pivot turning
-        giant.turning = true;
-        giant.newScaleX = scaleX;
-    }
-}
-
-//Timer for giant to wait until he can turn again
-function giantTurnTimerFunc(){
-    if(giant.turning){
-        giant.frame = 1;
-        giant.body.velocity.x = 0;
-        bossTurnTimer -= 1;
-    }
-    if(bossTurnTimer == 0){
-        giant.turning = false;
-        bossTurnTimer = 30;
-        giant.scale.setTo(giant.newScaleX, 1);
-    }
-}
-
-//Giant's movement in response to knight
-function giantAI(distanceFromBoss){
-    var currentTime = game.time.totalElapsedSeconds();
-    var bossOrientation = giant.scale.x, magicBossPivotNumber = 200;
-    giantTurnTimerFunc();
-    
-    //Swing if in close range
-    if (!giant.turning && !giant.swinging && !giant.stomping && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on right
-        giant.body.velocity.x = 0;
-        giantTurn(-1, bossOrientation);
-        giantSwing(bossOrientation);
-    } else if (!giant.turning && !giant.swinging && !giant.stomping && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on left
-        giant.body.velocity.x = 0;
-        giantTurn(1, bossOrientation);
-        giantSwing(bossOrientation);
-    }
-
-    //Stomp if further from the player than swing range, around every bossStompTime seconds
-    else if (!giant.turning && !giant.swinging && (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossStompTime > bossStompTime - 1)) {
-        giant.body.velocity.x = 0;
-        giantTurn(1, bossOrientation);
-        giantStomp();
-    } else if (!giant.turning && !giant.swinging && (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossStompTime > bossStompTime - 1)) {
-        giant.body.velocity.x = 0;
-        giantTurn(-1, bossOrientation);
-        giantStomp();
-    }
-
-    //Follow/track player
-    else if (!giant.turning && !giant.swinging && !giant.stomping && distanceFromBoss > thresholdFromBossWalk) {
-        giant.body.velocity.x = -100;
-        giantTurn(1, bossOrientation);
-        giant.animations.play('walk'), bossStep.play();
-    } else if (!giant.turning && !giant.swinging && !giant.stomping && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
-        giant.body.velocity.x = 100;
-        giantTurn(-1, bossOrientation);
-        giant.animations.play('walk'), bossStep.play();
-    }
-    
-}
-
-//Damage timers, for damage functions to work properly
-function giantHurt(){ 
-    //Giant hurt
-    if(!giant.hurtOnce){
-        giantHurtTimer += 1;
-    }
-    if(giantHurtTimer === 30){
-        giant.hurtOnce = true, bossHurtOnce = true;
-        giantHurtTimer = 0;
-    } 
-}
-
-//Boss loses health
-function giantDamage(){
-    if(giant.hurtOnce){
-        giant.hurtOnce = false, bossHurtOnce = false;
-        bossHealth -= 1;
-        
-        //Make giant slide in direction of knight hit
-        if(knight.body.x < giant.body.x)
-            giant.body.velocity.x += 50;
-        else if(knight.body.x > giant.body.x)
-            giant.body.velocity.x -= 50;
-        
-        if (bossHealth == 9) {
-            evilHeart5.kill();
-        } else if (bossHealth == 8) {
-            evilHeart5Half.kill();
-        } else if (bossHealth == 7) {
-            evilHeart4.kill();
-        } else if (bossHealth == 6) {
-            evilHeart4Half.kill();
-        } else if (bossHealth == 5) {
-            evilHeart3.kill();
-        } else if (bossHealth == 4) {
-            evilHeart3Half.kill();
-        } else if (bossHealth == 3) {
-            evilHeart2.kill();
-        } else if (bossHealth == 2) {
-            evilHeart2Half.kill();
-        } else if (bossHealth == 1) {
-            evilHeart1.kill();
-        } else if (bossHealth <= 0) {
-            evilHeart1Half.kill();
-            // add in animation when boss dies
-            giant.kill();
-            victory();
-            level2Locked = false;
-        }
-            
-    }
-}
-
 function debugF(){
-    //var distanceFromBoss = (giant.body.center.x - knight.body.center.x);
+    //var distanceFromBoss = (boss.body.center.x - knight.body.center.x);
     debug.text = 'Livestaken '+livesTaken;
     
     game.debug.body(knight);
     game.debug.body(knightBox);
-    game.debug.body(giant);
+    game.debug.body(boss);
     game.debug.body(swingBox1);
     game.debug.body(swingBox2);
     game.debug.body(swingBox3);

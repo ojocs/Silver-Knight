@@ -75,6 +75,7 @@ function create(){
     
     //Add background
     var background = game.add.sprite(0, 0, 'background');
+    background.scale.setTo(0.89, 0.7);
     
     //Add steps
     steps = game.add.group();
@@ -94,10 +95,10 @@ function create(){
     //Add tower
     tower = game.add.group();
     tower.enableBody = true;
-    var towerPiece = tower.create(1550, 113, 'towerBody');
+    var towerPiece = tower.create(1550, 159, 'towerBody');
     towerPiece.body.immovable = true;
-//    towerPiece.scale.setTo(.85, .85);
-    towerPiece = tower.create(1495, 5, 'towerTop');
+    towerPiece.scale.setTo(.85, .85);
+    towerPiece = tower.create(1465, 58, 'towerTop');
     towerPiece.body.immovable = true;
 //    towerPiece.scale.setTo(.85, .85);
 

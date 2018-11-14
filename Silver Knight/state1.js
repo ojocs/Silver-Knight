@@ -6,7 +6,15 @@ var state1 = {
 
 function preload() {
     preloadKnight();
-    game.load.image('background', 'assets/state1/Level 2 Background.png');
+    //Level
+    game.load.image('background', 'assets/Level 2/Level 2 BG.png');
+    game.load.image('background', 'assets/Level 2/Platform 2.1.png');
+    game.load.image('background', 'assets/Level 2/Platform 2.2.png');
+    game.load.image('background', 'assets/Level 2/Platform 2.3.png');
+    //Boss
+    game.load.image('background', 'assets/Level 2/Tree Projectile.png');
+    game.load.image('background', 'assets/Level 2/Tree Spike.png');
+    game.load.image('background', 'assets/Level 2/Tree Spritesheet.png');
 }
 
 var demo = {};

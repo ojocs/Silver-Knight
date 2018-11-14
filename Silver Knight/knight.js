@@ -31,7 +31,7 @@ function preloadKnight(){
 var knight;
 
 //Pause variables
-var pauseButton, pauseMenu, exitButton, currentLvl, gameIsOver;
+var pauseButton, pauseMenu, exitButton, gameIsOver;
 
 //Health
 var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3, heart3Half; //Knight has 6 lives
@@ -44,7 +44,7 @@ var moveBinds;
 var ground;
 
 //Blink Variables
-var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni, blink1, blink2;
+var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni, blink1, blink2, blink3;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -59,13 +59,13 @@ var speed, drag = 100, walkSpeed = 600;
 var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
 
 //Boss related variables.
-var distanceFromBoss, livesTaken, bossHurtOnce;
+var distanceFromBoss, livesTaken;
 
 //Call in create
 function createKnight(level){
     //Boss stuff (placeholders really)
     distanceFromBoss = 0;
-    bossHurtOnce = false;
+    boss.hurtOnce = false;
     
     //For use in victory and restart functions
     currentLvl = level;
@@ -243,7 +243,7 @@ function updateKnight(currentDistanceFromBoss, ground){
         //Slash sound always
         swordSlash.play();
         //Clink sound only if hit boss
-        if(!bossHurtOnce)
+        if(!boss.hurtOnce)
             swordHitAudio.play();
     }
     
