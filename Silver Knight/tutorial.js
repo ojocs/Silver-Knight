@@ -15,14 +15,16 @@ var teleText = "F + cursor click to\n teleport anywhere on screen";
 var tutorialFinishText = "Tutorial Done!\n Now play the game";
 
 function preload(){
-        game.physics.startSystem(Phaser.Physics.ARCADE); // Redundant since it's already been called in state0
+    game.physics.startSystem(Phaser.Physics.ARCADE); // Redundant since it's already been called in state0
+    
+    //Blank boss
+    game.load.image('blankBoss', 'assets/blankBoss.png');
+    //preload knight
+    preloadKnight();
         
-        //preload knight
-        preloadKnight();
-        
-        //Buttons
-        game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
-        game.load.image('backButton', 'assets/Tutorial/Continue Button.png');
+    //Buttons
+    game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
+    game.load.image('backButton', 'assets/Tutorial/Continue Button.png');
         
 //        //Preload tilemap
 //        game.load.tilemap('test', 'assets/tutorial/tutorial.json', null, Phaser.Tilemap.TILED_JSON);
@@ -115,10 +117,12 @@ function create(){
     nextButton = game.add.button(game.world.centerX+50, game.world.centerY + 50, 'backButton', actionOnClick, this);
     nextButton.scale.setTo(1,1);
     
+    //Boss stuff (placeholders really for blank boss)
+    boss = game.add.sprite(0, 0, 'blankBoss');
+    distanceFromBoss = 0, boss.hurtOnce = true;
+    
     //create knight
     createKnight(0);
-    //To prevent uneeded sword clink
-    bossHurtOnce = true;
 }
  
 function update() {

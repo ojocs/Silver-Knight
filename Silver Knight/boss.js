@@ -11,7 +11,7 @@ var currentLvl;
 
 function createBoss(){
     //Set global constants, change if needed inside each respective state. Essentially placeholders
-    boss = game.add.sprite(centerX, centerY + 120, 'blankBoss');
+    boss = game.add.sprite(centerX, game.world.height, 'blankBoss');
     
     //Movement
     boss.speed = 0, bossTurnTimer = 0, boss.turning = false;
@@ -39,7 +39,7 @@ function createBoss(){
     evilHeart5 = game.add.image(1430, 10, 'evil_heart');
 }
 
-function updateBoss(distanceFromBoss){
+function updateBoss(distanceFromBoss){game.debug.body(boss);
     //Hurt timer
     bossHurt();
     
@@ -116,12 +116,21 @@ function bossAI(distanceFromBoss){
     else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss > thresholdFromBossWalk) {
         boss.body.velocity.x = -100;
         bossTurn(1, bossOrientation);
-        boss.animations.play('walk'), bossStep.play();
+        determineWalk();
     } else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
         boss.body.velocity.x = 100;
         bossTurn(-1, bossOrientation);
+        determineWalk();
+    }
+}
+
+function determineWalk(){
+    if(currentLvl === 1){
         boss.animations.play('walk'), bossStep.play();
     }
+//    if(currentLvl === 2){
+//        boss.animations.play('treeWalk');
+//    }
 }
 
 //Determine attack1 based on current level

@@ -1,5 +1,6 @@
 //Call in preload
-function preloadKnight(){
+function preloadKnight(){    
+    //Knight
     game.load.spritesheet('knight', 'assets/knight/Silver Knight Spritesheet.png', 354, 230);
     game.load.image('heart', 'assets/knight/heart 100.png');
     game.load.image('half_heart', 'assets/knight/half heart 100.png');
@@ -59,14 +60,10 @@ var speed, drag = 100, walkSpeed = 600;
 var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
 
 //Boss related variables.
-var distanceFromBoss, livesTaken;
+var distanceFromBoss, livesTaken, boss;
 
 //Call in create
-function createKnight(level){
-    //Boss stuff (placeholders really)
-    distanceFromBoss = 0;
-    boss.hurtOnce = false;
-    
+function createKnight(level){    
     //For use in victory and restart functions
     currentLvl = level;
     
