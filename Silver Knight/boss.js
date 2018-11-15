@@ -39,7 +39,7 @@ function createBoss(){
     evilHeart5 = game.add.image(1430, 10, 'evil_heart');
 }
 
-function updateBoss(distanceFromBoss){game.debug.body(boss);
+function updateBoss(distanceFromBoss){
     //Hurt timer
     bossHurt();
     
@@ -114,11 +114,11 @@ function bossAI(distanceFromBoss){
 
     //Follow/track player
     else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss > thresholdFromBossWalk) {
-        boss.body.velocity.x = -100;
+        boss.body.velocity.x = -boss.speed;
         bossTurn(1, bossOrientation);
         determineWalk();
     } else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
-        boss.body.velocity.x = 100;
+        boss.body.velocity.x = boss.speed;
         bossTurn(-1, bossOrientation);
         determineWalk();
     }
@@ -128,28 +128,32 @@ function determineWalk(){
     if(currentLvl === 1){
         boss.animations.play('walk'), bossStep.play();
     }
-//    if(currentLvl === 2){
-//        boss.animations.play('treeWalk');
-//    }
+    if(currentLvl === 2){
+        boss.animations.play('treeWalk');
+    }
 }
 
 //Determine attack1 based on current level
 function determineAttack1(bossOrientation){
     if(currentLvl === 1)
         giantSwing(bossOrientation);
+    if(currentLvl === 2)
+        treeProjectile();
 }
 
 //Determine attack2 based on current level
 function determineAttack2(){
     if(currentLvl === 1)
         giantStomp();
+    if(currentLvl === 2)
+        treeSpike();
 }
 
 //Boss loses health
 function bossDamage(){
     if(boss.hurtOnce){
         boss.hurtOnce = false, bossHurtOnce = false;
-        boss.health -= 1;
+        boss.health -= 10;
         
         //Make boss slide in direction of knight hit
         if(knight.body.x < boss.body.x)
