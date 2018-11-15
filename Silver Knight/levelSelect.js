@@ -8,7 +8,8 @@ function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
     game.load.spritesheet('shield1', 'assets/Level Select/Level 1 Shield.png', 142, 200);
     game.load.spritesheet('shield2', 'assets/Level Select/Level 2 Shield.png', 142, 200);
-    game.load.spritesheet('shield3', 'assets/Level Select/Level 3 Shield.png', 142, 200);
+    //game.load.spritesheet('shield3', 'assets/Level Select/Level 3 Shield.png', 142, 200);
+    game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
     game.load.image('locked', 'assets/Level Select/Locked Level.png');
     game.load.image('backButton', 'assets/tutorial/continue button.png');
    // game.load.image('black', 'assets/black screen.png');
@@ -28,24 +29,34 @@ function create() {
     var bg = game.add.image(0, 0, 'background');
     bg.alpha = 1;
     
-    shield1 = game.add.button(centerX-300, centerY-200, 'shield1');
+    shield1 = game.add.button(centerX-325, centerY-100, 'shield1');
     shield1.frame = 1;
     shield1.anchor.setTo(0.5, 0.5)
-    shield1.scale.setTo(1.9, 1.9);
+    shield1.scale.setTo(2, 2);
     shield1.onInputUp.add(startLevel1, this);
     
     shield2 = game.add.button(-300, 0, 'shield2', startLevel2, this); //Loads shield but outside of the screen
     
-    locked2 = game.add.button(centerX+300, centerY-200, 'locked');
+    locked2 = game.add.button(centerX+325, centerY-100, 'locked');
     locked2.anchor.setTo(0.5, 0.5);
-    locked2.scale.setTo(1.9, 1.9);
+    locked2.scale.setTo(2, 2);
     
+/* Hold on Level 3
     shield3 = game.add.button(-300, 0, 'shield3', startLevel3, this);
     
     locked3 = game.add.button(centerX, centerY+200, 'locked');
     locked3.anchor.setTo(0.5, 0.5);
     locked3.scale.setTo(1.9, 1.9);
+*/
     
+    //Tutorial Button
+    tutButton = game.add.button(centerX, 800, 'tutButton');
+    tutButton.frame = 1
+    tutButton.anchor.setTo(0.5, 0.5);
+    tutButton.scale.setTo(0.5, 0.5);
+    tutButton.inputEnabled = true;
+    tutButton.onInputUp.add(startTutorial, this);
+  
     backButton = game.add.button(100, 100, 'backButton');
     backButton.anchor.setTo(0.5);
     backButton.scale.setTo(-1.2, 1.2);
@@ -58,26 +69,37 @@ function create() {
 }
 
 function update() {
+    //Tutorial Button highlights when hovered over
+    if (tutButton.input.pointerOver()){
+        tutButton.frame = 0;
+    }
+    else{
+        tutButton.frame = 1;
+    }
+    
+    //Shield1 highlights when hovered over
     if (shield1.input.pointerOver()){
         shield1.frame = 1;
     } else{
         shield1.frame = 0;
     }
     
+    //Shield2 appears upon beating Level 1
     if (level2Locked == false){
         locked2.destroy();
         shield2.frame = 0;
         shield2.anchor.setTo(0.5, 0.5)
         shield2.scale.setTo(1.9, 1.9);
         //move shield2 into the right position
-        shield2.position.x = centerX+300;
-        shield2.position.y = centerY-200;
+        shield2.position.x = centerX+325;
+        shield2.position.y = centerY-100;
     } if (shield2.input.pointerOver()){
         shield2.frame = 1;
     } else{
         shield2.frame = 0;
     }
     
+/* Commented out, hold on Level 3
     if (level3Locked = false){
         locked3.destroy();
         shield3.frame = 0;
@@ -90,6 +112,7 @@ function update() {
     } else{
         shield3.frame = 0;
     }
+*/
     
     game.world.bringToTop(black);
 }

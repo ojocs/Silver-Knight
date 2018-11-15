@@ -8,7 +8,6 @@ function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
     game.load.image('logo', 'assets/startScreen/silver knight logo.png');
     game.load.spritesheet('startButton', 'assets/startScreen/start button.png', 640, 320);
-    game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
     game.load.image('black', 'assets/black screen.png');
 }
 
@@ -33,7 +32,7 @@ function create() {
     game.add.tween(logo).to( { alpha: 1}, 2000, Phaser.Easing.Linear.None, true); //Logo fades in
     
     //Start Button
-    startButton = game.add.button(centerX - 250, centerY + 300, 'startButton');
+    startButton = game.add.button(centerX, centerY + 320, 'startButton');
     startButton.frame = 1;
     startButton.alpha = 0;
     game.time.events.add(1600, function() { //Waits for logo to fade-in
@@ -45,21 +44,6 @@ function create() {
     game.time.events.add(2000, function() {
         startButton.onInputUp.add(startLevelSelect, this);
     }, this); //Waits for fade-i to activate clicking function
-
-    
-    //Tutorial Button
-    tutButton = game.add.button(centerX + 250, centerY + 300, 'tutButton');
-    tutButton.frame = 1
-    tutButton.alpha = 0;
-    game.time.events.add(1600, function() {
-        game.add.tween(tutButton).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
-    }, this);
-    tutButton.anchor.setTo(0.5, 0.5);
-    tutButton.scale.setTo(0.5, 0.5);
-    tutButton.inputEnabled = true;
-    game.time.events.add(2000, function() {
-        tutButton.onInputUp.add(startTutorial, this);
-    }, this);
 }
 
 function update() {
@@ -72,16 +56,6 @@ function update() {
             startButton.frame = 1;
         }
     }, this)
-    
-    //Tutorial Button highlights when hovered over
-    game.time.events.add(3000, function() {
-        if (tutButton.input.pointerOver()){
-            tutButton.frame = 0;
-        }
-        else{
-            tutButton.frame = 1;
-        }
-    }, this)   
 }
 
 //Takes you to Level Select
