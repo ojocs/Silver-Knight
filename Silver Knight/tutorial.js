@@ -14,6 +14,22 @@ var blinkText = "Shift + one move key to\n blink in specified direction" ;
 var teleText = "F + cursor click to\n teleport anywhere on screen";
 var tutorialFinishText = "Tutorial Done!\n Now play the game";
 
+
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+      families: ['VT323']
+    }
+
+};
+
 function preload(){
     game.physics.startSystem(Phaser.Physics.ARCADE); // Redundant since it's already been called in state0
     
@@ -31,6 +47,10 @@ function preload(){
     game.load.image('stepImg', 'assets/tutorial/tutorial elements/Tutorial Ground 2.png');
     game.load.image('towerBody', 'assets/tutorial/tutorial elements/Tutorial Tower Body.png');
     game.load.image('towerTop', 'assets/tutorial/tutorial elements/Tutorial Tower Top.png');
+    
+    //  Load the Google WebFont Loader script
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    
 }
 
 var steps, tower, stepImage;
@@ -77,8 +97,7 @@ function create(){
 //    skipButton.scale.setTo(0.8, 0.8);
 //    skipButton.inputEnabled = true;
     
-    moveText = game.add.text(game.world.centerX,game.world.centerY - 100, text, { font: "65px Arial", fill: "#ffffff", align: "center" });
-        
+    moveText = game.add.text(game.world.centerX,game.world.centerY - 400, text, { font: "65px VT323", fill: "#ffffff", align: "center" });
     nextButton = game.add.button(game.world.centerX+50, game.world.centerY + 50, 'backButton', actionOnClick, this);
     nextButton.scale.setTo(1,1);
     
