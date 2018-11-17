@@ -45,7 +45,7 @@ var moveBinds;
 var ground, touchGround;
 
 //Blink Variables
-var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni, blink1, blink2, blink3;
+var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -82,6 +82,8 @@ function createKnight(level){
     //Teleport Timer Display
     timerSprite = game.add.sprite(355, 10, 'timer');
     timerSprite.visibile = true;
+    
+    blinkCount = 3;
     
     //blink displays
     blink1 = game.add.sprite(450, -25, 'blinkDisplay');

@@ -97,8 +97,8 @@ function create(){
 //    skipButton.scale.setTo(0.8, 0.8);
 //    skipButton.inputEnabled = true;
     
-    moveText = game.add.text(game.world.centerX,game.world.centerY - 400, text, { font: "65px VT323", fill: "#ffffff", align: "center" });
-    nextButton = game.add.button(game.world.centerX+50, game.world.centerY + 50, 'backButton', actionOnClick, this);
+    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#ffffff", align: "center" });
+    nextButton = game.add.button(game.world.centerX - 300, game.world.centerY + 200, 'backButton', actionOnClick, this);
     nextButton.scale.setTo(1,1);
     
     //Boss stuff (placeholders really for blank boss)
