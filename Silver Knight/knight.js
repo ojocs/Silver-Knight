@@ -42,7 +42,7 @@ var hitboxes, knightBox;
 
 //Movement variables
 var moveBinds;
-var ground;
+var ground, touchGround;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount = 3, canBlink, blinkAni, blink1, blink2, blink3;
@@ -272,7 +272,7 @@ function movement(knightOrientation, hitPlatform, ground){
             knight.animations.play('stand');
         }
         
-        var touchGround = knight.body.y === (game.world.height - knight.body.height);
+        touchGround = knight.body.y === (game.world.height - knight.body.height);
 
     //Jump
         if (moveBinds.upW.isDown && (knight.body.touching.down || touchGround || ground)) {

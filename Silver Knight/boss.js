@@ -21,8 +21,6 @@ function createBoss(){
     bossHitboxes.enableBody = true;
     
     //Attacks' booleans. Means that boss is performing attack if true
-    
-    
     boss.attack1 = false, boss.attack2 = false;
     
     //Health Display and variables
@@ -138,7 +136,7 @@ function determineAttack1(bossOrientation){
     if(currentLvl === 1)
         giantSwing(bossOrientation);
     if(currentLvl === 2)
-        treeProjectile();
+        treeSpike();
 }
 
 //Determine attack2 based on current level
@@ -146,7 +144,7 @@ function determineAttack2(){
     if(currentLvl === 1)
         giantStomp();
     if(currentLvl === 2)
-        treeSpike();
+        treeProjectile();
 }
 
 //Boss loses health
