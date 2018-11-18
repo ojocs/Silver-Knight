@@ -41,6 +41,7 @@ function preload(){
     //Buttons
     game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
     game.load.image('backButton', 'assets/Tutorial/Continue Button.png');
+    game.load.image('mainMenuButton', 'assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
     game.load.image('background', 'assets/tutorial/tutorial elements/Tutorial BG 2.png');
@@ -51,9 +52,13 @@ function preload(){
     //  Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     
+    // star
+    game.load.spritesheet('star', 'assets/tutorial/Star.png');
+    
 }
 
 var steps, tower, stepImage;
+var star;
 
 function create(){
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -89,7 +94,14 @@ function create(){
     towerPiece.body.immovable = true;
 //    towerPiece.scale.setTo(.85, .85);
 
-        
+    // add star
+    star = game.add.group();
+    star.enableBody = true;
+    var starPiece = star.create(game.world.centerX + 725, 50, 'star');
+    starPiece.scale.setTo(.5,.5);
+    starPiece.body.immovable = true;
+    
+    //game.add.text(game.world.centerX, game.world.centerY, star.body);
     //Add button
 
 //    skipButton = game.add.button(centerX+250, 60, 'skipButton', startLevelSelect, this);
@@ -115,6 +127,12 @@ function update() {
     var insideSteps = game.physics.arcade.overlap(knight, steps);
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
+    
+    //collide with star
+    //currently does not work
+    var touchStar = game.physics.arcade.overlap(knight, star, collectStar, null, this);
+    game.add.text(game.world.centerX, game.world.centerY, touchStar);
+    
         
     //Prevent/get out of glitch of going into steps
     if(insideSteps)
@@ -124,6 +142,13 @@ function update() {
     updateKnight(0, stepCollide);
         
     //testMovement();
+}
+
+
+
+function collectStar() { 
+    star.kill(); 
+    
 }
 
 function actionOnClick() {
@@ -141,8 +166,15 @@ function actionOnClick() {
     } else {
         moveText.setText("");
         nextButton.kill();
+        tutorialOver();
     }
     
+}
+
+function tutorialOver() {
+    var mainMenuButton = game.add.button(centerX, centerY, 'mainMenuButton', startLevelSelect, this);
+    mainMenuButton.scale.setTo(2, 2);
+    mainMenuButton.anchor.setTo(0.5, 0.5);
 }
 
 
