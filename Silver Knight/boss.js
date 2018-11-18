@@ -18,6 +18,10 @@ function createBoss(){
     //Make hitboxes for weapons
     bossHitboxes = game.add.group();
     bossHitboxes.enableBody = true;
+<<<<<<< HEAD
+=======
+    boss.addChild(bossHitboxes);
+>>>>>>> parent of 59e6aa2... Problems with merging
     
     //Attacks' booleans. Means that boss is performing attack if true
     boss.attack1 = false, boss.attack2 = false;
@@ -150,7 +154,11 @@ function determineAttack2(){
 function bossDamage(){
     if(boss.hurtOnce){
         boss.hurtOnce = false, bossHurtOnce = false;
+<<<<<<< HEAD
         boss.health -= 10;
+=======
+        boss.health -= 1;
+>>>>>>> parent of 59e6aa2... Problems with merging
         
         //Make boss slide in direction of knight hit
         if(knight.body.x < boss.body.x)

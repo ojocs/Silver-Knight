@@ -13,7 +13,11 @@ function preload() {
     game.load.image('platform2.2', 'assets/Level 2/Platform 2.2.png');
     game.load.image('platform2.3', 'assets/Level 2/Platform 2.3.png');
     //Boss
+<<<<<<< HEAD
     game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile.png');
+=======
+    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile 2.png');
+>>>>>>> parent of 59e6aa2... Problems with merging
     game.load.spritesheet('treeSpike', 'assets/Level 2/Tree Spike.png', 729, 490);
     game.load.spritesheet('tree', 'assets/Level 2/Tree Spritesheet.png', 219, 300);
 }
@@ -23,7 +27,11 @@ var centerX = 1000, centerY = 500;
 var bg, logo, startButton, tutButton, black;
 
 //Objects for tree's attack
+<<<<<<< HEAD
 var spike, spikeDist = 270, projectile;
+=======
+var spike, spikeDist = 270, projectiles, treeHand;
+>>>>>>> parent of 59e6aa2... Problems with merging
 
 var platforms2;
 var debug;
@@ -48,7 +56,11 @@ function create() {
     boss.animations.add('treeWalk', [23, 24, 25 , 26], 17);
     
     //Set variables for attacks
+<<<<<<< HEAD
     boss.addChild(bossHitboxes), thresholdFromBossWalk = 450, bossSpecialTime = 3;
+=======
+    boss.addChild(bossHitboxes), thresholdFromBossWalk = 450, bossSpecialTime = 2;
+>>>>>>> parent of 59e6aa2... Problems with merging
     
     //Add attack1 animation, aka spike
     boss.attack1 = false;
@@ -71,6 +83,7 @@ function create() {
     boss.treeProjectileAni.onComplete.add(function(){
         boss.attack2 = false;
     });
+<<<<<<< HEAD
     //Add projectile
 //    projectile = bossHitboxes.create(0, 0, 'treeProjectile');
 //    projectile.anchor.setTo(0.5, 0.5);
@@ -78,6 +91,23 @@ function create() {
     
     //Make knight
     createKnight(2);
+=======
+    //Add projectiles, can fire up to 2 bullets
+    projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
+    //Speed and firerate. Latter is every 1/2 second
+    projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
+    //Add some extra physics
+    projectiles.bulletRotateToVelocity = true, projectiles.bulletGravity = true;
+    //Bullets killed if out of bounds
+    projectiles.outOfBoundsKill = true, projectiles.lifespan = 1000;
+    //Projectiles launched from boss, offest to its hand
+    treeHand = bossHitboxes.create(0, 0, null), treeHand.body.enable = true;
+    treeHand.anchor.setTo(0.5, 0.5), treeHand.body.setSize(10, 10, 10, 10);
+    
+    //Make knight
+    createKnight(2);
+    
+>>>>>>> parent of 59e6aa2... Problems with merging
     //Debugging
     debug = game.add.text(1500, 16, ' ', {
         fontSize: '50px', fill: '#000' });
@@ -86,6 +116,7 @@ function create() {
 function update() {
     var distanceFromBoss = boss.body.center.x - knight.body.center.x;
     updateKnight(distanceFromBoss);
+<<<<<<< HEAD
     updateBoss(distanceFromBoss);
     
     //To prevent unwanted post victory death, destroy attack objects
@@ -95,6 +126,28 @@ function update() {
     
     //Debugging
     game.debug.body(spike), debug.text = 'attack1 '+boss.attack1+'\nattack2 '+boss.attack2+'\nspike enable? '+spike.enableBody;
+=======
+    
+    //Destroy bullet if it collides with platforms
+    
+    //Destroy bullet if it collides with knight, take away health
+    game.physics.arcade.collide(projectiles.bullets, knight, function(knight, bullet){
+        bullet.kill(); 
+        livesTaken = 1, knightStaggerJump = 100, knightStaggerSlide = 1200;
+        knightDamage();
+    });
+    
+    //To prevent unwanted post victory death, destroy attack objects
+    if(boss.alive){
+        updateBoss(distanceFromBoss);
+    }
+    if(!boss.alive){
+        spike.kill();//, projectiles.destroy();
+    }
+    
+    //Debugging
+    game.debug.body(spike), debug.text = 'treeHand x '+treeHand.body.x+'\ntreehand y '+treeHand.body.y;
+>>>>>>> parent of 59e6aa2... Problems with merging
 }
 
 //Detect spike and knight collision
@@ -166,4 +219,16 @@ function treeProjectile(){
     boss.attack2 = true;
     boss.animations.play('treeProjectileAttack');
     
+<<<<<<< HEAD
+=======
+    var treeOffsetX = boss.scale.x === 1 ? boss.body.x: boss.body.x + 200;
+    var treeOffsetY = boss.body.y + 200;
+    //Projectiles launched from boss, offest to its hand
+    treeHand = bossHitboxes.create(treeOffsetX, treeOffsetY, null), treeHand.body.enable = true;
+    treeHand.anchor.setTo(0.5, 0.5), treeHand.body.setSize(10, 10, 10, 10);
+    
+    //Fire in direction of sprite
+    var offsetOfKnight = 100;
+    projectiles.fire(treeHand, knight.body.x - offsetOfKnight, knight.body.y + offsetOfKnight);
+>>>>>>> parent of 59e6aa2... Problems with merging
 }
