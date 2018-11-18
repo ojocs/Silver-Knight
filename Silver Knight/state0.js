@@ -72,11 +72,7 @@ function create() {
     //Add Giant
     createBoss();
     boss = game.add.sprite(centerX, centerY + 120, 'giant');
-<<<<<<< HEAD
     boss.speed = 140, boss.health = 10;
-=======
-    boss.speed = 140, boss.health = 1;
->>>>>>> parent of 59e6aa2... Problems with merging
     boss.anchor.setTo(0.8, 0.5);
     game.physics.enable(boss);
     boss.body.gravity.y = 400;
@@ -89,10 +85,7 @@ function create() {
     boss.turning = false, bossTurnTimer = 30, bossSpecialTime = 5, thresholdFromBossWalk = 300;
     
     //Make hitBoxes for club
-<<<<<<< HEAD
     boss.addChild(bossHitboxes);
-=======
->>>>>>> parent of 59e6aa2... Problems with merging
     swingBox1 = bossHitboxes.create(0, 0, null);
     swingBox1.anchor.setTo(0.5, 0.5);
     //So hitbox won't be active unless giant is swinging
@@ -126,14 +119,10 @@ function create() {
     stompThud = game.add.audio('stompThud'), bossStep = game.add.audio('bossStep', 15);
      
     createKnight(1);
-<<<<<<< HEAD
     
     //Decode sounds
 //    game.sound.setDecodedCallback([ teleAudio, teleAudio2, swordHitAudio ], updateKnight, this);
  
-=======
-   
->>>>>>> parent of 59e6aa2... Problems with merging
     //Debugging
     debug = game.add.text(1500, 16, ' ', {
         fontSize: '50px', fill: '#000' });
