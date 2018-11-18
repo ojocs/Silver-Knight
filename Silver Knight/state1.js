@@ -88,6 +88,11 @@ function update() {
     updateKnight(distanceFromBoss);
     updateBoss(distanceFromBoss);
     
+    //To prevent unwanted post victory death, destroy attack objects
+    if(!boss.alive){
+        spike.kill();
+    }
+    
     //Debugging
     game.debug.body(spike), debug.text = 'attack1 '+boss.attack1+'\nattack2 '+boss.attack2+'\nspike enable? '+spike.enableBody;
 }
@@ -160,4 +165,5 @@ function treeSpike(){
 function treeProjectile(){
     boss.attack2 = true;
     boss.animations.play('treeProjectileAttack');
+    
 }

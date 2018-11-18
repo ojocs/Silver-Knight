@@ -44,7 +44,7 @@ var hitboxes, knightBox;
 
 //Movement variables
 var moveBinds;
-var ground, touchGround;
+var ground, touchGround, onPlatform;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
@@ -162,6 +162,9 @@ function createKnight(level){
     canBlink = true;
     canTele = true;
     
+    //For preventing platform glitches
+    onPlatform = false;
+    
     // camera follow knight 
     game.camera.follow(knight);
     
@@ -222,8 +225,8 @@ function updateKnight(currentDistanceFromBoss, ground){
         teleControls();
     
         //Normal Movement
-        if(!hit)
-        movement(knightOrientation, hitPlatform, ground);
+        if(!hit && !onPlatform)
+            movement(knightOrientation, hitPlatform, ground);
 
         //Speed and drag
         speedF();

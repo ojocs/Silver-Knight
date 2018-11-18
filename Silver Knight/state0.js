@@ -143,7 +143,7 @@ function update() {
     
     //---Character collisions----//
     //Knight loses health when hit by club
-    if(!boss.turning){
+    if(!boss.turning && boss.alive){
         livesTaken = 2, knightStaggerJump = 500, knightStaggerSlide = 2000;
         game.physics.arcade.overlap(bossHitboxes, knight, knightDamage, null, this);
     }
