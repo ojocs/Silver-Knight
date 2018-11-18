@@ -23,7 +23,7 @@ var centerX = 1000, centerY = 500;
 var bg, logo, startButton, tutButton, black;
 
 //Objects for tree's attack
-var spike, spikeDist = 350, projectile;
+var spike, spikeDist = 270, projectile;
 
 var platforms2;
 var debug;
@@ -45,14 +45,14 @@ function create() {
     boss.newScaleX = 1, bossTurnTimer = 10;
     
     //Add walk animation
-    boss.animations.add('treeWalk', [23, 24, 25 , 26], 20);
+    boss.animations.add('treeWalk', [23, 24, 25 , 26], 17);
     
-    //For attacks
-    boss.addChild(bossHitboxes), thresholdFromBossWalk = 450;
+    //Set variables for attacks
+    boss.addChild(bossHitboxes), thresholdFromBossWalk = 450, bossSpecialTime = 3;
     
     //Add attack1 animation, aka spike
     boss.attack1 = false;
-    boss.treeSpikeAni = boss.animations.add('treeGroundAttack', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 7);
+    boss.treeSpikeAni = boss.animations.add('treeGroundAttack', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 15);
     boss.treeSpikeAni.onComplete.add(function(){
         boss.attack1 = false;
     });
@@ -61,13 +61,13 @@ function create() {
     game.physics.enable(spike), spike.enableBody = false, spike.visibile = false;
     spike.scale.setTo(.5, .5);
     //boss.addChild(spike), spike.anchor.setTo(0.5, 0.5);
-    spike.ani = spike.animations.add('spike', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 13);
+    spike.ani = spike.animations.add('spike', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 20);
     //So that spike will be blank at start of first run through attack1
     spike.frame = 11;
         
     //Add attack2 animation, aka projectile
     boss.attack2 = false;
-    boss.treeProjectileAni = boss.animations.add('treeProjectileAttack', [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41], 20);
+    boss.treeProjectileAni = boss.animations.add('treeProjectileAttack', [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41], 25);
     boss.treeProjectileAni.onComplete.add(function(){
         boss.attack2 = false;
     });
@@ -88,11 +88,14 @@ function update() {
     updateKnight(distanceFromBoss);
     updateBoss(distanceFromBoss);
     
-    //To have spike hitboxes work properly
-    //spikeBoxes();
-    
     //Debugging
     game.debug.body(spike), debug.text = 'attack1 '+boss.attack1+'\nattack2 '+boss.attack2+'\nspike enable? '+spike.enableBody;
+}
+
+//Detect spike and knight collision
+function spikeHitKnight(){
+    livesTaken = 2, knightStaggerJump = 1200, knightStaggerSlide = 1500;
+    game.physics.arcade.overlap(spike, knight, knightDamage, null, this);
 }
 
 //Tree spike attack
@@ -102,57 +105,54 @@ function treeSpike(){
         boss.attack1 = true;
         boss.animations.play('treeGroundAttack');
         //Make spike appear next to the tree on the ground
-        spike.body.y = 300;//game.world.height - spike.body.height;
+        spike.body.y = game.world.height - spike.body.height;
         //Decide where to appear based on tree orientation
         spike.body.x = boss.body.x;
-        if(boss.scale.x < 0){
-            spike.body.x += spikeDist - 100;
+        if(distanceFromBoss < 0){
+            spike.body.x += spikeDist;
         }
-        else if(boss.scale.x > 0){
+        else if(distanceFromBoss > 0){
             spike.body.x -= spikeDist;
         }
         //Wait for a bit and enable the spike's body
         var treeSpikeTimer = game.time.create(true);
-        treeSpikeTimer.add(1300, function(){
+        treeSpikeTimer.add(800, function(){
             spike.animations.play('spike');
             spike.enableBody = true, spike.visibile = true;
             spike.body.setSize(0, 0, 0, 0);
-        });//729, 490
-        treeSpikeTimer.add(1310, function(){
-            spike.body.setSize(354, 157, 170, 330);
+            //Detect collision with knight, -2 lives
+            spikeHitKnight();
         });
-        treeSpikeTimer.add(1320, function(){
-            spike.body.setSize(454, 263, 198, 224);
+        //Set spike's body to different sizes based on current frame        
+        treeSpikeTimer.add(810, function(){
+            spike.body.setSize(354, 157, 170, 330), spikeHitKnight();
         });
-        treeSpikeTimer.add(1330, function(){
-            spike.body.setSize(582, 310, 224, 180);
+        treeSpikeTimer.add(820, function(){
+            spike.body.setSize(454, 263, 198, 224), spikeHitKnight();
         });
-//        treeSpikeTimer.add(1340, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
-//        treeSpikeTimer.add(1350, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
-//        treeSpikeTimer.add(1360, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
-//        treeSpikeTimer.add(1370, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
-//        treeSpikeTimer.add(1380, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
-//        treeSpikeTimer.add(1390, function(){
-//            spike.body.setSize(354, 157, 0, 0);
-//        });
+        treeSpikeTimer.add(830, function(){
+            spike.body.setSize(582, 310, 224, 180), spikeHitKnight();
+        });
+        treeSpikeTimer.add(840, function(){
+            spike.body.setSize(600, 480, 30, 10), spikeHitKnight();
+        });
+        treeSpikeTimer.add(850, function(){
+            spike.body.setSize(410, 490, 170, 0), spikeHitKnight();
+        });
+        treeSpikeTimer.add(860, function(){
+            spike.body.setSize(100, 490, 170, 0), spikeHitKnight();
+        });
+        treeSpikeTimer.add(870, function(){
+            spike.body.setSize(410, 490, 170, 0), spikeHitKnight();
+        });
+        treeSpikeTimer.add(890, function(){
+            spike.body.setSize(377, 422, 192, 72), spikeHitKnight();
+        });
         //Get rid of spike
-        treeSpikeTimer.add(1400, function(){
+        treeSpikeTimer.add(900, function(){
             spike.enableBody = false, spike.visibile = false;
         });
         treeSpikeTimer.start();
-        //Detect collision with knight, -2 lives
-            livesTaken = 2;
-            game.physics.arcade.overlap(spike, knight, knightDamage, null, this);
     }
 }
 

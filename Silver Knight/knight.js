@@ -35,7 +35,7 @@ var knight;
 var pauseButton, pauseMenu, exitButton, gameIsOver;
 
 //Health
-var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3, heart3Half; //Knight has 6 lives
+var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3, heart3Half, hit; //Knight has 6 lives
 
 //Hitboxes for attacks/weapons
 var hitboxes, knightBox;
@@ -60,7 +60,7 @@ var speed, drag = 100, walkSpeed = 600;
 var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
 
 //Boss related variables.
-var distanceFromBoss, livesTaken, boss;
+var distanceFromBoss, livesTaken, boss, knightStaggerJump, knightStaggerSlide;
 
 //Call in create
 function createKnight(level){    
@@ -78,6 +78,7 @@ function createKnight(level){
     heart2 = game.add.image(125, 10, 'heart');
     heart3Half = game.add.image(240, 10, 'half_heart');
     heart3 = game.add.image(240, 10, 'heart');
+    hit = false;
     
     //Teleport Timer Display
     timerSprite = game.add.sprite(355, 10, 'timer');
@@ -219,6 +220,7 @@ function updateKnight(currentDistanceFromBoss, ground){
         teleControls();
     
         //Normal Movement
+        if(!hit)
         movement(knightOrientation, hitPlatform, ground);
 
         //Speed and drag
@@ -471,6 +473,10 @@ function hurt(){
     if(!knight.hurtOnce){
         knightHurtTimer += 1;
     }
+    //So knight won't move for a little when hit, rather stagger
+    if(knightHurtTimer === 30)
+        hit = false;
+    //Reset timer
     if(knightHurtTimer === 100){
         knight.hurtOnce = true;
         knightHurtTimer = 0;
@@ -480,19 +486,19 @@ function hurt(){
 //Player loses health
 function knightDamage() {
     if(knight.hurtOnce){
-        knight.hurtOnce = false;
+        knight.hurtOnce = false, hit = true;
         health -= livesTaken;
 
         //make player jump a little when hit
-        knight.body.velocity.y  = -500;
+        knight.body.velocity.y  = -knightStaggerJump;
         // move player back when hit inside states
         if (distanceFromBoss > 0) {
 
-            knight.body.velocity.x -= 1000;
+            knight.body.velocity.x -= knightStaggerSlide;
 
         } else if(distanceFromBoss < 0) {
 
-            knight.body.velocity.x += 1000;
+            knight.body.velocity.x += knightStaggerSlide;
 
         }
         

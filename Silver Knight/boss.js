@@ -5,8 +5,7 @@ function preloadBoss(){
     game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100.png');
 }
 
-var boss, bossHitboxes, bossSpecialTime = 5, bossTurnTimer;
-var thresholdFromBossWalk = 300;
+var boss, bossHitboxes, bossSpecialTime, bossTurnTimer, thresholdFromBossWalk;
 var currentLvl;
 
 function createBoss(){
@@ -77,7 +76,7 @@ function bossTurnTimerFunc(){
     }
     if(bossTurnTimer == 0){
         boss.turning = false;
-        bossTurnTimer = 30;
+        bossTurnTimer = currentLvl === 1 ? 30 : 10;
         boss.scale.setTo(boss.newScaleX, 1);
     }
 }

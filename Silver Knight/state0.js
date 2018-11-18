@@ -81,7 +81,8 @@ function create() {
     boss.body.setSize(200, 520, 280, 170);
     boss.body.collideWorldBounds = true;
     
-    boss.turning = false, bossTurnTimer = 30;
+    //Set variables for attacks
+    boss.turning = false, bossTurnTimer = 30, bossSpecialTime = 5, thresholdFromBossWalk = 300;
     
     //Make hitBoxes for club
     boss.addChild(bossHitboxes);
@@ -143,7 +144,7 @@ function update() {
     //---Character collisions----//
     //Knight loses health when hit by club
     if(!boss.turning){
-        livesTaken = 2;
+        livesTaken = 2, knightStaggerJump = 500, knightStaggerSlide = 2000;
         game.physics.arcade.overlap(bossHitboxes, knight, knightDamage, null, this);
     }
     
@@ -229,7 +230,7 @@ function giantStomp(){
         if (knight.body.touching.down) {
             //If touching ground, decrement life by 1, else only make him stagger
             livesTaken = groundCollide ? 1 : 0;
-            knightDamage();
+            kngihtStaggerJump = 500, knightStaggerSlide = 2000, knightDamage();
         }
     }
 }
