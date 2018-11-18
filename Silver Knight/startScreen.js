@@ -9,12 +9,14 @@ function preload() {
     game.load.image('logo', 'assets/startScreen/silver knight logo.png');
     game.load.spritesheet('startButton', 'assets/startScreen/start button.png', 640, 320);
     game.load.image('black', 'assets/black screen.png');
+    game.load.audio('intro', 'assets/audio/music/Medieval Intro Edit.wav');
 }
 
 var demo = {};
 var centerX = 1000, centerY = 500;
 var bg, logo, startButton, tutButton, black;
 var isTutorial = false; // Variable for the exit button
+var introMusic;
 
 function create() {
     console.log('startScreen');
@@ -47,6 +49,8 @@ function create() {
 }
 
 function update() {
+    resumeIntro();
+    
     //Start Button highlights when hovered over
     game.time.events.add(2500, function() {
         if (startButton.input.pointerOver()){
@@ -56,6 +60,27 @@ function update() {
             startButton.frame = 1;
         }
     }, this)
+}
+
+//Play intro music if it's not already playing
+function resumeIntro(){
+    if (introMusic == null){ //Adds 'intro' only once
+        introMusic = game.add.audio('intro');
+        introMusic.loopFull();
+    };
+    if (introMusic.volume < 1){
+//        console.log('intro not palying');
+        introMusic.volume = 1;
+        introMusic.loopFull();
+    } else if (introMusic.volume == 1){
+        //console.log('intro is playing');
+    };
+}
+
+//Fades out introMusic; introMusic should not be playing during levels nor tutorial
+function fadeOutIntro(){
+    game.add.tween(introMusic).to( { volume: 0}, 200, Phaser.Easing.Linear.None, true);
+    //console.log(introMusic.volume);
 }
 
 //Takes you to Level Select

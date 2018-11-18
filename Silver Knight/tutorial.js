@@ -7,12 +7,13 @@ var tutorial = {
 var demo = {};
 var vel = 600, outline, movementTested = false, skipButton;
 var clickCount = 0;
-var text = "A W S D to move";
+var text = 'Use "W A S D" to move';
 var moveText;
-var attackText = "Space bar to attack";
-var blinkText = "Shift + one move key to\n blink in specified direction" ;
-var teleText = "F + cursor click to\n teleport anywhere on screen";
-var tutorialFinishText = "Tutorial Done!\n Now play the game";
+var attackText = "Press the spacebar to attack";
+var blinkText = "Press either shift key while moving to\n blink in that direction" ;
+var testBlinkText = "Now try reaching the star on top of the tower"
+var teleText = 'Press "F" to activate the long teleport,\n then click anywhere on the screen';
+var tutorialFinishText = "Tutorial Done!\n";
 
 
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -59,6 +60,7 @@ function preload(){
 
 var steps, tower, stepImage;
 var star;
+var blinkStar = false; // Boolean to know when the knight used blink to get the star
 
 function create(){
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -122,6 +124,8 @@ function create(){
 }
  
 function update() {
+    fadeOutIntro();
+    
     //Collide with steps
     var stepCollide = game.physics.arcade.collide(knight, steps);
     var insideSteps = game.physics.arcade.overlap(knight, steps);
@@ -162,6 +166,8 @@ function actionOnClick() {
     } else if (clickCount == 3) {
         moveText.setText(blinkText);
     } else if (clickCount == 4) {
+        moveText.setText(testBlinkText);
+    } else if (clickCount == 5 && blinkStar == true) {
         moveText.setText(tutorialFinishText);
     } else {
         moveText.setText("");

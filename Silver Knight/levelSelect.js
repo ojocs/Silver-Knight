@@ -69,6 +69,8 @@ function create() {
 }
 
 function update() {
+    resumeIntro();
+    
     //Tutorial Button highlights when hovered over
     if (tutButton.input.pointerOver()){
         tutButton.frame = 0;

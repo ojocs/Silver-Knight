@@ -19,6 +19,8 @@ function preloadKnight(){
     game.load.image('nextLevelButton', 'assets/Win or Lose/Next Lvl Button.png');
     game.load.image('gameOverText', 'assets/Win or Lose/Game Over Text.png');
     game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
+    game.load.audio('victoryMusic', 'assets/audio/knight audio/Medieval Fanfare.wav');
+    game.load.audio('gameOverMusic', 'assets/audio/knight audio/Game Over.wav');    
     
     //Audio
     game.load.audio('teleAudio', 'assets/audio/knight audio/Teleport Sound 5.wav');
@@ -32,7 +34,7 @@ function preloadKnight(){
 var knight;
 
 //Pause variables
-var pauseButton, pauseMenu, exitButton, gameIsOver;
+var pauseButton, pauseMenu, exitButton, restartButton, gameIsOver;
 
 //Health
 var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3, heart3Half, hit; //Knight has 6 lives
@@ -71,7 +73,7 @@ function createKnight(level){
     gameIsOver = false;
     
     //Health
-    health = 6;
+    health = 1;
     heart1Half = game.add.image(10, 10, 'half_heart');
     heart1 = game.add.image(10, 10, 'heart');
     heart2Half = game.add.image(125, 10, 'half_heart');
@@ -170,11 +172,11 @@ function createKnight(level){
     // For BG music: Add like: music = game.add.audio('theme',1,true); and to play: key, volume, loop music.play('',0,1,true);
     
     //Exit Button
-    var exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
+    exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
     exitButton.anchor.setTo(1, 0.5);
     
     //Restart Button
-    var restartButton = game.add.button(centerX+100, 60, 'restartButton', restartLevel, this);
+    restartButton = game.add.button(centerX+100, 60, 'restartButton', restartLevel, this);
     restartButton.anchor.setTo(0, 0.5);
     
     //Pause
@@ -520,22 +522,76 @@ function knightDamage() {
     }
 }
 
+//--------------  VICTORY/GAME OVER ------------//
+
 function victory(){
+    var victoryMusic = game.add.audio('victoryMusic');
+    victoryMusic.play();
+    
+    //Disable buttons while victoryMusic play
+    exitButton.inputEnabled = false;
+    restartButton.inputEnabled = false;
+    
     var victoryText = game.add.image(centerX, centerY-100, 'victoryText');
+    victoryText.alpha = 0;
     victoryText.anchor.setTo(0.5, 0.5);
     victoryText.scale.setTo(1.5, 1.5);
+    //Fade in victoryText
+    game.add.tween(victoryText).to( { alpha: 1}, 5000, Phaser.Easing.Linear.None, true);
     
-    var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
-    mainMenuButton.scale.setTo(1.3, 1.3);
-    mainMenuButton.anchor.setTo(0.5, 0.5);
-    
-    //Assign next level button to level 2 if at level 1, otherwise to level 3
-    var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
-    //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
-    nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
-    nxtLvlButton.scale.setTo(1.3, 1.3);
-    nxtLvlButton.anchor.setTo(0.5, 0.5);
+    //Delay adding the buttons until victoryText fully appears
+    game.time.events.add(4900, function() {
+        var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
+        mainMenuButton.scale.setTo(1.3, 1.3);
+        mainMenuButton.anchor.setTo(0.5, 0.5);
+        
+        //Assign next level button to level 2 if at level 1, otherwise to level 3
+        var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
+        //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
+        nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
+        nxtLvlButton.scale.setTo(1.3, 1.3);
+        nxtLvlButton.anchor.setTo(0.5, 0.5);
+        
+        //Re-eneable buttons once victoryMusic is done
+        exitButton.inputEnabled = true;
+        restartButton.inputEnabled = true;
+    }, this);
 }
+
+function gameOver(){
+    var gameOverMusic = game.add.audio('gameOverMusic');
+    game.time.events.add(100, function() {
+        gameOverMusic.play();
+    });
+    
+    exitButton.inputEnabled = false;
+    restartButton.inputEnabled = false;
+    
+    //To stop knight's functions, which would cause bugs
+    teleMode = false, gameIsOver = true;
+    
+    var gameOverText = game.add.image(centerX, centerY-100, 'gameOverText')
+    gameOverText.alpha = 0;
+    gameOverText.anchor.setTo(0.5, 0.5);
+    gameOverText.scale.setTo(1.5, 1.5);
+    game.add.tween(gameOverText).to( { alpha: 1}, 3500, Phaser.Easing.Linear.None, true);
+    
+    //Delay adding the buttons until gameOverText fully appears
+    game.time.events.add(3400, function() {
+        var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
+        mainMenuButton.scale.setTo(1.3, 1.3);
+        mainMenuButton.anchor.setTo(0.5, 0.5);
+
+        var tryAgainButton = game.add.button(centerX - 250, centerY+150, 'tryAgainButton', restartLevel, this);
+        tryAgainButton.scale.setTo(1.3, 1.3);
+        tryAgainButton.anchor.setTo(0.5, 0.5);
+        
+        exitButton.inputEnabled = true;
+        restartButton.inputEnabled = true;
+    }, this);
+}
+
+//------------ END VICTORY/GAME OVER -----------//
 
 function restartLevel(){
     console.log('restart');
@@ -561,20 +617,3 @@ function unpauseGame(event){
 }
         
 //------------- END PAUSE ----------------------//
-
-function gameOver(){
-    //To stop knight's functions, which would cause bugs
-    teleMode = false, gameIsOver = true;
-    
-    var gameOverText = game.add.image(centerX, centerY-100, 'gameOverText')
-    gameOverText.anchor.setTo(0.5, 0.5);
-    gameOverText.scale.setTo(1.5, 1.5);
-    
-    var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
-    mainMenuButton.scale.setTo(1.3, 1.3);
-    mainMenuButton.anchor.setTo(0.5, 0.5);
-    
-    var tryAgainButton = game.add.button(centerX - 250, centerY+150, 'tryAgainButton', restartLevel, this);
-    tryAgainButton.scale.setTo(1.3, 1.3);
-    tryAgainButton.anchor.setTo(0.5, 0.5);
-}
