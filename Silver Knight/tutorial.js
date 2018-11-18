@@ -11,9 +11,15 @@ var text = 'Use "W A S D" to move';
 var moveText;
 var attackText = "Press the spacebar to attack";
 var blinkText = "Press either shift key while moving to\n blink in that direction" ;
-var testBlinkText = "Now try reaching the star on top of the tower"
+var blinkText2 = "Now try reaching the star on top of the tower"
+var blinkStar = false; // Boolean so the tutorial only progresses once the player reaches the star using blink
+var blinkText3 = 'Great! You can blink 3 times before having\n to wait for it to recharge'
+var blinkText4 = 'These icons will track your blinks'
 var teleText = 'Press "F" to activate the long teleport,\n then click anywhere on the screen';
-var tutorialFinishText = "Tutorial Done!\n";
+var teleText2 = 'Note the longer recharge time'
+var teleText3 = 'Now, use the long teleport to get this star'
+var teleStar = false; //Boolean so the tutorial only progresses once the play reaches the star using longTele
+var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're ready to begin your journey";
 
 
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -60,7 +66,6 @@ function preload(){
 
 var steps, tower, stepImage;
 var star;
-var blinkStar = false; // Boolean to know when the knight used blink to get the star
 
 function create(){
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -126,6 +131,8 @@ function create(){
 function update() {
     fadeOutIntro();
     
+    playTutorial();
+    
     //Collide with steps
     var stepCollide = game.physics.arcade.collide(knight, steps);
     var insideSteps = game.physics.arcade.overlap(knight, steps);
@@ -157,30 +164,51 @@ function collectStar() {
 
 function actionOnClick() {
     clickCount++;
+    console.log('clickCount', clickCount);
+}
+
+function playTutorial(){
     
     if (clickCount == 1) {
         // The key here is setText(), which allows you to update the text of a text object.
         moveText.setText(attackText);
     } else if (clickCount == 2) {
-        moveText.setText(teleText);
-    } else if (clickCount == 3) {
         moveText.setText(blinkText);
+    } else if (clickCount == 3 && blinkStar == false) {
+        moveText.setText(blinkText2);
+        
+        //Remove nextButton so player has to get the star to continue
+        nextButton.alpha = 0;
+        nextButton.inputEnabled = false;
+        
+        //Removable code; makes sure tutorial doesn't progress until blinkStar = true
+        game.time.events.add(2000, function() {
+            blinkStar = true;
+        }, this);
+        //--------------------------------------//
+    } else if (clickCount == 3 && blinkStar == true) {
+        //Put nextButton back
+        nextButton.alpha = 1;
+        nextButton.inputEnabled = true;
+        
+        moveText.setText(blinkText3);
     } else if (clickCount == 4) {
-        moveText.setText(testBlinkText);
-    } else if (clickCount == 5 && blinkStar == true) {
-        moveText.setText(tutorialFinishText);
-    } else {
-        moveText.setText("");
-        nextButton.kill();
-        tutorialOver();
-    }
-    
-}
+        moveText.setText(teleText);
+    } else if (clickCount == 5) {
+        moveText.setText(teleText2);
+    } else if (clickCount == 6 && teleStar == false) {
+        moveText.setText(teleText3);
 
-function tutorialOver() {
-    var mainMenuButton = game.add.button(centerX, centerY, 'mainMenuButton', startLevelSelect, this);
-    mainMenuButton.scale.setTo(2, 2);
-    mainMenuButton.anchor.setTo(0.5, 0.5);
+        nextButton.kill();
+        
+        //Removable code; makes sure tutorial doesn't progress until teleStar = true
+        game.time.events.add(2000, function() {
+            teleStar = true;
+        }, this);
+        //--------------------------------------//
+    } else if(clickCount == 6 && teleStar == true){
+        moveText.setText(tutorialFinishText);
+    }
 }
 
 
