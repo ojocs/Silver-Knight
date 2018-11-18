@@ -73,7 +73,7 @@ function createKnight(level){
     gameIsOver = false;
     
     //Health
-    health = 1;
+    health = 6;
     heart1Half = game.add.image(10, 10, 'half_heart');
     heart1 = game.add.image(10, 10, 'heart');
     heart2Half = game.add.image(125, 10, 'half_heart');

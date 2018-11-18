@@ -18,6 +18,7 @@ function createBoss(){
     //Make hitboxes for weapons
     bossHitboxes = game.add.group();
     bossHitboxes.enableBody = true;
+    boss.addChild(bossHitboxes);
     
     //Attacks' booleans. Means that boss is performing attack if true
     boss.attack1 = false, boss.attack2 = false;
@@ -150,7 +151,7 @@ function determineAttack2(){
 function bossDamage(){
     if(boss.hurtOnce){
         boss.hurtOnce = false, bossHurtOnce = false;
-        boss.health -= 10;
+        boss.health -= 1;
         
         //Make boss slide in direction of knight hit
         if(knight.body.x < boss.body.x)
