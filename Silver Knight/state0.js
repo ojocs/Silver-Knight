@@ -72,7 +72,7 @@ function create() {
     //Add Giant
     createBoss();
     boss = game.add.sprite(centerX, centerY + 120, 'giant');
-    boss.speed = 140, boss.health = 1;
+    boss.speed = 140, boss.health = 10;
     boss.anchor.setTo(0.8, 0.5);
     game.physics.enable(boss);
     boss.body.gravity.y = 400;
@@ -163,7 +163,7 @@ function update() {
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    debugF();    
+    //debugF();    
 }
 
 //Giant swinging attack

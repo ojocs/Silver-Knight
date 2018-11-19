@@ -106,7 +106,7 @@ function create() {
         fontSize: '50px', fill: '#000' });
 }
 
-function update() {game.debug.body(projectiles.bullets);
+function update() {//game.debug.body(projectiles.bullets);
     fadeOutIntro();
     
     //Knight collide with platforms
@@ -144,7 +144,7 @@ function update() {game.debug.body(projectiles.bullets);
     }
     
     //Debugging
-    game.debug.body(spike), debug.text = 'treeHand x '+treeHand.body.x+'\ntreehand y '+treeHand.body.y;
+    //game.debug.body(spike), debug.text = 'treeHand x '+treeHand.body.x+'\ntreehand y '+treeHand.body.y;
 }
 
 //Detect spike and knight collision
