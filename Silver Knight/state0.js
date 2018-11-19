@@ -84,6 +84,11 @@ function create() {
     //Set variables for attacks
     boss.turning = false, bossTurnTimer = 30, bossSpecialTime = 5, thresholdFromBossWalk = 300;
     
+    //Make hitboxes for weapons
+    bossHitboxes = game.add.group();
+    bossHitboxes.enableBody = true;
+    boss.addChild(bossHitboxes);
+    
     //Make hitBoxes for club
     swingBox1 = bossHitboxes.create(0, 0, null);
     swingBox1.anchor.setTo(0.5, 0.5);
@@ -148,16 +153,17 @@ function update() {
     }
     
     var distanceFromBoss = boss.body.center.x - knight.body.center.x;
+    var vertFromBoss = boss.body.y - (knight.body.y + knight.body.height);
     
     //--------------GIANT AI-----------------------------//
     if(boss.alive)
         updateBoss(distanceFromBoss);    
     
     //Call knight's update
-    updateKnight(distanceFromBoss, groundCollide);
+    updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    //debugF();    
+    debugF();    
 }
 
 //Giant swinging attack

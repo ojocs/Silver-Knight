@@ -15,11 +15,6 @@ function createBoss(){
     //Movement
     boss.speed = 0, bossTurnTimer = 0, boss.turning = false;
     
-    //Make hitboxes for weapons
-    bossHitboxes = game.add.group();
-    bossHitboxes.enableBody = true;
-    boss.addChild(bossHitboxes);
-    
     //Attacks' booleans. Means that boss is performing attack if true
     boss.attack1 = false, boss.attack2 = false;
     

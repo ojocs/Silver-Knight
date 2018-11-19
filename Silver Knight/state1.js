@@ -13,7 +13,7 @@ function preload() {
     game.load.image('platform2.2', 'assets/Level 2/Platform 2.2.png');
     game.load.image('platform2.3', 'assets/Level 2/Platform 2.3.png');
     //Boss
-    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile.png');
+    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile 2.png');
     game.load.spritesheet('treeSpike', 'assets/Level 2/Tree Spike.png', 729, 490);
     game.load.spritesheet('tree', 'assets/Level 2/Tree Spritesheet.png', 219, 300);
 }
@@ -34,6 +34,19 @@ function create() {
     var bg = game.add.image(0, 0, 'background');
     
     //Platforms
+    platforms2 = game.add.group(), platforms2.enableBody = true;
+    
+    var ledge = platforms2.create(60, 300, 'platform2.1');
+    ledge.body.immovable = true;
+    ledge = platforms2.create(1100, 320, 'platform2.2');
+    ledge.body.immovable = true;
+    ledge = platforms2.create(580, 480, 'platform2.3');
+    ledge.body.immovable = true;
+    ledge = platforms2.create(1550, 450, 'platform2.3');
+    ledge.body.immovable = true;
+    
+    //Prevent getting stuck in ground
+    platforms2.antiStuck = ledge.body.height;
     
     //Add Tree Boss
     createBoss();
@@ -73,8 +86,8 @@ function create() {
     });
     //Add projectiles, can fire up to 2 bullets
     projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
-    projectiles.bullets.setAll('scale.x', 0.2);
-    projectiles.bullets.setAll('scale.y', 0.2);
+//    projectiles.bullets.setAll('scale.x', 0.2);
+//    projectiles.bullets.setAll('scale.y', 0.2);
     //Speed and firerate. Latter is every 1/2 second
     projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
     //Add some extra physics
@@ -93,11 +106,25 @@ function create() {
         fontSize: '50px', fill: '#000' });
 }
 
-function update() {
+function update() {game.debug.body(projectiles.bullets);
     fadeOutIntro();
     
+    //Knight collide with platforms
+    hitPlatform = game.physics.arcade.collide(knight, platforms2);
+    //Complicated but actually works unlike arcade.collide for  some reason. Also 4 is random number that helps get it perfect
+    groundCollide = (knight.body.y + knight.body.height) === (game.world.height - platforms2.antiStuck - 4);
+    onPlatform = game.physics.arcade.overlap(knight, platforms2);
+    
+    //To prevent falling through platforms when you teleport to one, seems unfair if not
+    if(onPlatform && knight.teleporting){//Only when he's teleporting
+        //put knight above platform
+        knight.body.y = knight.body.y - platforms2.antiStuck/2;
+    }
+    
+    //Update knight
     var distanceFromBoss = boss.body.center.x - knight.body.center.x;
-    updateKnight(distanceFromBoss);
+    var vertFromBoss = boss.body.y - (knight.body.y + knight.body.height);
+    updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
     
     //Destroy bullet if it collides with platforms
     

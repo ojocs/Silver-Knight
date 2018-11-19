@@ -74,7 +74,7 @@ var isLevel1; // variable to
 var isLevel2;
 
 //Boss related variables.
-var distanceFromBoss, livesTaken, boss, knightStaggerJump, knightStaggerSlide;
+var distanceFromBoss, vertFromBoss, livesTaken, boss, knightStaggerJump, knightStaggerSlide;
 
 //Call in create
 function createKnight(level){    
@@ -203,11 +203,11 @@ function createKnight(level){
 }
 
 //Call in update
-function updateKnight(currentDistanceFromBoss, ground){
+function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
     //playLevelMusic();
     
     //Boss stuff
-    distanceFromBoss = currentDistanceFromBoss;
+    distanceFromBoss = currentDistanceFromBoss, vertFromBoss = currentVertFromBoss;
     
     //Button Tints: Buttons tint when hovered over
     if (pauseButton.input.pointerOver()){
@@ -235,7 +235,8 @@ function updateKnight(currentDistanceFromBoss, ground){
         }
     
     //------------------MOVEMENT--------------------------//   
-    
+    touchGround = knight.body.y === (game.world.height - knight.body.height);
+        
         //Teleport controls
         teleControls();
     
@@ -311,8 +312,6 @@ function movement(knightOrientation, hitPlatform, ground){
         } else if(knight.body.velocity.x == 0){
             knight.animations.play('stand');
         }
-        
-        touchGround = knight.body.y === (game.world.height - knight.body.height);
 
     //Jump
         if (moveBinds.upW.isDown && (knight.body.touching.down || touchGround || ground)) {
