@@ -14,7 +14,7 @@ function preload() {
     game.load.audio('bossStep', 'assets/audio/giant audio/Boss Step 2.wav');
     //Level preload
     game.load.image('background', 'assets/state0/Level 1 Background.png');
-    game.load.image('ground', 'assets/state0/Platform 1.1.png');
+    game.load.image('ground', 'assets/state0/Platform 1.1.png')
 }
 
 var demo = {},
@@ -125,6 +125,7 @@ function create() {
 }
 
 function update() {    
+    isLevel1 = true;
     fadeOutIntro();
     
     //----Environment collisions----//

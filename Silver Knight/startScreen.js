@@ -9,7 +9,7 @@ function preload() {
     game.load.image('logo', 'assets/startScreen/silver knight logo.png');
     game.load.spritesheet('startButton', 'assets/startScreen/start button.png', 640, 320);
     game.load.image('black', 'assets/black screen.png');
-    game.load.audio('intro', 'assets/audio/music/Medieval Intro Edit.wav');
+    game.load.audio('intro', 'assets/audio/music/Intro Music 2.wav');
 }
 
 var demo = {};
@@ -72,14 +72,12 @@ function resumeIntro(){
 //        console.log('intro not palying');
         introMusic.volume = 1;
         introMusic.loopFull();
-    } else if (introMusic.volume == 1){
-        //console.log('intro is playing');
-    };
+    }
 }
 
 //Fades out introMusic; introMusic should not be playing during levels nor tutorial
 function fadeOutIntro(){
-    game.add.tween(introMusic).to( { volume: 0}, 200, Phaser.Easing.Linear.None, true);
+    game.add.tween(introMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
     //console.log(introMusic.volume);
 }
 

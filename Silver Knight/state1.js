@@ -13,7 +13,7 @@ function preload() {
     game.load.image('platform2.2', 'assets/Level 2/Platform 2.2.png');
     game.load.image('platform2.3', 'assets/Level 2/Platform 2.3.png');
     //Boss
-    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile 2.png');
+    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile.png');
     game.load.spritesheet('treeSpike', 'assets/Level 2/Tree Spike.png', 729, 490);
     game.load.spritesheet('tree', 'assets/Level 2/Tree Spritesheet.png', 219, 300);
 }
@@ -73,6 +73,8 @@ function create() {
     });
     //Add projectiles, can fire up to 2 bullets
     projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
+    projectiles.bullets.setAll('scale.x', 0.2);
+    projectiles.bullets.setAll('scale.y', 0.2);
     //Speed and firerate. Latter is every 1/2 second
     projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
     //Add some extra physics
@@ -92,6 +94,8 @@ function create() {
 }
 
 function update() {
+    fadeOutIntro();
+    
     var distanceFromBoss = boss.body.center.x - knight.body.center.x;
     updateKnight(distanceFromBoss);
     
