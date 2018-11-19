@@ -7,19 +7,20 @@ var tutorial = {
 var demo = {};
 var vel = 600, outline, movementTested = false, skipButton;
 var clickCount = 0;
+var starCount;
 var text = 'Use "W A S D" to move';
 var moveText;
 var attackText = "Press the spacebar to attack";
 var blinkText = "Press either shift key while moving to\n blink in that direction" ;
-var blinkText2 = "Now try reaching the star on top of the tower"
-var blinkStar = false; // Boolean so the tutorial only progresses once the player reaches the star using blink
-var blinkText3 = 'Great! You can blink 3 times before having\n to wait for it to recharge'
-var blinkText4 = 'These icons will track your blinks'
+var blinkText2 = "These icons will track your blinks\n They recharge anytime you're not blinking"
+var blinkText3 = "Now try reaching the star\n on top of the tower"
+var blinkStar; // Boolean so the tutorial only progresses once the player reaches the star using blink
+var blinkText4 = 'Great!'
 var teleText = 'Press "F" to activate the long teleport,\n then click anywhere on the screen';
 var teleText2 = 'Note the longer recharge time'
 var teleText3 = 'Now, use the long teleport to get this star'
-var teleStar = false; //Boolean so the tutorial only progresses once the play reaches the star using longTele
-var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're ready to begin your journey";
+var teleStar; //Boolean so the tutorial only progresses once the play reaches the star using longTele
+var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're\n ready to begin your journey";
 
 
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -60,14 +61,28 @@ function preload(){
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     
     // star
-    game.load.spritesheet('star', 'assets/tutorial/Star.png');
+    game.load.spritesheet('star', 'assets/tutorial/Star Spritesheet.png', 100, 100);
+    game.load.audio('starSound', 'assets/audio/star spawn.wav'); 
+    
+    // blink box
+    game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 500);
+    game.load.spritesheet('teleflash', 'assets/tutorial/tele icon box.png', 1000, 500);
     
 }
 
 var steps, tower, stepImage;
-var star;
+var star, starSound;
+var soundPlayed, soundPlayed2; // Booleans for starSound
+var blinkFlash, teleFlash;
 
 function create(){
+    soundPlayed = false;
+    soundPlayed2 = false;
+    starCount = 0;
+    blinkStar = false;
+    teleStar = false;
+    
+    clickCount = 0
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -99,14 +114,26 @@ function create(){
     towerPiece.scale.setTo(.85, .85);
     towerPiece = tower.create(1465, 120, 'towerTop');
     towerPiece.body.immovable = true;
-//    towerPiece.scale.setTo(.85, .85);
+    
+    // blink box flashing
+    blinkFlash = game.add.sprite(0, 0, 'blinkflash');
+    blinkFlash.alpha = 0;
+    blinkFlash.scale.setTo(2, 2);
+    blinkFlash.animations.add('blinking');
+    
+    // tele box flashing
+    teleFlash = game.add.sprite(0, 0, 'teleflash');
+    teleFlash.alpha = 0;
+    teleFlash.scale.setTo(2, 2);
+    teleFlash.animations.add('blinking');
 
     // add star
-    star = game.add.group();
-    star.enableBody = true;
-    var starPiece = star.create(game.world.centerX + 725, 50, 'star');
-    starPiece.scale.setTo(.5,.5);
-    starPiece.body.immovable = true;
+    star = game.add.sprite(game.world.centerX + 725, -200, 'star');
+    star.animations.add('shimmer');
+    star.animations.play('shimmer', 14, true);
+    game.physics.enable(star);
+    star.body.immovable = true;
+    starSound = game.add.audio('starSound');
     
     //game.add.text(game.world.centerX, game.world.centerY, star.body);
     //Add button
@@ -116,7 +143,7 @@ function create(){
 //    skipButton.scale.setTo(0.8, 0.8);
 //    skipButton.inputEnabled = true;
     
-    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#ffffff", align: "center" });
+    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#f76300", align: "center" });
     nextButton = game.add.button(game.world.centerX - 300, game.world.centerY + 200, 'backButton', actionOnClick, this);
     nextButton.scale.setTo(1,1);
     
@@ -127,10 +154,9 @@ function create(){
     //create knight
     createKnight(0);
 }
- 
+
 function update() {
     fadeOutIntro();
-    
     playTutorial();
     
     //Collide with steps
@@ -139,10 +165,8 @@ function update() {
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
     
-    //collide with star
-    //currently does not work
-    var touchStar = game.physics.arcade.overlap(knight, star, collectStar, null, this);
-    game.add.text(game.world.centerX, game.world.centerY, touchStar);
+    // overlap with star
+    game.physics.arcade.overlap(knight, star, collectStar, null, this);
     
         
     //Prevent/get out of glitch of going into steps
@@ -155,62 +179,109 @@ function update() {
     //testMovement();
 }
 
-
-
-function collectStar() { 
-    star.kill(); 
-    
+function collectStar(knight, star) { 
+    star.position.x = -200;
+    starCount += 1;
+    if (starCount == 0){
+        blinkStar = false;
+        telestar = false;
+    }else if (starCount == 1){
+        blinkStar = true;
+    } else if (starCount == 2){
+        teleStar = true;
+        star.kill();
+    }
 }
 
 function actionOnClick() {
     clickCount++;
     console.log('clickCount', clickCount);
 }
-
-function playTutorial(){
-    
+function playTutorial(){    
     if (clickCount == 1) {
         // The key here is setText(), which allows you to update the text of a text object.
         moveText.setText(attackText);
     } else if (clickCount == 2) {
         moveText.setText(blinkText);
-    } else if (clickCount == 3 && blinkStar == false) {
+    } else if (clickCount == 3) {
+        blinkFlash.alpha = 1;
+        blinkFlash.animations.play('blinking', 16, true);
+        game.world.bringToTop(blinkFlash);
+        game.world.bringToTop(nextButton);
         moveText.setText(blinkText2);
-        
+        game.world.bringToTop(moveText);
+    } else if (clickCount == 4 && blinkStar == false) {
+        blinkFlash.kill();
+        moveText.setText(blinkText3);
+
+        game.time.events.add(1000, function() {
+            star.alpha = 1;
+            star.position.y = 25;
+            
+            //Star sound plays only once
+            if (soundPlayed == false){
+                starSound.play();
+                game.time.events.add(10, function() {
+                    soundPlayed = true;
+                }, this)
+                if (soundPlayed){
+                    console.log('soundPlayed');
+                }
+            };
+        }, this)
+
         //Remove nextButton so player has to get the star to continue
         nextButton.alpha = 0;
-        nextButton.inputEnabled = false;
-        
-        //Removable code; makes sure tutorial doesn't progress until blinkStar = true
-        game.time.events.add(2000, function() {
-            blinkStar = true;
-        }, this);
-        //--------------------------------------//
-    } else if (clickCount == 3 && blinkStar == true) {
+        nextButton.inputEnabled = false;        
+    } else if (clickCount == 4 && blinkStar == true) {
         //Put nextButton back
         nextButton.alpha = 1;
         nextButton.inputEnabled = true;
-        
-        moveText.setText(blinkText3);
-    } else if (clickCount == 4) {
-        moveText.setText(teleText);
+        moveText.setText(blinkText4);
     } else if (clickCount == 5) {
+        moveText.setText(teleText);
+    } else if (clickCount == 6) {
+        teleFlash.alpha = 1;
+        teleFlash.animations.play('blinking', 16, true);
+        game.world.bringToTop(teleFlash);
+        game.world.bringToTop(nextButton);
         moveText.setText(teleText2);
-    } else if (clickCount == 6 && teleStar == false) {
+        game.world.bringToTop(moveText);
+    } else if (clickCount == 7 && teleStar == false) {
+        console.log('teleStar = false');
+        teleFlash.kill();
         moveText.setText(teleText3);
 
-        nextButton.kill();
+        //Have to use this method for delay because game.time.events.add was being skipped
+        var timer = game.time.create(false);
+        timer.add(1000, this.starSound2, this);
+        timer.start();
         
-        //Removable code; makes sure tutorial doesn't progress until teleStar = true
-        game.time.events.add(2000, function() {
-            teleStar = true;
-        }, this);
-        //--------------------------------------//
-    } else if(clickCount == 6 && teleStar == true){
+        nextButton.kill();
+    } else if(clickCount == 7 && teleStar == true){
+        console.log('teleStar = true');
         moveText.setText(tutorialFinishText);
     }
 }
 
+function starSound2(){
+    star.position.x = 30;
+    star.position.y = 150;
+    if (soundPlayed2 == false){
+        starSound.play();
+        var timer = game.time.create(false);
+        timer.add(10, this.sound2True, this);
+        timer.start()
+        if (soundPlayed2){
+            console.log('soundPlayed');
+            starSound.stop();
+        }
+    };
+}
+
+function sound2True(){
+    soundPlayed2 = true;
+}
 
 function returnToMain(){
     game.state.start('startScreen')

@@ -124,7 +124,8 @@ function bossAI(distanceFromBoss){
 
 function determineWalk(){
     if(currentLvl === 1){
-        boss.animations.play('walk'), bossStep.play();
+        boss.animations.play('walk');
+        //bossStep.play();
     }
     if(currentLvl === 2){
         boss.animations.play('treeWalk');

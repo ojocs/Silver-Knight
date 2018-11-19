@@ -4,7 +4,8 @@ function preloadKnight(){
     game.load.spritesheet('knight', 'assets/knight/Silver Knight Spritesheet.png', 354, 230);
     game.load.image('heart', 'assets/knight/heart 100.png');
     game.load.image('half_heart', 'assets/knight/half heart 100.png');
-    game.load.spritesheet('timer', 'assets/Timer Spritesheet.png', 100, 100);
+    game.load.spritesheet('timer', 'assets/knight/Timer Spritesheet.png', 100, 100);
+    game.load.spritesheet('blinkTimer', 'assets/Blink Timer spritesheet', 100, 100);
     game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 150, 150);
     
     //Buttons
@@ -19,12 +20,16 @@ function preloadKnight(){
     game.load.image('nextLevelButton', 'assets/Win or Lose/Next Lvl Button.png');
     game.load.image('gameOverText', 'assets/Win or Lose/Game Over Text.png');
     game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
+    
+    //Music
     game.load.audio('victoryMusic', 'assets/audio/knight audio/Medieval Fanfare.wav');
     game.load.audio('gameOverMusic', 'assets/audio/knight audio/Game Over.wav');    
+    game.load.audio('level1Music', 'assets/audio/music/Boss 1 Music.wav');
+    game.load.audio('level2Music', 'assets/audio/music/Boss 2 Music.wav');
     
     //Audio
-    game.load.audio('teleAudio', 'assets/audio/knight audio/Teleport Sound 5.wav');
-    game.load.audio('teleAudio2', 'assets/audio/knight audio/Teleport Sound.wav');    
+    game.load.audio('teleAudio', 'assets/audio/knight audio/teleport sound.wav');
+    game.load.audio('teleAudio2', 'assets/audio/knight audio/teleport sound 5.wav'); 
     game.load.audio('swordHitAudio', 'assets/audio/knight audio/Sword3.wav');
     game.load.audio('swordSlash', 'assets/audio/knight audio/Sword Slash 1.wav');
     game.load.audio('knightStep', 'assets/audio/knight audio/Knight Step 1.wav');
@@ -48,6 +53,8 @@ var ground, touchGround, onPlatform;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
+var blinkTimerText = "";
+var blinkTextDisplay;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -60,6 +67,11 @@ var speed, drag = 100, walkSpeed = 600;
 
 //Sounds
 var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
+
+//Music
+var levelMusic;
+var isLevel1; // variable to 
+var isLevel2;
 
 //Boss related variables.
 var distanceFromBoss, livesTaken, boss, knightStaggerJump, knightStaggerSlide;
@@ -84,20 +96,21 @@ function createKnight(level){
     
     //Teleport Timer Display
     timerSprite = game.add.sprite(355, 10, 'timer');
-    timerSprite.visibile = true;
+    timerSprite.alpha = 0.5;
     
     blinkCount = 3;
     
     //blink displays
-    blink1 = game.add.sprite(450, -25, 'blinkDisplay');
+    blink1 = game.add.sprite(450, -10, 'blinkDisplay');
     blink1.scale.setTo(.75,.75);
     blink1.visible = true;
-    blink2 = game.add.sprite(545, -25, 'blinkDisplay');
+    blink2 = game.add.sprite(545, -10, 'blinkDisplay');
     blink2.scale.setTo(.75,.75);
     blink2.visible = true;
-    blink3 = game.add.sprite(640, -25, 'blinkDisplay');
+    blink3 = game.add.sprite(640, -10, 'blinkDisplay');
     blink3.scale.setTo(.75,.75);
     
+    blinkTextDisplay = game.add.text(640, 25, blinkTimerText, { font: "65px VT323", fill: "#f76300", align: "center" });
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
     knight.anchor.setTo(0.5, 0.5);
@@ -191,6 +204,8 @@ function createKnight(level){
 
 //Call in update
 function updateKnight(currentDistanceFromBoss, ground){
+    //playLevelMusic();
+    
     //Boss stuff
     distanceFromBoss = currentDistanceFromBoss;
     
@@ -257,6 +272,20 @@ function updateKnight(currentDistanceFromBoss, ground){
     }
 }
 
+function playLevelMusic(){
+    if (isLevel1){ //Adds 'intro' only once
+        levelMusic = game.add.audio('level1Music');
+        levelMusic.volume = 0.05;
+        levelMusic.loopFull();
+        console.log('playing level1Music')
+    };
+//    if (levelMusic.volume < 1){
+////        console.log('intro not palying');
+//        levelMusic.volume = 1;
+//        levelMusic.loopFull();
+//    }
+}
+
 //WASD movement
 function movement(knightOrientation, hitPlatform, ground){
     var magicKnightPivotNumber = 114;//cause it's some random number that works
@@ -269,14 +298,16 @@ function movement(knightOrientation, hitPlatform, ground){
             if(knightOrientation != knight.scale.x){//Pivot turning
                 knight.body.x -= knight.body.width + magicKnightPivotNumber;
             }
-            knight.animations.play('walk'), knightStepSound.play();
+            knight.animations.play('walk');
+            //knightStepSound.play();
         } else if (moveBinds.rightD.isDown) {
             knight.body.velocity.x = walkSpeed;
             knight.scale.setTo(1, 1); //Knight faces right
             if(knightOrientation != knight.scale.x){//Pivot turning
                 knight.body.x += knight.body.width + magicKnightPivotNumber;
             }
-            knight.animations.play('walk'), knightStepSound.play();
+            knight.animations.play('walk');
+            //knightStepSound.play();
         } else if(knight.body.velocity.x == 0){
             knight.animations.play('stand');
         }
@@ -316,16 +347,20 @@ function speedF(){
 function teleTimers(){
     
     if (canTele) {
+        // comment out code, add back in to only display teleport timer when in teleMode
         
-        if(teleMode)
+        if(teleMode){
+            timerSprite.alpha = 1;
             timerSprite.frame = 4;
-        else
-            timerSprite.frame = 5;
+        }
+        else{
+            timerSprite.alpha = 0.5;
+            timerSprite.frame = 4;
+        }
 
     } else if (!canTele && teleTimer < 200) {
-
         teleTimer += 1;
-
+        timerSprite.alpha = 0.5;
         timerSprite.frame = 0;
 
     } else if (!canTele && teleTimer < 400) {
@@ -349,21 +384,29 @@ function teleTimers(){
     } else if (!canTele && teleTimer == 800) {
 
         canTele = true;
-
         timerSprite.frame = 4;
 
     }
 
+    
     //Blink timer
-    if (!canBlink){
-        blinkTimer += 1;
+    blinkTimer += 1;
+    // blink timer starts if you have used a blink
+    if (blinkCount < 3) {
+        blinkTextDisplay.visible = true;
+        // displays inverted 500 -> 499 -> 0
+        // easier for users to understand
+        blinkTextDisplay.setText(500 - blinkTimer)
+
     }
     //Resetting for when using blinks
     if (blinkTimer === 15 && blinkCount > 0) {//Still have all blinks
         canBlink = true;
-    } else if(blinkTimer === 270 && blinkCount === 0) {//Used up all blinks
+    } else if(blinkTimer === 500) {// resets all blinks after 500 frames
         canBlink = true;
         blinkCount = 3;
+        blinkTimer = 0;
+        blinkTextDisplay.visible = false;
         blink1.visible = true;
         blink2.visible = true;
         blink3.visible = true;
@@ -528,6 +571,8 @@ function knightDamage() {
 //--------------  VICTORY/GAME OVER ------------//
 
 function victory(){
+    //levelMusic.fadeOut();
+    
     var victoryMusic = game.add.audio('victoryMusic');
     victoryMusic.play();
     
@@ -543,22 +588,26 @@ function victory(){
     game.add.tween(victoryText).to( { alpha: 1}, 5000, Phaser.Easing.Linear.None, true);
     
     //Delay adding the buttons until victoryText fully appears
-    game.time.events.add(4900, function() {
-        var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
-        mainMenuButton.scale.setTo(1.3, 1.3);
-        mainMenuButton.anchor.setTo(0.5, 0.5);
-        
-        //Assign next level button to level 2 if at level 1, otherwise to level 3
-        var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
-        //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
-        nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
-        nxtLvlButton.scale.setTo(1.3, 1.3);
-        nxtLvlButton.anchor.setTo(0.5, 0.5);
-        
-        //Re-eneable buttons once victoryMusic is done
-        exitButton.inputEnabled = true;
-        restartButton.inputEnabled = true;
-    }, this);
+    var timer = game.time.create(false);
+    timer.add(4900, this.addVictoryButtons, this);
+    timer.start();
+}
+
+function addVictoryButtons(){
+    var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
+    mainMenuButton.scale.setTo(1.3, 1.3);
+    mainMenuButton.anchor.setTo(0.5, 0.5);
+
+    //Assign next level button to level 2 if at level 1, otherwise to level 3
+    var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
+    //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
+    nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
+    nxtLvlButton.scale.setTo(1.3, 1.3);
+    nxtLvlButton.anchor.setTo(0.5, 0.5);
+
+    //Re-eneable buttons once victoryMusic is done
+    exitButton.inputEnabled = true;
+    restartButton.inputEnabled = true;
 }
 
 function gameOver(){
@@ -580,20 +629,23 @@ function gameOver(){
     game.add.tween(gameOverText).to( { alpha: 1}, 3500, Phaser.Easing.Linear.None, true);
     
     //Delay adding the buttons until gameOverText fully appears
-    game.time.events.add(3400, function() {
-        var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
-        mainMenuButton.scale.setTo(1.3, 1.3);
-        mainMenuButton.anchor.setTo(0.5, 0.5);
-
-        var tryAgainButton = game.add.button(centerX - 250, centerY+150, 'tryAgainButton', restartLevel, this);
-        tryAgainButton.scale.setTo(1.3, 1.3);
-        tryAgainButton.anchor.setTo(0.5, 0.5);
-        
-        exitButton.inputEnabled = true;
-        restartButton.inputEnabled = true;
-    }, this);
+    var timer = game.time.create(false);
+    timer.add(3400, this.addGameOverButtons, this);
+    timer.start();
 }
 
+function addGameOverButtons(){
+    var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
+    mainMenuButton.scale.setTo(1.3, 1.3);
+    mainMenuButton.anchor.setTo(0.5, 0.5);
+
+    var tryAgainButton = game.add.button(centerX - 250, centerY+150, 'tryAgainButton', restartLevel, this);
+    tryAgainButton.scale.setTo(1.3, 1.3);
+    tryAgainButton.anchor.setTo(0.5, 0.5);
+
+    exitButton.inputEnabled = true;
+    restartButton.inputEnabled = true;
+}
 //------------ END VICTORY/GAME OVER -----------//
 
 function restartLevel(){
