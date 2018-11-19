@@ -48,6 +48,8 @@ var ground, touchGround, onPlatform;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
+var blinkTimerText = "";
+var blinkTextDisplay;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -98,6 +100,7 @@ function createKnight(level){
     blink3 = game.add.sprite(640, -25, 'blinkDisplay');
     blink3.scale.setTo(.75,.75);
     
+    blinkTextDisplay = game.add.text(640, 25, blinkTimerText, { font: "65px VT323", fill: "#f76300", align: "center" });
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
     knight.anchor.setTo(0.5, 0.5);
@@ -316,11 +319,12 @@ function speedF(){
 function teleTimers(){
     
     if (canTele) {
+        // comment out code, add back in to only display teleport timer when in teleMode
         
-        if(teleMode)
-            timerSprite.frame = 4;
-        else
-            timerSprite.frame = 5;
+        //if(teleMode)
+        timerSprite.frame = 4;
+        //else
+            //timerSprite.frame = 5;
 
     } else if (!canTele && teleTimer < 200) {
 
@@ -354,16 +358,25 @@ function teleTimers(){
 
     }
 
+    
     //Blink timer
-    if (!canBlink){
-        blinkTimer += 1;
+    blinkTimer += 1;
+    // blink timer starts if you have used a blink
+    if (blinkCount < 3) {
+        blinkTextDisplay.visible = true;
+        // displays inverted 500 -> 499 -> 0
+        // easier for users to understand
+        blinkTextDisplay.setText(500 - blinkTimer)
+
     }
     //Resetting for when using blinks
     if (blinkTimer === 15 && blinkCount > 0) {//Still have all blinks
         canBlink = true;
-    } else if(blinkTimer === 270 && blinkCount === 0) {//Used up all blinks
+    } else if(blinkTimer === 500) {// resets all blinks after 500 frames
         canBlink = true;
         blinkCount = 3;
+        blinkTimer = 0;
+        blinkTextDisplay.visible = false;
         blink1.visible = true;
         blink2.visible = true;
         blink3.visible = true;
