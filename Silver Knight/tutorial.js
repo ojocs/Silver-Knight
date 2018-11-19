@@ -63,13 +63,13 @@ function preload(){
     game.load.spritesheet('star', 'assets/tutorial/Star.png');
     
     // blink box
-    game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 20, 50);
+    game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 2000);
     
 }
 
 var steps, tower, stepImage;
 var star;
-var blinkFlas, blinking;
+var blinkFlash, blinking;
 
 function create(){
     clickCount = 0
@@ -77,14 +77,11 @@ function create(){
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
-    // blink box
-    blinkFlash = game.add.sprite(200, 50, 'blinkflash');
-    blinking = blinkFlash.animations.add('blinking');
-    console.log(blinking)
-    //blinkFlash.animations.play('blinking', 15, true);
-     
-    
-    
+    // blink box flashing
+    blinkFlash = game.add.sprite(game.world.centerX, game.world.centerY, 'blinkflash');
+    blinkFlash.visible = true;
+    console.log(blinkFlash);
+    //blinking = blinkFlash.animations.add('blinking');
     
     //Add background
     var background = game.add.image(0, 0, 'background');
@@ -143,7 +140,6 @@ function create(){
  
 function update() {
     fadeOutIntro();
-    
     playTutorial();
     
     //Collide with steps
