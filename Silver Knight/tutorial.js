@@ -11,7 +11,7 @@ var text = 'Use "W A S D" to move';
 var moveText;
 var attackText = "Press the spacebar to attack";
 var blinkText = "Press either shift key while moving to\n blink in that direction" ;
-var blinkText2 = "Now try reaching the star on top of the tower"
+var blinkText2 = "Now try reaching the star\n on top of the tower"
 var blinkStar = false; // Boolean so the tutorial only progresses once the player reaches the star using blink
 var blinkText3 = 'Great! You can blink 3 times before having\n to wait for it to recharge'
 var blinkText4 = 'These icons will track your blinks'
@@ -19,7 +19,7 @@ var teleText = 'Press "F" to activate the long teleport,\n then click anywhere o
 var teleText2 = 'Note the longer recharge time'
 var teleText3 = 'Now, use the long teleport to get this star'
 var teleStar = false; //Boolean so the tutorial only progresses once the play reaches the star using longTele
-var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're ready to begin your journey";
+var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're\n ready to begin your journey";
 
 
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -62,15 +62,26 @@ function preload(){
     // star
     game.load.spritesheet('star', 'assets/tutorial/Star.png');
     
+    // blink box
+    game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 2000);
+    
 }
 
 var steps, tower, stepImage;
 var star;
+var blinkFlash, blinking;
 
 function create(){
+    clickCount = 0
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+    // blink box flashing
+    blinkFlash = game.add.sprite(game.world.centerX, game.world.centerY, 'blinkflash');
+    blinkFlash.visible = true;
+    console.log(blinkFlash);
+    //blinking = blinkFlash.animations.add('blinking');
     
     //Add background
     var background = game.add.image(0, 0, 'background');
@@ -102,11 +113,10 @@ function create(){
 //    towerPiece.scale.setTo(.85, .85);
 
     // add star
-    star = game.add.group();
-    star.enableBody = true;
-    var starPiece = star.create(game.world.centerX + 725, 50, 'star');
-    starPiece.scale.setTo(.5,.5);
-    starPiece.body.immovable = true;
+    star = game.add.sprite(game.world.centerX + 725, 50, 'star');
+    game.physics.enable(star);
+    star.scale.setTo(.5,.5);
+    star.body.immovable = true;
     
     //game.add.text(game.world.centerX, game.world.centerY, star.body);
     //Add button
@@ -116,7 +126,7 @@ function create(){
 //    skipButton.scale.setTo(0.8, 0.8);
 //    skipButton.inputEnabled = true;
     
-    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#ffffff", align: "center" });
+    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#f76300", align: "center" });
     nextButton = game.add.button(game.world.centerX - 300, game.world.centerY + 200, 'backButton', actionOnClick, this);
     nextButton.scale.setTo(1,1);
     
@@ -130,7 +140,6 @@ function create(){
  
 function update() {
     fadeOutIntro();
-    
     playTutorial();
     
     //Collide with steps
@@ -139,10 +148,8 @@ function update() {
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
     
-    //collide with star
-    //currently does not work
-    var touchStar = game.physics.arcade.overlap(knight, star, collectStar, null, this);
-    game.add.text(game.world.centerX, game.world.centerY, touchStar);
+    // overlap with star
+    game.physics.arcade.overlap(knight, star, collectStar, null, this);
     
         
     //Prevent/get out of glitch of going into steps
@@ -158,7 +165,8 @@ function update() {
 
 
 function collectStar(knight, star) { 
-    starPiece.kill(); 
+    star.kill(); 
+    teleStar = true;
     
 }
 
