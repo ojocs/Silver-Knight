@@ -125,6 +125,8 @@ function create() {
 }
 
 function update() {    
+    fadeOutIntro();
+    
     //----Environment collisions----//
     hitPlatform = game.physics.arcade.collide(knight, platforms);
     //Complicated but actually works unlike arcade.collide for  some reason. Also 4 is random number that helps get it perfect
