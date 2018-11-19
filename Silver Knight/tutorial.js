@@ -157,8 +157,8 @@ function update() {
 
 
 
-function collectStar() { 
-    star.kill(); 
+function collectStar(knight, star) { 
+    starPiece.kill(); 
     
 }
 
