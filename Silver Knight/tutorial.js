@@ -64,6 +64,7 @@ function preload(){
     game.load.spritesheet('star', 'assets/tutorial/Star Spritesheet.png', 100, 100);
     game.load.audio('starSound', 'assets/audio/star spawn.wav');
     game.load.spritesheet('sparks', 'assets/tutorial/Sparks.png', 140, 140);
+    game.load.audio('pickup', 'assets/audio/electric woosh.wav');
     
     // blink box
     game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 500);
@@ -76,6 +77,7 @@ var star, starSound, sparks, sparksCount;
 var sparksPlayed, sparksPlayed2; // Booleans for the animations to only play when these equal false, changes to true after 1 playthrough
 var soundPlayed, soundPlayed2; // Booleans for starSound
 var blinkFlash, teleFlash;
+var pickupSound;
 
 function create(){
     soundPlayed = false;
@@ -136,6 +138,7 @@ function create(){
     game.physics.enable(star);
     star.body.immovable = true;
     starSound = game.add.audio('starSound');
+    pickupSound = game.add.audio('pickup');
     
     // star sparks
     sparks = game.add.sprite(-centerX, centerY, 'sparks');
@@ -189,6 +192,8 @@ function update() {
 }
 
 function collectStar(knight, star) { 
+    pickupSound.volume = 1.4
+    pickupSound.play();
     star.position.x = -200;
     starCount += 1;
     if (starCount == 0){
@@ -300,17 +305,17 @@ function sound1True(){
     console.log('sond1True Done')
 }
 
+var timer2, timer2Bool = false;
+
 function stopSparks() {
     console.log('sparksCount', sparksCount);
     // Moves spark animation out of screen
     sparks.position.x = -300;
-    console.log(sparks.position.x);
     if (sparksCount == 1){
         sparksPlayed = true; 
-        console.log('sparksPlayed = true');
     } else if (sparksCount == 2){
         sparksPlayed2 = true;
-        console.log('sparksPlayed2 = true');
+        
     }
 }
 
@@ -321,12 +326,12 @@ function star2(){
     
     if (sparksPlayed2 == false){
         console.log('sparksPlayed2');
-        sparks.position.x = 30;
-        sparks.position.y = 150;
-        sparks.animations.play('sparks', 12, true);
+        sparks.position.x = -20;
+        sparks.position.y = 100;
+        sparks.animations.play('sparks', 12, false);
         var timer = game.time.create(false);
         sparksCount = 2;
-        timer.add(633, this.stopSparks, this);
+        timer.add(550, this.stopSparks, this);
         timer.start();
     };
     
@@ -342,8 +347,8 @@ function star2(){
 }
 
 function star2Appear(){
-    star.position.x = 30;
-    star.position.y = 150;
+    star.position.x = 40;
+    star.position.y = 175;
 }
 
 function sound2True(){
