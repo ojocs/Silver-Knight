@@ -12,7 +12,7 @@ var text = 'Use "W A S D" to move';
 var moveText;
 var attackText = "Press the spacebar to attack";
 var blinkText = "Press either shift key while moving to\n blink in that direction" ;
-var blinkText2 = "These icons will track your blinks\n They recharge anytime you're not blinking"
+var blinkText2 = "These icons will track your blinks\n They recharge anytime you're\n not blinking"
 var blinkText3 = "Now try reaching the star\n on top of the tower"
 var blinkStar; // Boolean so the tutorial only progresses once the player reaches the star using blink
 var blinkText4 = 'Great!'
@@ -48,7 +48,7 @@ function preload(){
         
     //Buttons
     game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
-    game.load.image('backButton', 'assets/Tutorial/Next Button.png');
+    game.load.spritesheet('backButton', 'assets/Tutorial/Next Button.png', 200, 100);
     game.load.image('mainMenuButton', 'assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
@@ -156,8 +156,8 @@ function create(){
 //    skipButton.inputEnabled = true;
     
     moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#f76300", align: "center" });
-    nextButton = game.add.button(game.world.centerX - 300, game.world.centerY + 200, 'backButton', actionOnClick, this);
-    nextButton.scale.setTo(1,1);
+    nextButton = game.add.button(1600, game.world.centerY + 350, 'backButton', actionOnClick, this);
+    nextButton.frame = 0;
     
     //Boss stuff (placeholders really for blank boss)
     boss = game.add.sprite(0, 0, 'blankBoss');
@@ -170,6 +170,14 @@ function create(){
 function update() {
     fadeOutIntro();
     playTutorial();
+    
+    //Next button highlights when hovered over
+    if (nextButton.input.pointerOver()){
+        nextButton.frame = 1;
+    }
+    else{
+        nextButton.frame = 0;
+    }
     
     //Collide with steps
     var stepCollide = game.physics.arcade.collide(knight, steps);

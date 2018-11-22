@@ -73,7 +73,6 @@ function resumeIntro(){
         introMusic.volume = 1;
         introMusic.loopFull();
     }
-    game.music.volume = 0;
 }
 
 //Fades out introMusic; introMusic should not be playing during levels nor tutorial
