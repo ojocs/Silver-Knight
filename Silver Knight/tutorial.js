@@ -214,21 +214,21 @@ function playTutorial(){
         blinkFlash.kill();
         moveText.setText(blinkText3);
 
-        game.time.events.add(1000, function() {
+//        game.time.events.add(1000, function() {
             star.alpha = 1;
             star.position.y = 25;
             
             //Star sound plays only once
-            if (soundPlayed == false){
-                starSound.play();
-                game.time.events.add(10, function() {
-                    soundPlayed = true;
-                }, this)
-                if (soundPlayed){
-                    console.log('soundPlayed');
-                }
-            };
-        }, this)
+//            if (soundPlayed == false){
+//            //    starSound.play();
+//                game.time.events.add(10, function() {
+//                    soundPlayed = true;
+//                }, this)
+//                if (soundPlayed){
+//                    console.log('soundPlayed');
+//                }
+//            };
+  //      }, this)
 
         //Remove nextButton so player has to get the star to continue
         nextButton.alpha = 0;
