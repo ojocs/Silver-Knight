@@ -314,7 +314,7 @@ function movement(knightOrientation, hitPlatform, ground){
         }
 
     //Jump
-        if (moveBinds.upW.isDown && (knight.body.touching.down || touchGround || ground)) {
+        if (moveBinds.upW.isDown && ((knight.body.touching.down && hitPlatform) || touchGround || ground)) {
             knight.body.velocity.y = -1000;
         }
 

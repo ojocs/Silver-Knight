@@ -163,7 +163,7 @@ function update() {
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    //debugF();    
+    debugF();    
 }
 
 //Giant swinging attack
@@ -242,7 +242,7 @@ function giantStomp(){
 
 function debugF(){
     //var distanceFromBoss = (boss.body.center.x - knight.body.center.x);
-    debug.text = 'Livestaken '+livesTaken;
+    debug.text = 'onBoss'+onBoss+'\nattack2 '+boss.attack2;
     
     game.debug.body(knight);
     game.debug.body(knightBox);

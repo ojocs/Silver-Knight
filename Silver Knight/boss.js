@@ -5,7 +5,8 @@ function preloadBoss(){
     game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100.png');
 }
 
-var boss, bossHitboxes, bossSpecialTime, bossTurnTimer, thresholdFromBossWalk;
+//Boss variables
+var boss, bossHitboxes, bossSpecialTime, bossTurnTimer, thresholdFromBossWalk, onBoss;
 var currentLvl;
 
 function createBoss(){
@@ -83,25 +84,26 @@ function bossTurnTimerFunc(){
 function bossAI(distanceFromBoss){
     var currentTime = game.time.totalElapsedSeconds();
     var bossOrientation = boss.scale.x, magicBossPivotNumber = 200;
+    onBoss = game.physics.arcade.overlap(boss, knight);
     bossTurnTimerFunc();
     
     //Swing if in close range
-    if (!boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on right
+    if (!onBoss && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
         determineAttack1();
-    } else if (!boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on left
+    } else if (!onBoss && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on left
         boss.body.velocity.x = 0;
         bossTurn(1, bossOrientation);
         determineAttack1();
     }
 
     //Perform attack2 if further from the player than swing range, around every bossStompTime seconds
-    else if (!boss.turning && !boss.attack1 && (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {
+    else if (!boss.turning && !boss.attack1 && onBoss || (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
         boss.body.velocity.x = 0;
         bossTurn(1, bossOrientation);
         determineAttack2();
-    } else if (!boss.turning && !boss.attack1 && (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {
+    } else if (!boss.turning && !boss.attack1 && onBoss || (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
         determineAttack2();
@@ -109,11 +111,11 @@ function bossAI(distanceFromBoss){
 
     //Follow/track player
     else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss > thresholdFromBossWalk) {
-        boss.body.velocity.x = -boss.speed;
+        boss.body.velocity.x = -boss.speed;//Right
         bossTurn(1, bossOrientation);
         determineWalk();
     } else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
-        boss.body.velocity.x = boss.speed;
+        boss.body.velocity.x = boss.speed;//Left
         bossTurn(-1, bossOrientation);
         determineWalk();
     }
@@ -131,10 +133,12 @@ function determineWalk(){
 
 //Determine attack1 based on current level
 function determineAttack1(){
-    if(currentLvl === 1)
+    if(currentLvl === 1){
         giantSwing();
-    if(currentLvl === 2)
+    }
+    if(currentLvl === 2){
         treeSpike();
+    }
 }
 
 //Determine attack2 based on current level
