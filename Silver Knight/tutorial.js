@@ -62,7 +62,8 @@ function preload(){
     
     // star
     game.load.spritesheet('star', 'assets/tutorial/Star Spritesheet.png', 100, 100);
-    game.load.audio('starSound', 'assets/audio/star spawn.wav'); 
+    game.load.audio('starSound', 'assets/audio/star spawn.wav');
+    game.load.spritesheet('sparks', 'assets/tutorial/Sparks.png', 140, 140);
     
     // blink box
     game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 500);
@@ -71,7 +72,8 @@ function preload(){
 }
 
 var steps, tower, stepImage;
-var star, starSound;
+var star, starSound, sparks, sparksCount;
+var sparksPlayed, sparksPlayed2; // Booleans for the animations to only play when these equal false, changes to true after 1 playthrough
 var soundPlayed, soundPlayed2; // Booleans for starSound
 var blinkFlash, teleFlash;
 
@@ -134,6 +136,13 @@ function create(){
     game.physics.enable(star);
     star.body.immovable = true;
     starSound = game.add.audio('starSound');
+    
+    // star sparks
+    sparks = game.add.sprite(-centerX, centerY, 'sparks');
+    sparks.animations.add('sparks');
+    sparks.scale.setTo(1.6, 1.6);
+    sparksCount = 0;
+    sparksPlayed = false, sparksPlayed2 = false;
     
     //game.add.text(game.world.centerX, game.world.centerY, star.body);
     //Add button
@@ -213,22 +222,10 @@ function playTutorial(){
     } else if (clickCount == 4 && blinkStar == false) {
         blinkFlash.kill();
         moveText.setText(blinkText3);
-
-        game.time.events.add(1000, function() {
-            star.alpha = 1;
-            star.position.y = 25;
-            
-            //Star sound plays only once
-            if (soundPlayed == false){
-                starSound.play();
-                game.time.events.add(10, function() {
-                    soundPlayed = true;
-                }, this)
-                if (soundPlayed){
-                    console.log('soundPlayed');
-                }
-            };
-        }, this)
+        
+        var timer = game.time.create(false);
+        timer.add(1100, this.star1, this);
+        timer.start();
 
         //Remove nextButton so player has to get the star to continue
         nextButton.alpha = 0;
@@ -248,13 +245,12 @@ function playTutorial(){
         moveText.setText(teleText2);
         game.world.bringToTop(moveText);
     } else if (clickCount == 7 && teleStar == false) {
-        console.log('teleStar = false');
         teleFlash.kill();
         moveText.setText(teleText3);
 
         //Have to use this method for delay because game.time.events.add was being skipped
         var timer = game.time.create(false);
-        timer.add(1000, this.starSound2, this);
+        timer.add(1100, this.star2, this);
         timer.start();
         
         nextButton.kill();
@@ -264,19 +260,90 @@ function playTutorial(){
     }
 }
 
-function starSound2(){
-    star.position.x = 30;
-    star.position.y = 150;
+function star1(){
+    var timer = game.time.create(false);
+    timer.add(200, this.star1Appear, this);
+    timer.start();
+    
+    if (sparksPlayed == false){
+        sparks.position.x = 1665;
+        sparks.position.y = -40;
+        sparks.animations.play('sparks', 12, true);
+        var timer = game.time.create(false);
+        sparksCount = 1;
+        timer.add(633, this.stopSparks, this);
+        timer.start();
+    };
+
+    //Star sound plays only once
+    if (soundPlayed == false){
+        starSound.play();
+        
+        //So sound plays only once
+        var timer = game.time.create(false);
+        timer.add(10, this.sound1True, this);
+        timer.start()
+        if (soundPlayed){
+            starSound.stop();
+        }
+    };
+}
+
+function star1Appear(){
+    star.alpha = 1;
+    star.position.y = 25;
+}
+
+function sound1True(){
+    console.log('sond1True');
+    soundPlayed = true;
+    console.log('sond1True Done')
+}
+
+function stopSparks() {
+    console.log('sparksCount', sparksCount);
+    // Moves spark animation out of screen
+    sparks.position.x = -300;
+    console.log(sparks.position.x);
+    if (sparksCount == 1){
+        sparksPlayed = true; 
+        console.log('sparksPlayed = true');
+    } else if (sparksCount == 2){
+        sparksPlayed2 = true;
+        console.log('sparksPlayed2 = true');
+    }
+}
+
+function star2(){
+    var timer = game.time.create(false);
+    timer.add(200, this.star2Appear, this);
+    timer.start();
+    
+    if (sparksPlayed2 == false){
+        console.log('sparksPlayed2');
+        sparks.position.x = 30;
+        sparks.position.y = 150;
+        sparks.animations.play('sparks', 12, true);
+        var timer = game.time.create(false);
+        sparksCount = 2;
+        timer.add(633, this.stopSparks, this);
+        timer.start();
+    };
+    
     if (soundPlayed2 == false){
         starSound.play();
         var timer = game.time.create(false);
         timer.add(10, this.sound2True, this);
         timer.start()
         if (soundPlayed2){
-            console.log('soundPlayed');
             starSound.stop();
         }
     };
+}
+
+function star2Appear(){
+    star.position.x = 30;
+    star.position.y = 150;
 }
 
 function sound2True(){
