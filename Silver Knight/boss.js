@@ -89,11 +89,11 @@ function bossAI(distanceFromBoss){
     if (!boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
-        determineAttack1(bossOrientation);
+        determineAttack1();
     } else if (!boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk))) { //Player on left
         boss.body.velocity.x = 0;
         bossTurn(1, bossOrientation);
-        determineAttack1(bossOrientation);
+        determineAttack1();
     }
 
     //Perform attack2 if further from the player than swing range, around every bossStompTime seconds
@@ -130,9 +130,9 @@ function determineWalk(){
 }
 
 //Determine attack1 based on current level
-function determineAttack1(bossOrientation){
+function determineAttack1(){
     if(currentLvl === 1)
-        giantSwing(bossOrientation);
+        giantSwing();
     if(currentLvl === 2)
         treeSpike();
 }

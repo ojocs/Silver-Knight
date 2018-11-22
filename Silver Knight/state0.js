@@ -78,7 +78,7 @@ function create() {
     boss.body.gravity.y = 400;
     boss.frame = 1;
     //Adjust size of sprite's body, aka built in hitbox
-    boss.body.setSize(200, 520, 280, 170);
+    boss.body.setSize(200, 900, 280, 170);//(200, 520, 280, 170);
     boss.body.collideWorldBounds = true;
     
     //Set variables for attacks
@@ -163,24 +163,24 @@ function update() {
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    //debugF();    
+    debugF();    
 }
 
 //Giant swinging attack
-function giantSwing(bossOrientation){
+function giantSwing(){
     boss.attack1 = true;
     boss.animations.play('swing');
     var giantBoxTimer = game.time.create(true);
     //Coordiantes for hitboxes
-    var x1L = [300, 300, 300], x1R = [300, 300, 300];
-    var y1L = [200, 300, 150], y1R = [200, 300, 150];
-    var x2L = [-200, -400, -335], x2R = [-85, 100, 35];
+    var x1L = [300, 200, 200], x1R = [300, 200, 200];
+    var y1L = [100, 300, 150], y1R = [100, 300, 150];
+    var x2L = [-200, -400, -335], x2R = [-85, 200, 120];
     var y2L = [-270, -200, 100], y2R = [-260, -200, 100];
     //1st hitbox
     giantBoxTimer.add(500, function(){
-        if(bossOrientation > 0)//Left
+        if(boss.scale.x > 0)//Left
             swingBox1.body.setSize(x1L[0], y1L[0], x2L[0], y2L[0]);
-        else if(bossOrientation <= 0)//Right
+        else if(boss.scale.x <= 0)//Right
             swingBox1.body.setSize(x1R[0], y1R[0], x2R[0], y2R[0]);
         swingBox1.body.enable = true;
     });
@@ -189,23 +189,23 @@ function giantSwing(bossOrientation){
         swingBox1.body.enable = false;
         swingBox1.body.setSize(0, 0, 0, 0);
         swingBox2.body.enable = true;
-        if(bossOrientation > 0)//Left
+        if(boss.scale.x > 0)//Left
             swingBox2.body.setSize(x1L[1], y1L[1], x2L[1], y2L[1]);
         else//Right
             swingBox2.body.setSize(x1R[1], y1R[1], x2R[1], y2R[1]);
     });
-    //3rd hitbox made after .1 second after 2nd was made, get rid of 2nd
-    giantBoxTimer.add(1100, function(){
+    //3rd hitbox made after .05 second after 2nd was made, get rid of 2nd
+    giantBoxTimer.add(1050, function(){
         swingBox2.body.enable = false;
         swingBox2.body.setSize(0, 0, 0, 0);
         swingBox3.body.enable = true;
-        if(bossOrientation > 0)//Left
+        if(boss.scale.x > 0)//Left
             swingBox3.body.setSize(x1L[2], y1L[2], x2L[2], y2L[2]);
         else//Right
             swingBox3.body.setSize(x1R[2], y1R[2], x2R[2], y2R[2]);
     });
-    //Get rid of 3rd hitbox after another .3 seconds
-    giantBoxTimer.add(1400, function(){
+    //Get rid of 3rd hitbox after another .15 seconds
+    giantBoxTimer.add(1300, function(){
         swingBox3.body.enable = false;
         swingBox3.body.setSize(0, 0, 0, 0);
     });
