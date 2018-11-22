@@ -78,7 +78,7 @@ function create() {
     boss.body.gravity.y = 400;
     boss.frame = 1;
     //Adjust size of sprite's body, aka built in hitbox
-    boss.body.setSize(200, 900, 280, 170);//(200, 520, 280, 170);
+    boss.body.setSize(200, 520, 280, 170);
     boss.body.collideWorldBounds = true;
     
     //Set variables for attacks
@@ -163,7 +163,7 @@ function update() {
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    debugF();    
+    //debugF();    
 }
 
 //Giant swinging attack
