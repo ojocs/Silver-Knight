@@ -48,7 +48,7 @@ function preload(){
         
     //Buttons
     game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
-    game.load.image('backButton', 'assets/Tutorial/Continue Button.png');
+    game.load.image('backButton', 'assets/Tutorial/Next Button.png');
     game.load.image('mainMenuButton', 'assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
