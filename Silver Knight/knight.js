@@ -4,7 +4,7 @@ function preloadKnight(){
     game.load.spritesheet('knight', 'assets/knight/Silver Knight Spritesheet.png', 354, 230);
     game.load.image('heart', 'assets/knight/heart 100.png');
     game.load.image('half_heart', 'assets/knight/half heart 100.png');
-    game.load.spritesheet('timer', 'assets/knight/Timer Spritesheet.png', 100, 100);
+    game.load.spritesheet('timer', 'assets/knight/Teleport Timer.png', 120, 120);
     game.load.spritesheet('blinkTimer', 'assets/Blink Timer spritesheet', 100, 100);
     game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 150, 150);
     
@@ -350,11 +350,11 @@ function teleTimers(){
         
         if(teleMode){
             timerSprite.alpha = 1;
-            timerSprite.frame = 4;
+            timerSprite.frame = 17;
         }
         else{
             timerSprite.alpha = 0.5;
-            timerSprite.frame = 4;
+            timerSprite.frame = 16;
         }
 
     } else if (!canTele && teleTimer < 200) {
