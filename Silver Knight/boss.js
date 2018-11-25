@@ -1,8 +1,8 @@
 //Boss file with general aspects for all bosses. Specifics inside their respective state files
 function preloadBoss(){
     game.load.image('blank', 'Assets/blankBoss.png');
-    game.load.image('evil_heart', 'Assets/Evil Heart 100.png');
-    game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100.png');
+    game.load.image('evil_heart', 'Assets/Evil Heart 100 v2.png');
+    game.load.image('evil_half_heart', 'Assets/Evil Half Heart 100 v2.png');
 }
 
 //Boss variables
