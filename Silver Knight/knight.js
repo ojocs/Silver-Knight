@@ -20,6 +20,7 @@ function preloadKnight(){
     game.load.image('nextLevelButton', 'assets/Win or Lose/Next Lvl Button.png');
     game.load.image('gameOverText', 'assets/Win or Lose/Game Over Text.png');
     game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
+    game.load.image('black', 'assets/black screen.png');
     
     //Music
     game.load.audio('victoryMusic', 'assets/audio/knight audio/Medieval Fanfare.wav');
@@ -46,6 +47,9 @@ var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3,
 
 //Hitboxes for attacks/weapons
 var hitboxes, knightBox;
+
+//Black screen
+var black
 
 //Movement variables
 var moveBinds;
@@ -174,6 +178,11 @@ function createKnight(level){
     //For limiting teleportation
     canBlink = true;
     canTele = true;
+    
+    //Black screen for victory/game over
+    black = game.add.image(0, 0, 'black');
+    black.scale.setTo(10, 10);
+    black.alpha = 0;
     
     //For preventing platform glitches
     onPlatform = false;
@@ -569,15 +578,23 @@ function knightDamage() {
 
 //--------------  VICTORY/GAME OVER ------------//
 
+//Only functioning buttons should be the victory/game over buttons
+function disableButtons(){
+    exitButton.inputEnabled = false;
+    restartButton.inputEnabled = false;
+    pauseButton.inputEnabled = false;
+}
+
 function victory(){
     //levelMusic.fadeOut();
     
     var victoryMusic = game.add.audio('victoryMusic');
     victoryMusic.play();
     
-    //Disable buttons while victoryMusic play
-    exitButton.inputEnabled = false;
-    restartButton.inputEnabled = false;
+    disableButtons();
+    
+    game.world.bringToTop(black);
+    game.add.tween(black).to( { alpha: 0.8}, 4000, Phaser.Easing.Linear.None, true);
     
     var victoryText = game.add.image(centerX, centerY-100, 'victoryText');
     victoryText.alpha = 0;
@@ -603,10 +620,6 @@ function addVictoryButtons(){
     nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
     nxtLvlButton.scale.setTo(1.3, 1.3);
     nxtLvlButton.anchor.setTo(0.5, 0.5);
-
-    //Re-eneable buttons once victoryMusic is done
-    exitButton.inputEnabled = true;
-    restartButton.inputEnabled = true;
 }
 
 function gameOver(){
@@ -615,11 +628,13 @@ function gameOver(){
         gameOverMusic.play();
     });
     
-    exitButton.inputEnabled = false;
-    restartButton.inputEnabled = false;
+    disableButtons();
     
     //To stop knight's functions, which would cause bugs
     teleMode = false, gameIsOver = true;
+    
+    game.world.bringToTop(black);
+    game.add.tween(black).to( { alpha: 0.8}, 4000, Phaser.Easing.Linear.None, true);
     
     var gameOverText = game.add.image(centerX, centerY-100, 'gameOverText')
     gameOverText.alpha = 0;
@@ -641,9 +656,6 @@ function addGameOverButtons(){
     var tryAgainButton = game.add.button(centerX - 250, centerY+150, 'tryAgainButton', restartLevel, this);
     tryAgainButton.scale.setTo(1.3, 1.3);
     tryAgainButton.anchor.setTo(0.5, 0.5);
-
-    exitButton.inputEnabled = true;
-    restartButton.inputEnabled = true;
 }
 //------------ END VICTORY/GAME OVER -----------//
 
