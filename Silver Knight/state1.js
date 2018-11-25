@@ -67,7 +67,7 @@ function create() {
     boss.attack1 = false;
     boss.treeSpikeAni = boss.animations.add('treeGroundAttack', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 15);
     boss.treeSpikeAni.onComplete.add(function(){
-        boss.attack1 = false;
+        boss.attack1 = false;debug.text = 'in spike ani false';
     });
     //Add spike
     spike = game.add.sprite(boss.body.x, boss.body.y + boss.body.height, 'treeSpike');
@@ -127,6 +127,9 @@ function update() {//game.debug.body(projectiles.bullets);
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
     
     //Destroy bullet if it collides with platforms
+    game.physics.arcade.collide(projectiles.bullets, platforms2, function(bullet, platforms2){
+        bullet.kill();
+    });
     
     //Destroy bullet if it collides with knight, take away health
     game.physics.arcade.collide(projectiles.bullets, knight, function(knight, bullet){
@@ -144,7 +147,7 @@ function update() {//game.debug.body(projectiles.bullets);
     }
     
     //Debugging
-    //game.debug.body(spike), debug.text = 'treeHand x '+treeHand.body.x+'\ntreehand y '+treeHand.body.y;
+    //debug.text = 'onBoss '+ onBoss+'\nattack1 '+boss.attack1+'\nattack2 '+boss.attack2;
 }
 
 //Detect spike and knight collision
@@ -154,7 +157,7 @@ function spikeHitKnight(){
 }
 
 //Tree spike attack
-function treeSpike(){
+function treeSpike(){debug.text = 'in spike';
     //Only do if knight is on ground
     if(knight.body.touching.down || touchGround){
         boss.attack1 = true;

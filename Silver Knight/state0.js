@@ -163,7 +163,7 @@ function update() {
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
 
     //Debugging
-    debugF();    
+//    debugF();    
 }
 
 //Giant swinging attack

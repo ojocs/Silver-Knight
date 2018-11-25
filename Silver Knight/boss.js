@@ -84,7 +84,8 @@ function bossTurnTimerFunc(){
 function bossAI(distanceFromBoss){
     var currentTime = game.time.totalElapsedSeconds();
     var bossOrientation = boss.scale.x, magicBossPivotNumber = 200;
-    onBoss = game.physics.arcade.overlap(boss, knight);
+    onBoss = game.physics.arcade.overlap(boss, knight) //<< On or above VV
+    || ((vertFromBoss > 0) && (!(distanceFromBoss < thresholdFromBossWalk) && !(distanceFromBoss < -thresholdFromBossWalk)));
     bossTurnTimerFunc();
     
     //Swing if in close range
@@ -99,23 +100,24 @@ function bossAI(distanceFromBoss){
     }
 
     //Perform attack2 if further from the player than swing range, around every bossStompTime seconds
-    else if (!boss.turning && !boss.attack1 && onBoss || (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
+    else if (!onBoss && !boss.turning && !boss.attack1 && (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
         boss.body.velocity.x = 0;
         bossTurn(1, bossOrientation);
         determineAttack2();
-    } else if (!boss.turning && !boss.attack1 && onBoss || (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
+    } else if (!onBoss && !boss.turning && !boss.attack1 && (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
         determineAttack2();
     }
 
     //Follow/track player
-    else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss > thresholdFromBossWalk) {
-        boss.body.velocity.x = -boss.speed;//Right
+    else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss > 0 
+             || onBoss) {//Move left if player is on the boss, so boss can get into position for attack1
+        boss.body.velocity.x = -boss.speed;//Left
         bossTurn(1, bossOrientation);
         determineWalk();
-    } else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss < (-1 * thresholdFromBossWalk)) {
-        boss.body.velocity.x = boss.speed;//Left
+    } else if (!boss.turning && !boss.attack1 && !boss.attack2 && distanceFromBoss < 0) {
+        boss.body.velocity.x = boss.speed;//Right
         bossTurn(-1, bossOrientation);
         determineWalk();
     }
@@ -157,9 +159,9 @@ function bossDamage(){
         
         //Make boss slide in direction of knight hit
         if(knight.body.x < boss.body.x)
-            boss.body.velocity.x += 50;
+            boss.body.velocity.x += 100;
         else if(knight.body.x > boss.body.x)
-            boss.body.velocity.x -= 50;
+            boss.body.velocity.x -= 100;
         
         if (boss.health == 9) {
             evilHeart5.kill();
