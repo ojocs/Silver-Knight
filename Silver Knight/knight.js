@@ -379,24 +379,24 @@ function teleTimers(){
 
         teleTimer += 1;
 
-        timerSprite.frame = 1;
+        timerSprite.frame = 4;
 
     } else if (!canTele && teleTimer < 600) {
 
         teleTimer += 1;
 
-        timerSprite.frame = 2;      
+        timerSprite.frame = 8;      
 
     } else if (!canTele && teleTimer < 800) {
 
         teleTimer += 1;
 
-        timerSprite.frame = 3;
+        timerSprite.frame = 12;
 
     } else if (!canTele && teleTimer == 800) {
 
         canTele = true;
-        timerSprite.frame = 4;
+        timerSprite.frame = 16;
 
     }
 
