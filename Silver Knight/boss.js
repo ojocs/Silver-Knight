@@ -87,7 +87,7 @@ function bossAI(distanceFromBoss){
     bossTurnTimerFunc();
     
     //Attack1 if in close range
-    if ((currentLvl === 1 || (vertFromBoss < 0 && currentLvl === 2)) && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) &&     !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on right
+    if ((currentLvl === 1 || (vertFromBoss < 0 && currentLvl === 2)) && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
         determineAttack1();
