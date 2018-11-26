@@ -84,8 +84,8 @@ function create() {
     boss.treeProjectileAni.onComplete.add(function(){
         boss.attack2 = false;
     });
-    //Add projectiles, can fire up to 2 bullets
-    projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
+    //Add projectiles, fires 1 bullet at a time
+    projectiles = game.add.weapon(1, 'treeProjectile'), projectiles.enableBody = true;
     //Speed and firerate. Latter is every 1/2 second
     projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
     //Add some extra physics
@@ -209,14 +209,16 @@ function treeSpike(){
 
 //Tree projectile attack
 function treeProjectile(){
-    boss.attack2 = true;
-    boss.animations.play('treeProjectileAttack');
-    
     var treeOffsetX = boss.scale.x === 1 ? boss.body.x: boss.body.x + 200;
     var treeOffsetY = boss.body.y + 200;
     //Projectiles launched from boss, offest to its hand
     treeHand = bossHitboxes.create(treeOffsetX, treeOffsetY, null), treeHand.body.enable = true;
     treeHand.anchor.setTo(0.5, 0.5), treeHand.body.setSize(10, 10, 10, 10);
+    
+    //Boss animation and orientation
+    //boss.scale.x = distanceFromBoss > 0 ? 1 : -1;
+    boss.attack2 = true;
+    boss.animations.play('treeProjectileAttack');
     
     //Fire in direction of sprite
     var offsetOfKnight = 100;
