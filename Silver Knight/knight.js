@@ -5,7 +5,7 @@ function preloadKnight(){
     game.load.image('heart', 'assets/knight/heart 100.png');
     game.load.image('half_heart', 'assets/knight/half heart 100.png');
     game.load.spritesheet('timer', 'assets/knight/Teleport Timer.png', 120, 120);
-    game.load.spritesheet('blinkTimer', 'assets/Blink Timer spritesheet', 100, 100);
+    game.load.spritesheet('blinkTimer', 'assets/Blink Timer Spritsheet.png', 100, 100);
     game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 150, 150);
     
     //Buttons
@@ -57,8 +57,9 @@ var ground, touchGround, onPlatform;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
-var blinkTimerText = "";
-var blinkTextDisplay;
+//var blinkTimerText = "";
+//var blinkTextDisplay;
+var blinkTimerDisplay;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
@@ -114,7 +115,10 @@ function createKnight(level){
     blink3 = game.add.sprite(640, -10, 'blinkDisplay');
     blink3.scale.setTo(.75,.75);
     
-    blinkTextDisplay = game.add.text(640, 25, blinkTimerText, { font: "65px VT323", fill: "#f76300", align: "center" });
+    //blinkTextDisplay = game.add.text(640, 25, blinkTimerText, { font: "65px VT323", fill: "#f76300", align: "center" });
+    blinkTimerDisplay = game.add.sprite(650,25, 'blinkTimer');
+    blinkTimerDisplay.scale.setTo(.75, .75);
+    blinkTimerDisplay.visible = false;
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
     knight.anchor.setTo(0.5, 0.5);
@@ -401,10 +405,21 @@ function teleTimers(){
     blinkTimer += 1;
     // blink timer starts if you have used a blink
     if (blinkCount < 3) {
-        blinkTextDisplay.visible = true;
+        blinkTimerDisplay.visible = true;
+        
+        if (blinkTimer < 100) {
+            blinkTimerDisplay.frame = 0;
+        } else if (blinkTimer < 200) {
+            blinkTimerDisplay.frame = 1;
+        } else if (blinkTimer < 300) {
+            blinkTimerDisplay.frame = 2;
+        } else if (blinkTimer < 400) {
+            blinkTimerDisplay.frame = 3;
+        } 
+        //blinkTextDisplay.visible = true;
         // displays inverted 500 -> 499 -> 0
         // easier for users to understand
-        blinkTextDisplay.setText(500 - blinkTimer)
+        //blinkTextDisplay.setText(500 - blinkTimer)
 
     }
     //Resetting for when using blinks
@@ -414,7 +429,7 @@ function teleTimers(){
         canBlink = true;
         blinkCount = 3;
         blinkTimer = 0;
-        blinkTextDisplay.visible = false;
+        blinkTimerDisplay.visible = false;
         blink1.visible = true;
         blink2.visible = true;
         blink3.visible = true;
