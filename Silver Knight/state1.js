@@ -67,7 +67,7 @@ function create() {
     boss.attack1 = false;
     boss.treeSpikeAni = boss.animations.add('treeGroundAttack', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], 15);
     boss.treeSpikeAni.onComplete.add(function(){
-        boss.attack1 = false;debug.text = 'in spike ani false';
+        boss.attack1 = false;
     });
     //Add spike
     spike = game.add.sprite(boss.body.x, boss.body.y + boss.body.height, 'treeSpike');
@@ -86,8 +86,6 @@ function create() {
     });
     //Add projectiles, can fire up to 2 bullets
     projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
-//    projectiles.bullets.setAll('scale.x', 0.2);
-//    projectiles.bullets.setAll('scale.y', 0.2);
     //Speed and firerate. Latter is every 1/2 second
     projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
     //Add some extra physics
@@ -126,11 +124,6 @@ function update() {//game.debug.body(projectiles.bullets);
     var vertFromBoss = boss.body.y - (knight.body.y + knight.body.height);
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
     
-    //Destroy bullet if it collides with platforms
-    game.physics.arcade.collide(projectiles.bullets, platforms2, function(bullet, platforms2){
-        bullet.kill();
-    });
-    
     //Destroy bullet if it collides with knight, take away health
     game.physics.arcade.collide(projectiles.bullets, knight, function(knight, bullet){
         bullet.kill(); 
@@ -157,7 +150,7 @@ function spikeHitKnight(){
 }
 
 //Tree spike attack
-function treeSpike(){debug.text = 'in spike';
+function treeSpike(){
     //Only do if knight is on ground
     if(knight.body.touching.down || touchGround){
         boss.attack1 = true;
