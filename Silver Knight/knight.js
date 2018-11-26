@@ -617,16 +617,14 @@ function addVictoryButtons(){
     //Assign next level button to level 2 if at level 1, otherwise to level 3
     var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
     //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
-    nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevelSelect, this) : nxtLvlButton;
+    nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this) : nxtLvlButton;
     nxtLvlButton.scale.setTo(1.3, 1.3);
     nxtLvlButton.anchor.setTo(0.5, 0.5);
 }
 
 function gameOver(){
     var gameOverMusic = game.add.audio('gameOverMusic');
-    game.time.events.add(100, function() {
-        gameOverMusic.play();
-    });
+    gameOverMusic.play();
     
     disableButtons();
     

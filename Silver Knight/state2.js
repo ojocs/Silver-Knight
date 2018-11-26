@@ -5,25 +5,21 @@ var state2 = {
 }
 
 function preload() {
-    preloadKnight();
+    game.load.image('background', 'assets/Credits.png');
+    game.load.image('black', 'assets/black screen.png');
 }
 
 var demo = {};
 var centerX = 1000, centerY = 500;
-var bg, logo, startButton, tutButton, black;
+var bg; //background
 
 function create() {
-    console.log('level 2');
-    
-    game.add.text(centerX, centerY, 'LEVEL 3', {
-        fontSize: '100px',
-        fill: '#ffffff'
-    });
-    
-    //Make knight
-    createKnight(3);
+    bg = game.add.image(0, 0, 'background');
+    console.log('credits');
+    black = game.add.image(0, 0, 'black');
+    black.scale.setTo(10, 10);
 }
 
 function update() {
-    updateKnight();
+    game.add.tween(black).to( { alpha: 0}, 500, Phaser.Easing.Linear.None, true);
 }

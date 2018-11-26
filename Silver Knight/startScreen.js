@@ -6,7 +6,7 @@ var startScreen = {
 
 function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
-    game.load.image('logo', 'assets/startScreen/silver knight logo.png');
+    game.load.image('logo', 'assets/startScreen/silver knight logo v2.png');
     game.load.spritesheet('startButton', 'assets/startScreen/start button.png', 640, 320);
     game.load.image('black', 'assets/black screen.png');
     game.load.audio('intro', 'assets/audio/music/Intro Music 2.wav');
