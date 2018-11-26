@@ -99,6 +99,9 @@ function create() {
     //Make knight
     createKnight(2);
     
+    // play level 1 music
+    playLevelMusic(2);
+    
     //Debugging
     debug = game.add.text(1500, 16, ' ', {
         fontSize: '50px', fill: '#000' });

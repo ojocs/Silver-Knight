@@ -14,7 +14,10 @@ function preload() {
     game.load.audio('bossStep', 'assets/audio/giant audio/Boss Step 2.wav');
     //Level preload
     game.load.image('background', 'assets/state0/Level 1 Background.png');
-    game.load.image('ground', 'assets/state0/Platform 1.1.png')
+    game.load.image('ground', 'assets/state0/Platform 1.1.png');
+    
+    game.load.audio('level1Music', 'assets/audio/music/Boss 1 Music.wav');
+    
 }
 
 var demo = {},
@@ -34,6 +37,7 @@ var hitPlatform, groundCollide, onPlatform;
 
 var debug;
 
+var levelMusic;
 function create() {
     console.log('level 1');
     
@@ -123,6 +127,9 @@ function create() {
     stompThud = game.add.audio('stompThud'), bossStep = game.add.audio('bossStep', 15);
      
     createKnight(1);
+    
+    // play level 1 music
+    playLevelMusic(1);
    
     //Debugging
     debug = game.add.text(1500, 16, ' ', {

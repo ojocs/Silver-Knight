@@ -286,13 +286,20 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
     }
 }
 
-function playLevelMusic(){
-    if (isLevel1){ //Adds 'intro' only once
+function playLevelMusic(Level){
+    if (Level == 1) { //Adds 'intro' only once
         levelMusic = game.add.audio('level1Music');
         levelMusic.volume = 0.05;
+        levelMusic.play();
         levelMusic.loopFull();
-        console.log('playing level1Music')
-    };
+        console.log('playing level1Music');
+    } else if (Level == 2) {
+        levelMusic = game.add.audio('level2Music');
+        levelMusic.volume = 0.05;
+        levelMusic.play();
+        levelMusic.loopFull();
+        console.log('playing level2Music');
+    }
 //    if (levelMusic.volume < 1){
 ////        console.log('intro not palying');
 //        levelMusic.volume = 1;
