@@ -2,6 +2,7 @@ var game = new Phaser.Game(2000, 1000, Phaser.AUTO);
 game.state.add('boss', boss);
 game.state.add('knight', knight);
 game.state.add('startScreen', startScreen);
+game.state.add('introScreen', introScreen);
 game.state.add('levelSelect', levelSelect);
 game.state.add('tutorial', tutorial);
 game.state.add('state0', state0);

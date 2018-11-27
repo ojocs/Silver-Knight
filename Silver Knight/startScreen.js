@@ -17,6 +17,7 @@ var centerX = 1000, centerY = 500;
 var bg, logo, startButton, tutButton, black;
 var isTutorial = false; // Variable for the exit button
 var introMusic;
+var needIntro = true; //Boolean to know if we need to play intro or not
 
 function create() {
     console.log('startScreen');
@@ -44,7 +45,11 @@ function create() {
     startButton.scale.setTo(0.5, 0.5);
     startButton.inputEnabled = true;
     game.time.events.add(2000, function() {
-        startButton.onInputUp.add(startLevelSelect, this);
+        if (needIntro){
+            startButton.onInputUp.add(startIntroScreen, this);
+        } else{
+            startButton.onInputUp.add(startLevelSelect, this);   
+        }
     }, this); //Waits for fade-i to activate clicking function
 }
 
@@ -60,6 +65,11 @@ function update() {
             startButton.frame = 1;
         }
     }, this)
+}
+
+function startIntroScreen(){
+    fadeAll();
+    game.state.start('introScreen');
 }
 
 //Play intro music if it's not already playing
@@ -86,9 +96,6 @@ function startLevelSelect(){
     teleMode = false;
     console.log('startLevelSelect');
     fadeAll();
-//    game.time.events.add(500, function() {
-//        game.state.start('levelSelect');
-//    }, this);
     game.state.start('levelSelect');
 }
 

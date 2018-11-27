@@ -6,7 +6,7 @@ var levelSelect = {
 
 function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
-    game.load.spritesheet('shield1', 'assets/Level Select/Level 1 Shield.png', 142, 200);
+    game.load.spritesheet('shield1', 'assets/Level Select/Level 1 Shield v2.png', 142, 200);
     game.load.spritesheet('shield2', 'assets/Level Select/Level 2 Shield.png', 142, 200);
     //game.load.spritesheet('shield3', 'assets/Level Select/Level 3 Shield.png', 142, 200);
     game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
