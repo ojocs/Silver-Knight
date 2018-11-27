@@ -27,6 +27,15 @@ function create() {
     continueButton.scale.setTo(0.5, 0.5);
     continueButton.frame = 1;
     //continueButton.alpha = 0;
+    
+    var style = { font: "bold 32px Arial",
+    fill: "#fff"};
+
+    //  The Text is positioned at 0, 100
+    text = game.add.text(0, 0,
+                         "As the Silver Knight, you are the sole protector of this land.\nTrained for battle and learned in chivalry, you battle off evils to defend the innocent.\n Fight! Defend! Win!",
+                         style);
+    text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
 }
 
 function update() {    
