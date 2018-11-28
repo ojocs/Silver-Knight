@@ -8,6 +8,7 @@ function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
     game.load.image('black', 'assets/black screen.png');
     game.load.spritesheet('button', 'assets/continue button.png',640, 320);
+    game.load.image('introText', 'assets/intro text 2.png');
 }
 
 var demo = {};
@@ -22,24 +23,17 @@ function create() {
     black = game.add.image(0, 0, 'black');
     black.scale.setTo(10, 10);
     
-    continueButton = game.add.button(1500, 750, 'button', startLevelSelect, this);
+    continueButton = game.add.button(1600, 800, 'button', startLevelSelect, this);
     continueButton.inputEnabled = true;
-    continueButton.scale.setTo(0.5, 0.5);
+    continueButton.scale.setTo(0.45, 0.45);
     continueButton.frame = 1;
-    //continueButton.alpha = 0;
+    continueButton.alpha = 0;
     
-    var style = { font: "bold 32px Arial",
-    fill: "#fff"};
-
-    //  The Text is positioned at 0, 100
-    text = game.add.text(0, 0,
-                         "As the Silver Knight, you are the sole protector of this land.\nTrained for battle and learned in chivalry, you battle off evils to defend the innocent.\n Fight! Defend! Win!",
-                         style);
-    text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+    var text = game.add.image(0, 0, 'introText');
 }
 
 function update() {    
-    game.add.tween(black).to( { alpha: 0.6}, 500, Phaser.Easing.Linear.None, true);
+    game.add.tween(black).to( { alpha: 0.6}, 400, Phaser.Easing.Linear.None, true);
     
     //Continue Button highlights when hovered over
     if (continueButton.input.pointerOver()){
