@@ -53,7 +53,7 @@ var black
 
 //Movement variables
 var moveBinds;
-var ground, touchGround, onPlatform;
+var ground, touchGround, onPlatform, hitPlatform;
 
 //Blink Variables
 var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blink1, blink2, blink3;
@@ -65,7 +65,7 @@ var blinkTimerDisplay;
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
 
 //Attack
-var attack;
+var attack, canAttack, attackTimer;
 
 // Momentum
 var speed, drag = 100, walkSpeed = 600;
@@ -144,8 +144,9 @@ function createKnight(level){
     //So hitbox won't be active unless knight is attacking
     knightBox.body.enable = false;
     
-    //To play attacking animation completely
+    //To play attacking animation completely and to not spam attack
     knight.attacking = false;
+    canAttack = true, attackTimer = 0;
     
     knight.body.collideWorldBounds = true;
     knight.animations.add('stand', [1, 2], 5);
@@ -195,6 +196,7 @@ function createKnight(level){
     
     //For preventing platform glitches
     onPlatform = false;
+    hitPlatform = false;
     
     // camera follow knight 
     game.camera.follow(knight);
@@ -242,14 +244,17 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
         hurt();
         // teleport timer
         teleTimers();
+        //attack timer
+        attackTimerFunc();
     //------END TIMERS------//
         
     
         var knightOrientation = knight.scale.x;
     
         //Attack
-        if(attack.downDuration(1) && !knight.teleporting){
+        if(attack.isDown && !knight.teleporting && canAttack){
             attackFunc();
+            canAttack = false;
         }
     
     //------------------MOVEMENT--------------------------//   
@@ -364,6 +369,17 @@ function speedF(){
         knight.body.velocity.x = speed + drag;
     } else {
         knight.body.velocity.x = 0;
+    }
+}
+
+//Attack timer, so attack isn't spammed
+function attackTimerFunc() {
+    if(!canAttack)
+        attackTimer += 1;
+    //Can attack after 50 update counts
+    if(attackTimer === 30){
+        canAttack = true;
+        attackTimer = 0;
     }
 }
 
@@ -496,7 +512,7 @@ function attackFunc() {
     knightBox.body.enable = true;
     knight.animations.play('attack');
     var knightBoxTimer = game.time.create(true);
-    knightBoxTimer.add(500, function(){
+    knightBoxTimer.add(300, function(){
         knight.attacking = false;
         knightBox.body.enable = false;
     });

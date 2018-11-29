@@ -33,7 +33,7 @@ var stompThud, bossStep;
 //var change = game.rnd.integerInRange(1, 3);
 var platforms, ledge;
 
-var hitPlatform, groundCollide, onPlatform;
+var groundCollide;
 
 var debug;
 

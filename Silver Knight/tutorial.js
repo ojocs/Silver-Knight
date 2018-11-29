@@ -180,8 +180,8 @@ function update() {
     }
     
     //Collide with steps
-    var stepCollide = game.physics.arcade.collide(knight, steps);
-    var insideSteps = game.physics.arcade.overlap(knight, steps);
+    hitPlatform = game.physics.arcade.collide(knight, steps);
+    var insideSteps = game.physics.arcade.overlap(knight, stepImage);
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
     
@@ -194,9 +194,10 @@ function update() {
         knight.body.y -= 90;
     
     //update knight
-    updateKnight(0, stepCollide);
+    updateKnight(0, 0, null);
         
-    //testMovement();
+    //Debug
+    //game.debug.body(knightBox);
 }
 
 function collectStar(knight, star) { 
