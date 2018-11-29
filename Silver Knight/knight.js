@@ -289,13 +289,13 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
 function playLevelMusic(Level){
     if (Level == 1) { //Adds 'intro' only once
         levelMusic = game.add.audio('level1Music');
-        levelMusic.volume = 0.05;
+        levelMusic.volume = 1;
         levelMusic.play();
         levelMusic.loopFull();
         console.log('playing level1Music');
     } else if (Level == 2) {
         levelMusic = game.add.audio('level2Music');
-        levelMusic.volume = 0.05;
+        levelMusic.volume = 0.8;
         levelMusic.play();
         levelMusic.loopFull();
         console.log('playing level2Music');
@@ -608,7 +608,7 @@ function disableButtons(){
 }
 
 function victory(){
-    //levelMusic.fadeOut();
+    game.add.tween(levelMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
     
     var victoryMusic = game.add.audio('victoryMusic');
     victoryMusic.play();
@@ -645,6 +645,8 @@ function addVictoryButtons(){
 }
 
 function gameOver(){
+    game.add.tween(levelMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
+    
     var gameOverMusic = game.add.audio('gameOverMusic');
     gameOverMusic.play();
     

@@ -8,6 +8,7 @@ function preload() {
     game.load.image('background', 'assets/Credits.png');
     game.load.image('black', 'assets/black screen.png');
     game.load.spritesheet('backButton', 'assets/back button.png', 640, 320);
+    game.load.audio('creditsMusic', 'assets/audio/music/credits music.wav');
 }
 
 var demo = {};
@@ -16,6 +17,10 @@ var bg; //background
 
 function create() {
     console.log('credits');
+
+    creditsMusic = game.add.audio('creditsMusic');
+    creditsMusic.play();
+    creditsMusic.loopFull();
     
     bg = game.add.image(0, 0, 'background');
     

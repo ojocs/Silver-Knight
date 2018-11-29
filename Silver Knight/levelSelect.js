@@ -12,18 +12,25 @@ function preload() {
     game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
     game.load.image('locked', 'assets/Level Select/Locked Level.png');
     game.load.spritesheet('backButton', 'assets/back button.png', 640, 320);
+    game.load.audio('creditsMusic', 'assets/audio/music/credits music.wav');
    // game.load.image('black', 'assets/black screen.png');
 }
 
 var demo = {};
 var centerX = 1000, centerY = 500;
 var shield1, shield2, locked2, shield3, locked3, backButton;
+var creditsMusic;
 
 //Booleans for when to unlock levels 2 and 3
 var level2Locked = true, level3Locked = true;
 
 function create() {
     console.log('levelSelect');
+    
+    // Fades out creditsMusic only if it's playing
+    if (creditsMusic != null){
+        game.add.tween(creditsMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
+    }
     
     //Fade in background
     var bg = game.add.image(0, 0, 'background');
