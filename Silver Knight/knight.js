@@ -86,6 +86,11 @@ function createKnight(level){
     //For use in victory and restart functions
     currentLvl = level;
     
+    // Fades out levelMusic if any is playing
+    if (levelMusic != null){
+        game.add.tween(levelMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
+    }
+    
     //For knight's variables and functions to stop updating
     gameIsOver = false;
     
@@ -645,6 +650,7 @@ function addVictoryButtons(){
 }
 
 function gameOver(){
+    //Fades out levelMusic
     game.add.tween(levelMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
     
     var gameOverMusic = game.add.audio('gameOverMusic');

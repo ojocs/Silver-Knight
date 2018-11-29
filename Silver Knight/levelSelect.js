@@ -27,9 +27,14 @@ var level2Locked = true, level3Locked = true;
 function create() {
     console.log('levelSelect');
     
-    // Fades out creditsMusic only if it's playing
+    // Fades out creditsMusic if any is playing
     if (creditsMusic != null){
         game.add.tween(creditsMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
+    }
+    
+    // Fades out levelMusic if any is playing
+    if (levelMusic != null){
+        game.add.tween(levelMusic).to( { volume: 0}, 100, Phaser.Easing.Linear.None, true);
     }
     
     //Fade in background
