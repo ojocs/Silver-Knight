@@ -12,6 +12,7 @@ function preload() {
     game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
     game.load.image('locked', 'assets/Level Select/Locked Level.png');
     game.load.spritesheet('backButton', 'assets/back button.png', 640, 320);
+    game.load.spritesheet('creditsButton', 'assets/credits button.png', 640, 320);
     game.load.audio('creditsMusic', 'assets/audio/music/credits music.wav');
    // game.load.image('black', 'assets/black screen.png');
 }
@@ -20,6 +21,7 @@ var demo = {};
 var centerX = 1000, centerY = 500;
 var shield1, shield2, locked2, shield3, locked3, backButton;
 var creditsMusic;
+var creditsButton, showCredits = false; //boolean to show the credits button upon completion of the game
 
 //Booleans for when to unlock levels 2 and 3
 var level2Locked = true, level3Locked = true;
@@ -71,9 +73,15 @@ function create() {
   
     backButton = game.add.button(180, 100, 'backButton');
     backButton.anchor.setTo(0.5);
-    backButton.scale.setTo(0.3, 0.3);
+    backButton.scale.setTo(0.4, 0.4);
     backButton.frame = 1;
     backButton.onInputUp.add(returnToMain, this);
+    
+    creditsButton = game.add.button(-300, 100, 'creditsButton');
+    creditsButton.anchor.setTo(0.5);
+    creditsButton.scale.setTo(0.4, 0.4);
+    creditsButton.frame = 1;
+    creditsButton.onInputUp.add(startLevel3, this);
     
     black = game.add.sprite(0, 0, 'black');
     black.alpha = 1;
@@ -97,6 +105,17 @@ function update() {
     }
     else{
         tutButton.frame = 1;
+    }
+    
+    //Credits Button highlights when hovered over
+    if (creditsButton.input.pointerOver()){
+        creditsButton.frame = 0;
+    } else{
+        creditsButton.frame = 1;
+    }
+    
+    if (showCredits){
+        creditsButton.position.x = 1820;
     }
     
     //Shield1 highlights when hovered over
