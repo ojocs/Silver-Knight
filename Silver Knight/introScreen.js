@@ -23,13 +23,17 @@ function create() {
     black = game.add.image(0, 0, 'black');
     black.scale.setTo(10, 10);
     
-    continueButton = game.add.button(1600, 800, 'button', startLevelSelect, this);
-    continueButton.inputEnabled = true;
-    continueButton.scale.setTo(0.45, 0.45);
-    continueButton.frame = 1;
-    continueButton.alpha = 0;
+    continueButton = game.add.button(-1000, 770, 'button', startLevelSelect, this);
+//    continueButton.inputEnabled = true;
+//    continueButton.scale.setTo(0.45, 0.45);
+//    continueButton.frame = 1;
+//    continueButton.alpha = 0;
+    startTimer();
     
     var text = game.add.image(0, 0, 'introText');
+    text.alpha = 0;
+    text.scale.setTo(0.93, 0.93);
+    game.add.tween(text).to( { alpha:1 }, 1400, Phaser.Easing.Linear.None, true);
 }
 
 function update() {    
@@ -41,4 +45,22 @@ function update() {
     } else{
         continueButton.frame = 1;
     }
+}
+
+function startTimer(){
+    var timer = game.time.create(false);
+    timer.add(5000, this.addButton, this);
+    timer.start();
+    console.log('timer.start')
+}
+
+function addButton(){
+    console.log('addButton');
+    continueButton.position.x = 1580;
+    continueButton.inputEnabled = true;
+    continueButton.scale.setTo(0.5, 0.5);
+    continueButton.frame = 1;
+    continueButton.alpha = 0;
+    
+    game.add.tween(continueButton).to( { alpha:1 }, 1000, Phaser.Easing.Linear.None, true);
 }
