@@ -19,7 +19,6 @@ function create() {
     console.log('credits');
 
     creditsMusic = game.add.audio('creditsMusic');
-    creditsMusic.play();
     creditsMusic.loopFull();
     
     bg = game.add.image(0, 0, 'background');
