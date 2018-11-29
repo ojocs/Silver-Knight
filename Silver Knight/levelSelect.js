@@ -11,7 +11,7 @@ function preload() {
     //game.load.spritesheet('shield3', 'assets/Level Select/Level 3 Shield.png', 142, 200);
     game.load.spritesheet('tutButton', 'assets/startScreen/tutorial button.png', 640, 320);
     game.load.image('locked', 'assets/Level Select/Locked Level.png');
-    game.load.image('backButton', 'assets/tutorial/continue button.png');
+    game.load.spritesheet('backButton', 'assets/back button.png', 640, 320);
    // game.load.image('black', 'assets/black screen.png');
 }
 
@@ -57,9 +57,10 @@ function create() {
     tutButton.inputEnabled = true;
     tutButton.onInputUp.add(startTutorial, this);
   
-    backButton = game.add.button(100, 100, 'backButton');
+    backButton = game.add.button(180, 100, 'backButton');
     backButton.anchor.setTo(0.5);
-    backButton.scale.setTo(-1.2, 1.2);
+    backButton.scale.setTo(0.3, 0.3);
+    backButton.frame = 1;
     backButton.onInputUp.add(returnToMain, this);
     
     black = game.add.sprite(0, 0, 'black');
@@ -70,6 +71,13 @@ function create() {
 
 function update() {
     resumeIntro();
+    
+    //Back Button highlights when hovered over
+    if (backButton.input.pointerOver()){
+        backButton.frame = 0;
+    } else{
+        backButton.frame = 1;
+    }
     
     //Tutorial Button highlights when hovered over
     if (tutButton.input.pointerOver()){

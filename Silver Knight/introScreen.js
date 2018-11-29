@@ -24,10 +24,7 @@ function create() {
     black.scale.setTo(10, 10);
     
     continueButton = game.add.button(-1000, 770, 'button', startLevelSelect, this);
-//    continueButton.inputEnabled = true;
-//    continueButton.scale.setTo(0.45, 0.45);
-//    continueButton.frame = 1;
-//    continueButton.alpha = 0;
+
     startTimer();
     
     var text = game.add.image(0, 0, 'introText');
