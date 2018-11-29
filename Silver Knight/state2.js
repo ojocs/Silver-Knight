@@ -16,6 +16,8 @@ var centerX = 1000, centerY = 500;
 var bg; //background
 
 function create() {
+    showCredits = true;
+    
     console.log('credits');
 
     creditsMusic = game.add.audio('creditsMusic');
@@ -25,7 +27,7 @@ function create() {
     
     backButton = game.add.button(180, 775, 'backButton');
     backButton.anchor.setTo(0.5);
-    backButton.scale.setTo(0.3, 0.3);
+    backButton.scale.setTo(0.4, 0.4);
     backButton.frame = 1;
     backButton.onInputUp.add(startLevelSelect, this);
     
