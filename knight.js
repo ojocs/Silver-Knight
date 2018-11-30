@@ -424,6 +424,7 @@ function teleTimers(){
     } else if (!canTele && teleTimer == 800) {
 
         canTele = true;
+        teleMode = false;
         timerSprite.frame = 16;
         
         if (teleReadyPlayed == false){
