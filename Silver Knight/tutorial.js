@@ -181,7 +181,7 @@ function update() {
     
     //Collide with steps
     hitPlatform = game.physics.arcade.collide(knight, steps);
-    var insideSteps = game.physics.arcade.overlap(knight, stepImage);
+    var insideSteps = game.physics.arcade.overlap(knight, steps);
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
     

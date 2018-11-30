@@ -109,11 +109,13 @@ function bossAI(distanceFromBoss){
     }
     
     //Perform projectile if further from the player than attack1 range, around every bossSpecialTime seconds
-    else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
+    else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) && (distanceFromBoss >= thresholdFromBossWalk)) {//Left
         boss.body.velocity.x = 0;
         bossTurn(1, bossOrientation);
         determineAttack2();
-    } else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
+    } else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) 
+              // && (distanceFromBoss < (-1 * thresholdFromBossWalk))
+              ) {//Right
         boss.body.velocity.x = 0;
         bossTurn(-1, bossOrientation);
         determineAttack2();

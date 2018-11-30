@@ -182,7 +182,7 @@ function createKnight(level){
 
     //Mouse click for teleportation, click teleKey to enter long tele mode
     game.input.mouse.capture = true;
-    teleKey = game.input.keyboard.addKey(Phaser.KeyCode.F);
+    teleKey = game.input.keyboard.addKey(Phaser.KeyCode.E);
     teleMode = false;
     
     //For limiting teleportation
@@ -252,7 +252,7 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
         var knightOrientation = knight.scale.x;
     
         //Attack
-        if(attack.isDown && !knight.teleporting && canAttack){
+        if(attack.downDuration(1) && !knight.teleporting && canAttack){
             attackFunc();
             canAttack = false;
         }
@@ -282,16 +282,9 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
         teleAudio2.play();
         //wooshAudio.play();
     }
-    
-    //Sword hit
-    if(knight.attacking){
-        //Slash sound always
-        swordSlash.play();
-        //Clink sound only if hit boss
-        if(!boss.hurtOnce)
-            swordHitAudio.play();
-    }
-    
+         //Clink sound only if hit boss
+    if(knight.attacking && !boss.hurtOnce)
+        swordHitAudio.play();
     //--------------END SOUNDS-----------------------------//
     }
 }
@@ -511,6 +504,8 @@ function attackFunc() {
     knightBox.body.setSize(200, 220, x2, -110);
     knightBox.body.enable = true;
     knight.animations.play('attack');
+    //Slash sound always
+    swordSlash.play();
     var knightBoxTimer = game.time.create(true);
     knightBoxTimer.add(300, function(){
         knight.attacking = false;
