@@ -52,9 +52,9 @@ function preload(){
     game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
-    game.load.image('background', 'Assets/tutorial/tutorial elements/Tutorial BG 2.png');
-    game.load.image('stepImg', 'Assets/tutorial/tutorial elements/Ground.png');
-    game.load.image('towerPlat', 'Assets/tutorial/tutorial elements/Platform.png');
+    game.load.image('background', 'Assets/Tutorial/Tutorial Elements/Tutorial BG 2.png');
+    game.load.image('stepImg', 'Assets/Tutorial/Tutorial Elements/Ground.png');
+    game.load.image('towerPlat', 'Assets/Tutorial/Tutorial Elements/Platform.png');
 //    game.load.image('towerBody', 'Assets/tutorial/tutorial elements/Tutorial Tower Body.png');
 //    game.load.image('towerTop', 'Assets/tutorial/tutorial elements/Tutorial Tower Top.png');
     
@@ -63,13 +63,13 @@ function preload(){
     
     // star
     game.load.spritesheet('star', 'Assets/tutorial/Star Spritesheet.png', 100, 100);
-    game.load.audio('starSound', 'Assets/audio/star spawn.wav');
+    game.load.audio('starSound', 'Assets/Audio/Star Spawn.wav');
     game.load.spritesheet('sparks', 'Assets/tutorial/Sparks.png', 140, 140);
-    game.load.audio('pickup', 'Assets/audio/electric woosh.wav');
+    game.load.audio('pickup', 'Assets/Audio/Electric Woosh.wav');
     
     // blink box
-    game.load.spritesheet('blinkflash', 'Assets/tutorial/Blink Icon Box.png', 1000, 500);
-    game.load.spritesheet('teleflash', 'Assets/tutorial/tele icon box.png', 1000, 500);
+    game.load.spritesheet('blinkflash', 'Assets/Tutorial/Blink Icon Box.png', 1000, 500);
+    game.load.spritesheet('teleflash', 'Assets/Tutorial/Tele Icon Box.png', 1000, 500);
     
 }
 

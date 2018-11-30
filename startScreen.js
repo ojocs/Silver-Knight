@@ -5,11 +5,11 @@ var startScreen = {
 }
 
 function preload() {
-    game.load.image('background', 'Assets/startScreen/landscape.png');
-    game.load.image('logo', 'Assets/startScreen/silver knight logo v2.png');
-    game.load.spritesheet('startButton', 'Assets/startScreen/start button.png', 640, 320);
+    game.load.image('background', 'Assets/startScreen/Landscape.png');
+    game.load.image('logo', 'Assets/startScreen/Silver Knight Logo v2.png');
+    game.load.spritesheet('startButton', 'Assets/startScreen/Start Button.png', 640, 320);
     game.load.image('black', 'Assets/black screen.png');
-    game.load.audio('intro', 'Assets/audio/music/Intro Music 2.wav');
+    game.load.audio('intro', 'Assets/Audio/Music/Intro Music 2.wav');
 }
 
 var demo = {};

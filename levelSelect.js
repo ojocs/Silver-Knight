@@ -5,15 +5,15 @@ var levelSelect = {
 }
 
 function preload() {
-    game.load.image('background', 'Assets/startScreen/landscape.png');
+    game.load.image('background', 'Assets/startScreen/Landscape.png');
     game.load.spritesheet('shield1', 'Assets/Level Select/Level 1 Shield v2.png', 142, 200);
     game.load.spritesheet('shield2', 'Assets/Level Select/Level 2 Shield.png', 142, 200);
     //game.load.spritesheet('shield3', 'Assets/Level Select/Level 3 Shield.png', 142, 200);
-    game.load.spritesheet('tutButton', 'Assets/startScreen/tutorial button.png', 640, 320);
+    game.load.spritesheet('tutButton', 'Assets/startScreen/Tutorial Button.png', 640, 320);
     game.load.image('locked', 'Assets/Level Select/Locked Level.png');
-    game.load.spritesheet('backButton', 'Assets/back button.png', 640, 320);
-    game.load.spritesheet('creditsButton', 'Assets/credits button.png', 640, 320);
-    game.load.audio('creditsMusic', 'Assets/audio/music/credits music.wav');
+    game.load.spritesheet('backButton', 'Assets/Back Button.png', 640, 320);
+    game.load.spritesheet('creditsButton', 'Assets/Credits Button.png', 640, 320);
+    game.load.audio('creditsMusic', 'Assets/Audio/Music/Credits Music.wav');
    // game.load.image('black', 'Assets/black screen.png');
 }
 

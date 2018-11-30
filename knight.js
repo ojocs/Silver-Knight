@@ -23,18 +23,18 @@ function preloadKnight(){
     game.load.image('black', 'Assets/black screen.png');
     
     //Music
-    game.load.audio('victoryMusic', 'Assets/audio/knight audio/Medieval Fanfare.wav');
-    game.load.audio('gameOverMusic', 'Assets/audio/knight audio/Game Over.wav');    
-    game.load.audio('level1Music', 'Assets/audio/music/Boss 1 Music.wav');
-    game.load.audio('level2Music', 'Assets/audio/music/Boss 2 Music.wav');
+    game.load.audio('victoryMusic', 'Assets/Audio/Knight Audio/Medieval Fanfare.wav');
+    game.load.audio('gameOverMusic', 'Assets/Audio/Knight Audio/Game Over.wav');    
+    game.load.audio('level1Music', 'Assets/Audio/Music/Boss 1 Music.wav');
+    game.load.audio('level2Music', 'Assets/Audio/Music/Boss 2 Music.wav');
     
     //Audio
-    game.load.audio('teleAudio', 'Assets/audio/knight audio/teleport.wav'); 
-    game.load.audio('swordHitAudio', 'Assets/audio/knight audio/Sword3.wav');
-    game.load.audio('swordSlash', 'Assets/audio/knight audio/Sword Slash 1.wav');
-    game.load.audio('knightStep', 'Assets/audio/knight audio/Knight Step 1.wav');
-    game.load.audio('teleCharge', 'Assets/audio/knight audio/electric woosh.wav')
-    game.load.audio('teleReady', 'Assets/audio/knight audio/low quick charge v2.wav');
+    game.load.audio('teleAudio', 'Assets/Audio/Knight Audio/teleport.wav'); 
+    game.load.audio('swordHitAudio', 'Assets/Audio/Knight Audio/Sword3.wav');
+    game.load.audio('swordSlash', 'Assets/Audio/Knight Audio/Sword Slash 1.wav');
+    game.load.audio('knightStep', 'Assets/Audio/Knight Audio/Knight Step 1.wav');
+    game.load.audio('teleCharge', 'Assets/Audio/Knight Audio/Electric Woosh.wav')
+    game.load.audio('teleReady', 'Assets/Audio/Knight Audio/Low Quick Charge v2.wav');
 }
 
 //Knight, has most if not all player/user input code
