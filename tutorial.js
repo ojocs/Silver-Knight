@@ -111,7 +111,7 @@ function create(){
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1500, 30);
     
     //Add tower
-    towerPlatform = platforms.create(1550, 225, 'towerPlat');
+    towerPlatform = platforms.create(1500, 250, 'towerPlat');
     towerPlatform.body.enable = true, towerPlatform.body.immovable = true;
 //    var towerPiece = tower.create(1550, 225, 'towerBody');
 //    towerPiece.body.immovable = true;

@@ -30,7 +30,7 @@ function preloadKnight(){
     
     //Audio
     game.load.audio('teleAudio', 'Assets/Audio/Knight Audio/teleport.wav'); 
-    game.load.audio('swordHitAudio', 'Assets/Audio/Knight Audio/Sword3.wav');
+    game.load.audio('swordHitAudio', 'Assets/Audio/Knight Audio/Sword Hit.wav');
     game.load.audio('swordSlash', 'Assets/Audio/Knight Audio/Sword Slash 1.wav');
     game.load.audio('knightStep', 'Assets/Audio/Knight Audio/Knight Step 1.wav');
     game.load.audio('teleCharge', 'Assets/Audio/Knight Audio/Electric Woosh.wav')
