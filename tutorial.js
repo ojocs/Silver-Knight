@@ -55,16 +55,16 @@ function preload(){
     game.load.image('background', 'Assets/Tutorial/Tutorial Elements/Tutorial BG 2.png');
     game.load.image('stepImg', 'Assets/Tutorial/Tutorial Elements/Ground.png');
     game.load.image('towerPlat', 'Assets/Tutorial/Tutorial Elements/Platform.png');
-//    game.load.image('towerBody', 'Assets/tutorial/tutorial elements/Tutorial Tower Body.png');
-//    game.load.image('towerTop', 'Assets/tutorial/tutorial elements/Tutorial Tower Top.png');
+//    game.load.image('towerBody', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Body.png');
+//    game.load.image('towerTop', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Top.png');
     
     //  Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     
     // star
-    game.load.spritesheet('star', 'Assets/tutorial/Star Spritesheet.png', 100, 100);
+    game.load.spritesheet('star', 'Assets/Tutorial/Star Spritesheet.png', 100, 100);
     game.load.audio('starSound', 'Assets/Audio/Star Spawn.wav');
-    game.load.spritesheet('sparks', 'Assets/tutorial/Sparks.png', 140, 140);
+    game.load.spritesheet('sparks', 'Assets/Tutorial/Sparks.png', 140, 140);
     game.load.audio('pickup', 'Assets/Audio/Electric Woosh.wav');
     
     // blink box

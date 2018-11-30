@@ -10,13 +10,13 @@ function preload() {
     //Giant's preload
     game.load.spritesheet('giant', 'Assets/state0/Giant Spritesheet.png', 497, 630);
     //Giant sounds
-    game.load.audio('stompThud', 'Assets/audio/giant audio/stomp 1.wav');
-    game.load.audio('bossStep', 'Assets/audio/giant audio/Boss Step 2.wav');
+    game.load.audio('stompThud', 'Assets/Audio/Giant Audio/Stomp 1.wav');
+    game.load.audio('bossStep', 'Assets/Audio/Giant Audio/Boss Step 2.wav');
     //Level preload
     game.load.image('background', 'Assets/state0/Level 1 Background.png');
     game.load.image('ground', 'Assets/state0/Platform 1.1.png');
     
-    game.load.audio('level1Music', 'Assets/audio/music/Boss 1 Music.wav');
+    game.load.audio('level1Music', 'Assets/Audio/Music/Boss 1 Music.wav');
     
 }
 
