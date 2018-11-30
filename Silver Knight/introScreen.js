@@ -8,7 +8,7 @@ function preload() {
     game.load.image('background', 'assets/startScreen/landscape.png');
     game.load.image('black', 'assets/black screen.png');
     game.load.spritesheet('button', 'assets/continue button.png',640, 320);
-    game.load.image('introText', 'assets/intro text 2.png');
+    game.load.image('introText', 'assets/intro text.png');
 }
 
 var demo = {};
@@ -46,7 +46,7 @@ function update() {
 
 function startTimer(){
     var timer = game.time.create(false);
-    timer.add(5000, this.addButton, this);
+    timer.add(500, this.addButton, this);
     timer.start();
     console.log('timer.start')
 }
