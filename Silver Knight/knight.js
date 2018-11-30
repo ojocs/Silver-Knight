@@ -29,11 +29,12 @@ function preloadKnight(){
     game.load.audio('level2Music', 'assets/audio/music/Boss 2 Music.wav');
     
     //Audio
-    game.load.audio('teleAudio', 'assets/audio/knight audio/teleport sound.wav');
-    game.load.audio('teleAudio2', 'assets/audio/knight audio/teleport sound 5.wav'); 
+    game.load.audio('teleAudio', 'assets/audio/knight audio/teleport.wav'); 
     game.load.audio('swordHitAudio', 'assets/audio/knight audio/Sword3.wav');
     game.load.audio('swordSlash', 'assets/audio/knight audio/Sword Slash 1.wav');
     game.load.audio('knightStep', 'assets/audio/knight audio/Knight Step 1.wav');
+    game.load.audio('teleCharge', 'assets/audio/knight audio/electric woosh.wav')
+    game.load.audio('teleReady', 'assets/audio/knight audio/low quick charge v2.wav');
 }
 
 //Knight, has most if not all player/user input code
@@ -62,7 +63,9 @@ var blink, blinkDist = 450, blinkTimer = 0, blinkCount, canBlink, blinkAni, blin
 var blinkTimerDisplay;
 
 //Long teleport
-var canTele, teleKey, teleMode, teleTimer = 0, timerSprite;
+var canTele, teleKey, teleMode, teleTimer = 0, timerSprite, teleCharge, teleReady;
+
+var teleChargePlayed = false, teleReadyPlayed = false; //Boolean so teleCharge and teleReady plays only once
 
 //Attack
 var attack, canAttack, attackTimer;
@@ -71,7 +74,7 @@ var attack, canAttack, attackTimer;
 var speed, drag = 100, walkSpeed = 600;
 
 //Sounds
-var teleAudio, teleAudio2, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
+var teleAudio, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
 
 //Music
 var levelMusic;
@@ -202,11 +205,14 @@ function createKnight(level){
     game.camera.follow(knight);
     
     //Sounds
-    teleAudio = game.add.audio('teleAudio'), teleAudio2 = game.add.audio('teleAudio2');
+    teleAudio = game.add.audio('teleAudio');
     swordHitAudio = game.add.audio('swordHitAudio'), swordSlash = game.add.audio('swordSlash');
     knightStepSound = game.add.audio('knightStep');
-    // For BG music: Add like: music = game.add.audio('theme',1,true); and to play: key, volume, loop music.play('',0,1,true);
+    teleCharge = game.add.audio('teleCharge');
+    //teleCharge.volume = 0.5;
     
+    teleReady = game.add.audio('teleReady');
+    //teleReady.volume = 0.5;
     //Exit Button
     exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
     exitButton.anchor.setTo(1, 0.5);
@@ -276,13 +282,9 @@ function updateKnight(currentDistanceFromBoss, currentVertFromBoss, ground){
     //------------------END MOVEMENT--------------------------//
     
     //--------------SOUNDS-----------------------------//
-    //Teleport
-    if(knight.teleporting && (canBlink || canTele)){
-        teleAudio.play();
-        teleAudio2.play();
-        //wooshAudio.play();
-    }
-         //Clink sound only if hit boss
+    //Teleport sounds found in function teleControls
+        
+    //Clink sound only if hit boss
     if(knight.attacking && !boss.hurtOnce)
         swordHitAudio.play();
     //--------------END SOUNDS-----------------------------//
@@ -381,12 +383,17 @@ function teleTimers(){
     
     if (canTele) {
         // comment out code, add back in to only display teleport timer when in teleMode
-        
         if(teleMode){
             timerSprite.alpha = 1;
             timerSprite.frame = 17;
+            if (teleChargePlayed == false){
+                teleCharge.play();
+                console.log('teleCharge');
+                teleChargePlayed = true;
+            }
         }
         else{
+            teleChargePlayed = false;
             timerSprite.alpha = 0.5;
             timerSprite.frame = 16;
         }
@@ -418,6 +425,12 @@ function teleTimers(){
 
         canTele = true;
         timerSprite.frame = 16;
+        
+        if (teleReadyPlayed == false){
+                teleReady.play();
+                console.log('teleReady');
+                teleReadyPlayed = true;
+        }
 
     }
 
@@ -485,10 +498,13 @@ function teleControls(){
         (moveBinds.leftA.isDown || moveBinds.rightD.isDown || moveBinds.upW.isDown || moveBinds.downS.isDown)) {
         knight.teleporting = true;
         knight.animations.play('teleport');
+        teleAudio.play();
         blinkTele();
     } else if (canTele && game.input.activePointer.leftButton.isDown && teleMode) {
         knight.teleporting = true;
         knight.animations.play('teleport');
+        teleAudio.play();
+        teleReadyPlayed = false;
         cursorTele();
         teleMode = false;
     }
