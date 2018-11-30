@@ -53,9 +53,10 @@ function preload(){
     
     //Preload background, ground/steps and tower
     game.load.image('background', 'assets/tutorial/tutorial elements/Tutorial BG 2.png');
-    game.load.image('stepImg', 'assets/tutorial/tutorial elements/Tutorial Ground 2.png');
-    game.load.image('towerBody', 'assets/tutorial/tutorial elements/Tutorial Tower Body.png');
-    game.load.image('towerTop', 'assets/tutorial/tutorial elements/Tutorial Tower Top.png');
+    game.load.image('stepImg', 'assets/tutorial/tutorial elements/Ground.png');
+    game.load.image('towerPlat', 'assets/tutorial/tutorial elements/Platform.png');
+//    game.load.image('towerBody', 'assets/tutorial/tutorial elements/Tutorial Tower Body.png');
+//    game.load.image('towerTop', 'assets/tutorial/tutorial elements/Tutorial Tower Top.png');
     
     //  Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -72,7 +73,7 @@ function preload(){
     
 }
 
-var steps, tower, stepImage;
+var steps, tower, stepImage, platforms, towerPlatform;
 var star, starSound, sparks, sparksCount;
 var sparksPlayed, sparksPlayed2; // Booleans for the animations to only play when these equal false, changes to true after 1 playthrough
 var soundPlayed, soundPlayed2; // Booleans for starSound
@@ -96,28 +97,29 @@ function create(){
     background.scale.setTo(0.89, 0.8);
     
     //Add steps
-    steps = game.add.group();
-    steps.enableBody = true;
+    platforms = game.add.group();
+    platforms.enableBody = true;
     //Main step image
-    stepImage = steps.create(0, 685, 'stepImg');
+    stepImage = platforms.create(0, 800, 'stepImg');
     stepImage.enableBody = true, stepImage.body.immovable = true;
-    stepImage.body.setSize(2250, 100, 0, 230);
+    stepImage.body.setSize(2250, 0, 0, 230);
     //Rest are "hitbox" steps
-    var step = steps.create(403, 860, null);
+    var step = platforms.create(403, 860, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1850, 30);
-    step = steps.create(523, 770, null);
+    platforms.antiStuck = step.body.height;
+    step = platforms.create(523, 770, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1500, 30);
-    step = steps.create(655, 685, null);
+    step = platforms.create(655, 685, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1300, 30);
     
     //Add tower
-    tower = game.add.group();
-    tower.enableBody = true;
-    var towerPiece = tower.create(1550, 225, 'towerBody');
-    towerPiece.body.immovable = true;
-    towerPiece.scale.setTo(.85, .85);
-    towerPiece = tower.create(1465, 120, 'towerTop');
-    towerPiece.body.immovable = true;
+    towerPlatform = platforms.create(1550, 225, 'towerPlat');
+    towerPlatform.body.enable = true, towerPlatform.body.immovable = true;
+//    var towerPiece = tower.create(1550, 225, 'towerBody');
+//    towerPiece.body.immovable = true;
+//    towerPiece.scale.setTo(.85, .85);
+//    towerPiece = tower.create(1465, 120, 'towerTop');
+//    towerPiece.body.immovable = true;
     
     // blink box flashing
     blinkFlash = game.add.sprite(0, 0, 'blinkflash');
@@ -180,8 +182,9 @@ function update() {
     }
     
     //Collide with steps
-    hitPlatform = game.physics.arcade.collide(knight, steps);
-    var insideSteps = game.physics.arcade.overlap(knight, steps);
+    hitPlatform = game.physics.arcade.collide(knight, platforms);
+    var towerHit = game.physics.arcade.overlap(knight, towerPlatform);
+    var insideSteps = game.physics.arcade.overlap(knight, platforms);
     //Collide with tower?
     game.physics.arcade.collide(knight, tower);
     
@@ -190,7 +193,7 @@ function update() {
     
         
     //Prevent/get out of glitch of going into steps
-    if(insideSteps)
+    if(insideSteps && !towerHit)
         knight.body.y -= 90;
     
     //update knight
