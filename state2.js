@@ -5,10 +5,10 @@ var state2 = {
 }
 
 function preload() {
-    game.load.image('background', 'assets/Credits.png');
-    game.load.image('black', 'assets/black screen.png');
-    game.load.spritesheet('backButton', 'assets/back button.png', 640, 320);
-    game.load.audio('creditsMusic', 'assets/audio/music/credits music.wav');
+    game.load.image('background', 'Assets/Credits.png');
+    game.load.image('black', 'Assets/black screen.png');
+    game.load.spritesheet('backButton', 'Assets/back button.png', 640, 320);
+    game.load.audio('creditsMusic', 'Assets/audio/music/credits music.wav');
 }
 
 var demo = {};

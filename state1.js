@@ -8,14 +8,14 @@ function preload() {
     preloadKnight();
     preloadBoss();
     //Level
-    game.load.image('background', 'assets/Level 2/Level 2 BG.png');
-    game.load.image('platform2.1', 'assets/Level 2/Platform 2.1.png');
-    game.load.image('platform2.2', 'assets/Level 2/Platform 2.2.png');
-    game.load.image('platform2.3', 'assets/Level 2/Platform 2.3.png');
+    game.load.image('background', 'Assets/Level 2/Level 2 BG.png');
+    game.load.image('platform2.1', 'Assets/Level 2/Platform 2.1.png');
+    game.load.image('platform2.2', 'Assets/Level 2/Platform 2.2.png');
+    game.load.image('platform2.3', 'Assets/Level 2/Platform 2.3.png');
     //Boss
-    game.load.image('treeProjectile', 'assets/Level 2/Tree Projectile 2.png');
-    game.load.spritesheet('treeSpike', 'assets/Level 2/Tree Spike.png', 729, 490);
-    game.load.spritesheet('tree', 'assets/Level 2/Tree Spritesheet.png', 219, 300);
+    game.load.image('treeProjectile', 'Assets/Level 2/Tree Projectile 2.png');
+    game.load.spritesheet('treeSpike', 'Assets/Level 2/Tree Spike.png', 729, 490);
+    game.load.spritesheet('tree', 'Assets/Level 2/Tree Spritesheet.png', 219, 300);
 }
 
 var demo = {};

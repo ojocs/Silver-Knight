@@ -42,34 +42,34 @@ function preload(){
     game.physics.startSystem(Phaser.Physics.ARCADE); // Redundant since it's already been called in state0
     
     //Blank boss
-    game.load.image('blankBoss', 'assets/blankBoss.png');
+    game.load.image('blankBoss', 'Assets/blankBoss.png');
     //preload knight
     preloadKnight();
         
     //Buttons
-    game.load.image('skipButton', 'assets/Tutorial/Skip Tutorial Button.png'); 
-    game.load.spritesheet('backButton', 'assets/Tutorial/Next Button.png', 200, 100);
-    game.load.image('mainMenuButton', 'assets/Win or Lose/Main Menu Button.png');
+    game.load.image('skipButton', 'Assets/Tutorial/Skip Tutorial Button.png'); 
+    game.load.spritesheet('backButton', 'Assets/Tutorial/Next Button.png', 200, 100);
+    game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
-    game.load.image('background', 'assets/tutorial/tutorial elements/Tutorial BG 2.png');
-    game.load.image('stepImg', 'assets/tutorial/tutorial elements/Ground.png');
-    game.load.image('towerPlat', 'assets/tutorial/tutorial elements/Platform.png');
-//    game.load.image('towerBody', 'assets/tutorial/tutorial elements/Tutorial Tower Body.png');
-//    game.load.image('towerTop', 'assets/tutorial/tutorial elements/Tutorial Tower Top.png');
+    game.load.image('background', 'Assets/tutorial/tutorial elements/Tutorial BG 2.png');
+    game.load.image('stepImg', 'Assets/tutorial/tutorial elements/Ground.png');
+    game.load.image('towerPlat', 'Assets/tutorial/tutorial elements/Platform.png');
+//    game.load.image('towerBody', 'Assets/tutorial/tutorial elements/Tutorial Tower Body.png');
+//    game.load.image('towerTop', 'Assets/tutorial/tutorial elements/Tutorial Tower Top.png');
     
     //  Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     
     // star
-    game.load.spritesheet('star', 'assets/tutorial/Star Spritesheet.png', 100, 100);
-    game.load.audio('starSound', 'assets/audio/star spawn.wav');
-    game.load.spritesheet('sparks', 'assets/tutorial/Sparks.png', 140, 140);
-    game.load.audio('pickup', 'assets/audio/electric woosh.wav');
+    game.load.spritesheet('star', 'Assets/tutorial/Star Spritesheet.png', 100, 100);
+    game.load.audio('starSound', 'Assets/audio/star spawn.wav');
+    game.load.spritesheet('sparks', 'Assets/tutorial/Sparks.png', 140, 140);
+    game.load.audio('pickup', 'Assets/audio/electric woosh.wav');
     
     // blink box
-    game.load.spritesheet('blinkflash', 'assets/tutorial/Blink Icon Box.png', 1000, 500);
-    game.load.spritesheet('teleflash', 'assets/tutorial/tele icon box.png', 1000, 500);
+    game.load.spritesheet('blinkflash', 'Assets/tutorial/Blink Icon Box.png', 1000, 500);
+    game.load.spritesheet('teleflash', 'Assets/tutorial/tele icon box.png', 1000, 500);
     
 }
 

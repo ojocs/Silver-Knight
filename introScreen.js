@@ -5,10 +5,10 @@ var introScreen = {
 }
 
 function preload() {
-    game.load.image('background', 'assets/startScreen/landscape.png');
-    game.load.image('black', 'assets/black screen.png');
-    game.load.spritesheet('button', 'assets/continue button.png',640, 320);
-    game.load.image('introText', 'assets/intro text 2.png');
+    game.load.image('background', 'Assets/startScreen/landscape.png');
+    game.load.image('black', 'Assets/black screen.png');
+    game.load.spritesheet('button', 'Assets/continue button.png',640, 320);
+    game.load.image('introText', 'Assets/intro text 2.png');
 }
 
 var demo = {};

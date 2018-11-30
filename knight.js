@@ -1,40 +1,40 @@
 //Call in preload
 function preloadKnight(){    
     //Knight
-    game.load.spritesheet('knight', 'assets/knight/Silver Knight Spritesheet.png', 354, 230);
-    game.load.image('heart', 'assets/knight/heart 100.png');
-    game.load.image('half_heart', 'assets/knight/half heart 100.png');
-    game.load.spritesheet('timer', 'assets/knight/Teleport Timer.png', 120, 120);
-    game.load.spritesheet('blinkTimer', 'assets/Blink Timer Spritsheet.png', 100, 100);
-    game.load.spritesheet('blinkDisplay', 'assets/knight/Teleportation Spritesheet.png', 150, 150);
+    game.load.spritesheet('knight', 'Assets/knight/Silver Knight Spritesheet.png', 354, 230);
+    game.load.image('heart', 'Assets/knight/heart 100.png');
+    game.load.image('half_heart', 'Assets/knight/half heart 100.png');
+    game.load.spritesheet('timer', 'Assets/knight/Teleport Timer.png', 120, 120);
+    game.load.spritesheet('blinkTimer', 'Assets/Blink Timer Spritsheet.png', 100, 100);
+    game.load.spritesheet('blinkDisplay', 'Assets/knight/Teleportation Spritesheet.png', 150, 150);
     
     //Buttons
-    game.load.image('pauseMenu', 'assets/knight/Pause Menu.png');
-    game.load.spritesheet('pauseButton', 'assets/knight/Pause Button.png', 100, 100);
-    game.load.image('exitButton', 'assets/knight/exit button.png');
-    game.load.image('restartButton', 'assets/knight/restart button.png');
+    game.load.image('pauseMenu', 'Assets/knight/Pause Menu.png');
+    game.load.spritesheet('pauseButton', 'Assets/knight/Pause Button.png', 100, 100);
+    game.load.image('exitButton', 'Assets/knight/exit button.png');
+    game.load.image('restartButton', 'Assets/knight/restart button.png');
     
     //Victory and Game Over
-    game.load.image('victoryText', 'assets/Win or Lose/Victory Text.png');
-    game.load.image('mainMenuButton', 'assets/Win or Lose/Main Menu Button.png');
-    game.load.image('nextLevelButton', 'assets/Win or Lose/Next Lvl Button.png');
-    game.load.image('gameOverText', 'assets/Win or Lose/Game Over Text.png');
-    game.load.image('tryAgainButton', 'assets/Win or Lose/Try Again Button.png');
-    game.load.image('black', 'assets/black screen.png');
+    game.load.image('victoryText', 'Assets/Win or Lose/Victory Text.png');
+    game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
+    game.load.image('nextLevelButton', 'Assets/Win or Lose/Next Lvl Button.png');
+    game.load.image('gameOverText', 'Assets/Win or Lose/Game Over Text.png');
+    game.load.image('tryAgainButton', 'Assets/Win or Lose/Try Again Button.png');
+    game.load.image('black', 'Assets/black screen.png');
     
     //Music
-    game.load.audio('victoryMusic', 'assets/audio/knight audio/Medieval Fanfare.wav');
-    game.load.audio('gameOverMusic', 'assets/audio/knight audio/Game Over.wav');    
-    game.load.audio('level1Music', 'assets/audio/music/Boss 1 Music.wav');
-    game.load.audio('level2Music', 'assets/audio/music/Boss 2 Music.wav');
+    game.load.audio('victoryMusic', 'Assets/audio/knight audio/Medieval Fanfare.wav');
+    game.load.audio('gameOverMusic', 'Assets/audio/knight audio/Game Over.wav');    
+    game.load.audio('level1Music', 'Assets/audio/music/Boss 1 Music.wav');
+    game.load.audio('level2Music', 'Assets/audio/music/Boss 2 Music.wav');
     
     //Audio
-    game.load.audio('teleAudio', 'assets/audio/knight audio/teleport.wav'); 
-    game.load.audio('swordHitAudio', 'assets/audio/knight audio/Sword3.wav');
-    game.load.audio('swordSlash', 'assets/audio/knight audio/Sword Slash 1.wav');
-    game.load.audio('knightStep', 'assets/audio/knight audio/Knight Step 1.wav');
-    game.load.audio('teleCharge', 'assets/audio/knight audio/electric woosh.wav')
-    game.load.audio('teleReady', 'assets/audio/knight audio/low quick charge v2.wav');
+    game.load.audio('teleAudio', 'Assets/audio/knight audio/teleport.wav'); 
+    game.load.audio('swordHitAudio', 'Assets/audio/knight audio/Sword3.wav');
+    game.load.audio('swordSlash', 'Assets/audio/knight audio/Sword Slash 1.wav');
+    game.load.audio('knightStep', 'Assets/audio/knight audio/Knight Step 1.wav');
+    game.load.audio('teleCharge', 'Assets/audio/knight audio/electric woosh.wav')
+    game.load.audio('teleReady', 'Assets/audio/knight audio/low quick charge v2.wav');
 }
 
 //Knight, has most if not all player/user input code
