@@ -46,7 +46,7 @@ function update() {
 
 function startTimer(){
     var timer = game.time.create(false);
-    timer.add(5000, this.addButton, this);
+    timer.add(10, this.addButton, this);//5000, this.addButton, this);
     timer.start();
     console.log('timer.start')
 }

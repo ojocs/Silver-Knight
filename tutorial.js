@@ -102,15 +102,13 @@ function create(){
     //Main step image
     stepImage = platforms.create(0, 800, 'stepImg');
     stepImage.enableBody = true, stepImage.body.immovable = true;
-    stepImage.body.setSize(2250, 0, 0, 230);
+    stepImage.body.setSize(2250, 50, 0, 125);
     //Rest are "hitbox" steps
-    var step = platforms.create(403, 860, null);
+    var step = platforms.create(360, 870, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1850, 30);
     platforms.antiStuck = step.body.height;
     step = platforms.create(523, 770, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1500, 30);
-    step = platforms.create(655, 685, null);
-    step.body.enable = true, step.body.immovable = true, step.body.setSize(1300, 30);
     
     //Add tower
     towerPlatform = platforms.create(1550, 225, 'towerPlat');
