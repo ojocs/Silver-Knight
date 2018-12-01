@@ -20,6 +20,10 @@ var introMusic;
 var needIntro = true; //Boolean to know if we need to play intro or not
 
 function create() {
+    ///////////////////////////////////////////////
+    game.sound.mute = true;
+    /////////////////////////////////////////////////
+    
     console.log('startScreen');
     
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //Screen adjust

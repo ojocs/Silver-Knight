@@ -13,12 +13,12 @@ var moveText;
 var attackText = "Press the spacebar to attack";
 var blinkText = "Press either shift key while moving to\n blink in that direction" ;
 var blinkText2 = "These icons will track your blinks\n They recharge anytime you're\n not blinking"
-var blinkText3 = "Now try reaching the star\n on top of the tower"
+var blinkText3 = "Now try reaching the star"
 var blinkStar; // Boolean so the tutorial only progresses once the player reaches the star using blink
-var blinkText4 = 'Great!'
-var teleText = 'Press "F" to activate the long teleport,\n then click anywhere on the screen';
+var blinkText4 = 'Great! When on a platform,\n press "S" to drop down'
+var teleText = 'Press "E" to activate the long teleport,\n then click anywhere on the screen';
 var teleText2 = 'Note the longer recharge time'
-var teleText3 = 'Now, use the long teleport to get this star'
+var teleText3 = 'Now, teleport to get this star'
 var teleStar; //Boolean so the tutorial only progresses once the play reaches the star using longTele
 var tutorialFinishText = "You've completed the tutorial!\n Click the 'Exit' button when you're\n ready to begin your journey";
 
@@ -104,10 +104,10 @@ function create(){
     stepImage.enableBody = true, stepImage.body.immovable = true;
     stepImage.body.setSize(2250, 50, 0, 125);
     //Rest are "hitbox" steps
-    var step = platforms.create(360, 870, null);
+    var step = platforms.create(360, 880, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1850, 30);
     platforms.antiStuck = step.body.height;
-    step = platforms.create(523, 770, null);
+    step = platforms.create(467, 800, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1500, 30);
     
     //Add tower
@@ -155,7 +155,7 @@ function create(){
 //    skipButton.scale.setTo(0.8, 0.8);
 //    skipButton.inputEnabled = true;
     
-    moveText = game.add.text(game.world.centerX - 175, game.world.centerY + 200, text, { font: "65px VT323", fill: "#f76300", align: "center" });
+    moveText = game.add.text(700, 850, text, { font: "65px VT323", fill: "#f76300", align: "center" });
     nextButton = game.add.button(1600, game.world.centerY + 350, 'backButton', actionOnClick, this);
     nextButton.frame = 0;
     
@@ -282,7 +282,7 @@ function star1(){
     
     if (sparksPlayed == false){
         sparks.position.x = 1665;
-        sparks.position.y = -40;
+        sparks.position.y = 60;
         sparks.animations.play('sparks', 12, true);
         var timer = game.time.create(false);
         sparksCount = 1;
@@ -306,7 +306,7 @@ function star1(){
 
 function star1Appear(){
     star.alpha = 1;
-    star.position.y = 25;
+    star.position.y = 125;
 }
 
 function sound1True(){

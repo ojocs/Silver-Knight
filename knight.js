@@ -108,7 +108,7 @@ function createKnight(level){
     hit = false;
     
     //Teleport Timer Display
-    timerSprite = game.add.sprite(355, 10, 'timer');
+    timerSprite = game.add.sprite(345, 0, 'timer');
     timerSprite.alpha = 0.5;
     
     blinkCount = 3;
