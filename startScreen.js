@@ -19,11 +19,7 @@ var isTutorial = false; // Variable for the exit button
 var introMusic;
 var needIntro = true; //Boolean to know if we need to play intro or not
 
-function create() {
-    ///////////////////////////////////////////////
-    game.sound.mute = true;
-    /////////////////////////////////////////////////
-    
+function create() {    
     console.log('startScreen');
     
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; //Screen adjust
