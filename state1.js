@@ -55,7 +55,7 @@ function create() {
     boss.anchor.setTo(0.6, 0.5);
     game.physics.enable(boss), boss.body.gravity.y = 400;
     boss.frame = 1, boss.body.collideWorldBounds = true;
-    boss.newScaleX = 1, bossTurnTimer = 10;
+    boss.newScaleX = 1, bossTurnTimer = 0;
     
     //Add walk animation
     boss.animations.add('treeWalk', [23, 24, 25 , 26], 17);
@@ -107,7 +107,7 @@ function create() {
         fontSize: '50px', fill: '#000' });
 }
 
-function update() {//game.debug.body(projectiles.bullets);
+function update() {//game.debug.body(treeHand);
     fadeOutIntro();
     
     //Knight collide with platforms
@@ -224,6 +224,9 @@ function treeProjectile(){
     boss.animations.play('treeProjectileAttack');
     
     //Fire in direction of sprite
-    var offsetOfKnight = 100;
-    projectiles.fire(treeHand, knight.body.x - offsetOfKnight, knight.body.y + offsetOfKnight);
+    var fireTimer = game.time.create(true);
+    fireTimer.add(500, function(){
+        projectiles.fire(treeHand, knight.body.center.x, knight.body.center.y);
+    });
+    fireTimer.start();
 }

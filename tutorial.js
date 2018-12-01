@@ -55,8 +55,8 @@ function preload(){
     game.load.image('background', 'Assets/Tutorial/Tutorial Elements/Tutorial BG 2.png');
     game.load.image('stepImg', 'Assets/Tutorial/Tutorial Elements/Ground.png');
     game.load.image('towerPlat', 'Assets/Tutorial/Tutorial Elements/Platform.png');
-//    game.load.image('towerBody', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Body.png');
-//    game.load.image('towerTop', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Top.png');
+    game.load.image('towerBody', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Body.png');
+    game.load.image('towerTop', 'Assets/Tutorial/Tutorial Elements/Tutorial Tower Top.png');
     
     //  Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');

@@ -127,6 +127,21 @@ function createKnight(level){
     blinkTimerDisplay = game.add.sprite(650,25, 'blinkTimer');
     blinkTimerDisplay.scale.setTo(.75, .75);
     blinkTimerDisplay.visible = false;
+    
+    //Exit Button
+    exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
+    exitButton.anchor.setTo(1, 0.5);
+    
+    //Restart Button
+    restartButton = game.add.button(centerX+100, 60, 'restartButton', restartLevel, this);
+    restartButton.anchor.setTo(0, 0.5);
+    
+    //Pause
+    pauseButton = game.add.button(centerX, 60, 'pauseButton');
+    pauseButton.frame = 1;
+    pauseButton.anchor.setTo(0.5, 0.5);
+    pauseButton.onInputUp.add(pauseGame, this);
+    
     //Add Silver Knight
     knight = game.add.sprite(200, 0, 'knight');
     knight.anchor.setTo(0.5, 0.5);
@@ -213,19 +228,6 @@ function createKnight(level){
     
     teleReady = game.add.audio('teleReady');
     //teleReady.volume = 0.5;
-    //Exit Button
-    exitButton = game.add.button(centerX-100, 60, 'exitButton', startLevelSelect, this);
-    exitButton.anchor.setTo(1, 0.5);
-    
-    //Restart Button
-    restartButton = game.add.button(centerX+100, 60, 'restartButton', restartLevel, this);
-    restartButton.anchor.setTo(0, 0.5);
-    
-    //Pause
-    pauseButton = game.add.button(centerX, 60, 'pauseButton');
-    pauseButton.frame = 1;
-    pauseButton.anchor.setTo(0.5, 0.5);
-    pauseButton.onInputUp.add(pauseGame, this);
 }
 
 //Call in update

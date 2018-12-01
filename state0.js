@@ -76,7 +76,7 @@ function create() {
     //Add Giant
     createBoss();
     boss = game.add.sprite(centerX, centerY + 120, 'giant');
-    boss.speed = 140, boss.health = 10;
+    boss.speed = 200, boss.health = 10;
     boss.anchor.setTo(0.8, 0.5);
     game.physics.enable(boss);
     boss.body.gravity.y = 400;
@@ -86,7 +86,7 @@ function create() {
     boss.body.collideWorldBounds = true;
     
     //Set variables for attacks
-    boss.turning = false, bossTurnTimer = 30, bossSpecialTime = 5, thresholdFromBossWalk = 300;
+    boss.turning = false, bossTurnTimer = 5, bossSpecialTime = 5, thresholdFromBossWalk = 300;
     
     //Make hitboxes for weapons
     bossHitboxes = game.add.group();
@@ -110,18 +110,18 @@ function create() {
     swingBox3.body.enable = false;
     
     boss.newScaleX = 1;
-    boss.animations.add('walk', [1, 2, 3, 4], 3);
+    boss.animations.add('walk', [1, 2, 3, 4], 4);
     
     //Stomping
     boss.attack2 = false;
-    boss.stompAni = boss.animations.add('stomp', [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 23, 23, 23, 23], 12);
+    boss.stompAni = boss.animations.add('stomp', [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 23, 23, 23, 23, 23, 23], 18);
     boss.stompAni.onComplete.add(function(){
         boss.attack2 = false;
     });
         
     //Swinging club
     boss.attack1 = false;
-    boss.swingAni = boss.animations.add('swing', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], 16);
+    boss.swingAni = boss.animations.add('swing', [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], 20);
  
     //Giant Audio
     stompThud = game.add.audio('stompThud'), bossStep = game.add.audio('bossStep', 15);
@@ -184,7 +184,7 @@ function giantSwing(){
     var x2L = [-200, -400, -335], x2R = [-85, 200, 120];
     var y2L = [-270, -200, 100], y2R = [-260, -200, 100];
     //1st hitbox
-    giantBoxTimer.add(500, function(){
+    giantBoxTimer.add(400, function(){
         if(boss.scale.x > 0)//Left
             swingBox1.body.setSize(x1L[0], y1L[0], x2L[0], y2L[0]);
         else if(boss.scale.x <= 0)//Right
@@ -192,7 +192,7 @@ function giantSwing(){
         swingBox1.body.enable = true;
     });
     //2nd hitbox made after 1 second, get rid of 1st
-    giantBoxTimer.add(1000, function(){
+    giantBoxTimer.add(900, function(){
         swingBox1.body.enable = false;
         swingBox1.body.setSize(0, 0, 0, 0);
         swingBox2.body.enable = true;
@@ -202,7 +202,7 @@ function giantSwing(){
             swingBox2.body.setSize(x1R[1], y1R[1], x2R[1], y2R[1]);
     });
     //3rd hitbox made after .05 second after 2nd was made, get rid of 2nd
-    giantBoxTimer.add(1050, function(){
+    giantBoxTimer.add(900, function(){
         swingBox2.body.enable = false;
         swingBox2.body.setSize(0, 0, 0, 0);
         swingBox3.body.enable = true;
@@ -212,7 +212,7 @@ function giantSwing(){
             swingBox3.body.setSize(x1R[2], y1R[2], x2R[2], y2R[2]);
     });
     //Get rid of 3rd hitbox after another .15 seconds
-    giantBoxTimer.add(1300, function(){
+    giantBoxTimer.add(1100, function(){
         swingBox3.body.enable = false;
         swingBox3.body.setSize(0, 0, 0, 0);
     });
@@ -226,10 +226,10 @@ function giantSwing(){
 function giantStomp(){
     boss.animations.play('stomp');
     var stompTimer = game.time.create(true);
-    stompTimer.add(900, function (){
+    stompTimer.add(800, function (){
         boss.attack2 = true;
     });
-    stompTimer.add(1200, function(){
+    stompTimer.add(1100, function(){
         boss.attack2 = false;
     });
     stompTimer.start();
