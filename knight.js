@@ -2,8 +2,8 @@
 function preloadKnight(){    
     //Knight
     game.load.spritesheet('knight', 'Assets/knight/Silver Knight Spritesheet.png', 354, 230);
-    game.load.image('heart', 'Assets/knight/heart 100.png');
-    game.load.image('half_heart', 'Assets/knight/half heart 100.png');
+    game.load.image('heart', 'Assets/knight/Heart 100.png');
+    game.load.image('half_heart', 'Assets/knight/Half Heart 100.png');
     game.load.spritesheet('timer', 'Assets/knight/Teleport Timer.png', 120, 120);
     game.load.spritesheet('blinkTimer', 'Assets/Blink Timer Spritsheet.png', 100, 100);
     game.load.spritesheet('blinkDisplay', 'Assets/knight/Teleportation Spritesheet.png', 150, 150);
@@ -11,8 +11,8 @@ function preloadKnight(){
     //Buttons
     game.load.image('pauseMenu', 'Assets/knight/Pause Menu.png');
     game.load.spritesheet('pauseButton', 'Assets/knight/Pause Button.png', 100, 100);
-    game.load.image('exitButton', 'Assets/knight/exit button.png');
-    game.load.image('restartButton', 'Assets/knight/restart button.png');
+    game.load.image('exitButton', 'Assets/knight/Exit Button.png');
+    game.load.image('restartButton', 'Assets/knight/Restart Button.png');
     
     //Victory and Game Over
     game.load.image('victoryText', 'Assets/Win or Lose/Victory Text.png');
@@ -20,7 +20,7 @@ function preloadKnight(){
     game.load.image('nextLevelButton', 'Assets/Win or Lose/Next Lvl Button.png');
     game.load.image('gameOverText', 'Assets/Win or Lose/Game Over Text.png');
     game.load.image('tryAgainButton', 'Assets/Win or Lose/Try Again Button.png');
-    game.load.image('black', 'Assets/black screen.png');
+    game.load.image('black', 'Assets/Black Screen.png');
     
     //Music
     game.load.audio('victoryMusic', 'Assets/Audio/Knight Audio/Medieval Fanfare.wav');
@@ -29,11 +29,10 @@ function preloadKnight(){
     game.load.audio('level2Music', 'Assets/Audio/Music/Boss 2 Music.wav');
     
     //Audio
-    game.load.audio('teleAudio', 'Assets/Audio/Knight Audio/teleport.wav'); 
+    game.load.audio('teleAudio', 'Assets/Audio/Knight Audio/Teleport.wav'); 
     game.load.audio('swordHitAudio', 'Assets/Audio/Knight Audio/Sword Hit.wav');
     game.load.audio('swordSlash', 'Assets/Audio/Knight Audio/Sword Slash 1.wav');
-    game.load.audio('grunt', 'Assets/Audio/Knight Audio/grunt.wav');
-    game.load.audio('knightStep', 'Assets/Audio/Knight Audio/Knight Step 1.wav');
+    game.load.audio('grunt', 'Assets/Audio/Knight Audio/Grunt.wav');
     game.load.audio('teleCharge', 'Assets/Audio/Knight Audio/Electric Woosh.wav')
     game.load.audio('teleReady', 'Assets/Audio/Knight Audio/Low Quick Charge v2.wav');
 }
@@ -75,7 +74,7 @@ var attack, canAttack, attackTimer;
 var speed, drag = 100, walkSpeed = 600;
 
 //Sounds
-var teleAudio, wooshAudio, swordHitAudio, swordSlash, knightStepSound, grunt;
+var teleAudio, wooshAudio, swordHitAudio, swordSlash, grunt;
 
 //Music
 var levelMusic;
@@ -224,7 +223,6 @@ function createKnight(level){
     teleAudio = game.add.audio('teleAudio');
     swordHitAudio = game.add.audio('swordHitAudio'), swordSlash = game.add.audio('swordSlash');
     grunt = game.add.audio('grunt');
-    knightStepSound = game.add.audio('knightStep');
     teleCharge = game.add.audio('teleCharge');
     teleCharge.volume = 1.3;
     
@@ -329,7 +327,6 @@ function movement(knightOrientation, hitPlatform, ground){
                 knight.body.x -= knight.body.width + magicKnightPivotNumber;
             }
             knight.animations.play('walk');
-            //knightStepSound.play();
         } else if (moveBinds.rightD.isDown) {
             knight.body.velocity.x = walkSpeed;
             knight.scale.setTo(1, 1); //Knight faces right
@@ -337,7 +334,6 @@ function movement(knightOrientation, hitPlatform, ground){
                 knight.body.x += knight.body.width + magicKnightPivotNumber;
             }
             knight.animations.play('walk');
-            //knightStepSound.play();
         } else if(knight.body.velocity.x == 0){
             knight.animations.play('stand');
         }

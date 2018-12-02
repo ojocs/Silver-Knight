@@ -8,14 +8,13 @@ function preload() {
     preloadKnight();
     preloadBoss();
     //Giant's preload
-    game.load.spritesheet('giant', 'Assets/state0/Giant Spritesheet.png', 497, 630);
+    game.load.spritesheet('giant', 'Assets/Level 1/Giant Spritesheet.png', 497, 630);
     //Giant sounds
     game.load.audio('stompThud', 'Assets/Audio/Giant Audio/Giant Stomp.wav');
-    game.load.audio('bossStep', 'Assets/Audio/Giant Audio/Boss Step 2.wav');
     game.load.audio('bossSwing', 'Assets/Audio/Giant Audio/Giant Club Swing.wav');
     //Level preload
-    game.load.image('background', 'Assets/state0/Level 1 Background.png');
-    game.load.image('ground', 'Assets/state0/Platform 1.1.png');
+    game.load.image('background', 'Assets/Level 1/Level 1 Background.png');
+    game.load.image('ground', 'Assets/Level 1/Platform 1.1.png');
     
     game.load.audio('level1Music', 'Assets/Audio/Music/Boss 1 Music.wav');
     
@@ -29,7 +28,7 @@ var demo = {},
 var swingBox1, swingBox2, swingBox3;
 
 //Giant sounds
-var stompThud, bossStep, bossSwing;
+var stompThud, bossSwing;
 
 //var change = game.rnd.integerInRange(1, 3);
 var platforms, ledge;
@@ -129,7 +128,6 @@ function create() {
  
     //Giant Audio
     stompThud = game.add.audio('stompThud');
-    bossStep = game.add.audio('bossStep', 15);
     bossSwing = game.add.audio('bossSwing');    
      
     createKnight(1);

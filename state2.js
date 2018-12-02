@@ -6,7 +6,7 @@ var state2 = {
 
 function preload() {
     game.load.image('background', 'Assets/Credits.png');
-    game.load.image('black', 'Assets/black screen.png');
+    game.load.image('black', 'Assets/Black Screen.png');
     game.load.spritesheet('backButton', 'Assets/Back Button.png', 640, 320);
     game.load.audio('creditsMusic', 'Assets/Audio/Music/Credits Music.wav');
 }

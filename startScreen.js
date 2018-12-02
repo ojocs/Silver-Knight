@@ -8,7 +8,7 @@ function preload() {
     game.load.image('background', 'Assets/startScreen/Landscape.png');
     game.load.image('logo', 'Assets/startScreen/Silver Knight Logo v2.png');
     game.load.spritesheet('startButton', 'Assets/startScreen/Start Button.png', 640, 320);
-    game.load.image('black', 'Assets/black screen.png');
+    game.load.image('black', 'Assets/Black Screen.png');
     game.load.audio('intro', 'Assets/Audio/Music/Intro Music 2.wav');
 }
 

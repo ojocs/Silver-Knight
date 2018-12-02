@@ -6,7 +6,7 @@ var introScreen = {
 
 function preload() {
     game.load.image('background', 'Assets/startScreen/Landscape.png');
-    game.load.image('black', 'Assets/black screen.png');
+    game.load.image('black', 'Assets/Black Screen.png');
     game.load.spritesheet('button', 'Assets/Continue Button.png',640, 320);
     game.load.image('introText', 'Assets/Intro Text.png');
 }

@@ -39,7 +39,7 @@ WebFontConfig = {
 };
 
 function preload(){
-    game.physics.startSystem(Phaser.Physics.ARCADE); // Redundant since it's already been called in state0
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     
     //Blank boss
     game.load.image('blankBoss', 'Assets/blankBoss.png');
@@ -47,7 +47,6 @@ function preload(){
     preloadKnight();
         
     //Buttons
-    game.load.image('skipButton', 'Assets/Tutorial/Skip Tutorial Button.png'); 
     game.load.spritesheet('backButton', 'Assets/Tutorial/Next Button.png', 200, 100);
     game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
     
@@ -63,7 +62,7 @@ function preload(){
     game.load.spritesheet('star', 'Assets/Tutorial/Star Spritesheet.png', 100, 100);
     game.load.audio('starSound', 'Assets/Audio/Star Spawn.wav');
     game.load.spritesheet('sparks', 'Assets/Tutorial/Sparks.png', 140, 140);
-    game.load.audio('pickup', 'Assets/Audio/Item pickup.wav');
+    game.load.audio('pickup', 'Assets/Audio/Item Pickup.wav');
     
     // blink box
     game.load.spritesheet('blinkflash', 'Assets/Tutorial/Blink Icon Box.png', 1000, 500);
