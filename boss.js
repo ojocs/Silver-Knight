@@ -7,7 +7,7 @@ function preloadBoss(){
 
 //Boss variables
 var boss, bossHitboxes, bossSpecialTime, bossTurnTimer, thresholdFromBossWalk, onBoss;
-var currentLvl;
+var currentLvl, currentTime, bossOrientation, magicPivot = 200;
 
 //Knight variables
 var hitPlatform;
@@ -22,7 +22,8 @@ function createBoss(){
     bossHitboxes.enableBody = true;
     
     //Attacks' booleans. Means that boss is performing attack if true
-    boss.attack1 = false, boss.attack2 = false;
+    boss.attack1 = false, boss.attack2 = false, boss.walk = false;
+    currentTime = game.time.totalElapsedSeconds();
     
     //Health Display and variables
     boss.health = 10, boss.hurtOnce = false, bossHurtTimer = 0;
@@ -48,7 +49,7 @@ function updateBoss(distanceFromBoss){
     //Boss loses health when hit by sword
     game.physics.arcade.overlap(boss, knightBox, bossDamage, null, this);
     
-    //Movements and attacks based on knight
+    //Movements and attacks based on knigh
     bossAI(distanceFromBoss)
 }
 
@@ -88,48 +89,14 @@ function bossTurnTimerFunc(){
 
 //Boss's movement in response to knight
 function bossAI(distanceFromBoss){
-    var currentTime = game.time.totalElapsedSeconds();
-    var bossOrientation = boss.scale.x, magicBossPivotNumber = 200;
+    boss.walk = false;
+    currentTime = game.time.totalElapsedSeconds();
+    bossOrientation = boss.scale.x, magicBossPivotNumber = 200;
     bossTurnTimerFunc();
-    
-    //Attack1 if in close range
-    if ((vertFromBoss < 0 ) && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on right
-        boss.body.velocity.x = 0;
-        bossTurn(-1, bossOrientation);
-        determineAttack1();
-    } else if ((vertFromBoss < 0 ) && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on left
-        boss.body.velocity.x = 0;
-        bossTurn(1, bossOrientation);
-        determineAttack1();
-    }
-
-    //Perform stomp if further from the player than attack1 range, around every bossSpecialTime seconds
-    else if ((distanceFromBoss >= 0) && !boss.turning && !boss.attack1 && (hitPlatform && vertFromBoss >= 0 && currentTime % bossSpecialTime > bossSpecialTime - 1) || (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
-        boss.body.velocity.x = 0;
-        bossTurn(1, bossOrientation);
-        determineAttack2();
-    } else if ((distanceFromBoss < (-1 * 0)) && !boss.turning && !boss.attack1 && (hitPlatform && vertFromBoss >= 0 && (currentTime % bossSpecialTime > bossSpecialTime - 1)) || (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
-        boss.body.velocity.x = 0;
-        bossTurn(-1, bossOrientation);
-        determineAttack2();
-    }
-    
-//    //Perform projectile if further from the player than attack1 range, around every bossSpecialTime seconds
-//    else if (currentLvl === 2 && (distanceFromBoss >= thresholdFromBossWalk) && !boss.turning && !boss.attack1 && (hitPlatform && vertFromBoss >= 0 && (currentTime % bossSpecialTime > bossSpecialTime - 1))|| !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
-//        boss.body.velocity.x = 0;
-//        bossTurn(1, bossOrientation);
-//        determineAttack2();
-//    } else if (currentLvl === 2 && hitPlatform && vertFromBoss >= 0 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) || !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) 
-//              // && (distanceFromBoss < (-1 * thresholdFromBossWalk))
-//              ) {//Right
-//        boss.body.velocity.x = 0;
-//        bossTurn(-1, bossOrientation);
-//        determineAttack2();
-//    }
-    
-    //Follow player
-    else
-        bossMove(bossOrientation);
+    if(currentLvl === 1)
+        giantAI(distanceFromBoss);
+    else 
+        treeAI(distanceFromBoss);
 }
 
 //Follow/track player

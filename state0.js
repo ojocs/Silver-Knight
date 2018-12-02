@@ -111,7 +111,10 @@ function create() {
     swingBox3.body.enable = false;
     
     boss.newScaleX = 1;
-    boss.animations.add('walk', [1, 2, 3, 4], 4);
+    boss.walkAni1 = boss.animations.add('walk', [1, 2, 3, 4], 4);
+    boss.walkAni1.onStart.add(function(){
+        boss.walk = true;
+    });
     
     //Stomping
     boss.attack2 = false;
@@ -166,8 +169,10 @@ function update() {
     var vertFromBoss = boss.body.y - (knight.body.y + knight.body.height);
     
     //--------------GIANT AI-----------------------------//
-    if(boss.alive)
+    if(boss.alive && knight.alive)
         updateBoss(distanceFromBoss);    
+    if(!knight.alive)
+        boss.body.velocity.x = 0;
     
     //Call knight's update
     updateKnight(distanceFromBoss, vertFromBoss, groundCollide);
@@ -254,9 +259,37 @@ function giantStomp(){
         if (knight.body.touching.down) {
             //If touching ground, decrement life by 1, else only make him stagger
             livesTaken = groundCollide ? 1 : 0;
-            kngihtStaggerJump = 500, knightStaggerSlide = 2000, knightDamage();
+            knightStaggerJump = 500, knightStaggerSlide = 2000, knightDamage();
         }
     }
+}
+
+//Boss AI for giant
+function giantAI(distanceFromBoss){    
+    //Attack1 if in close range
+    if ((vertFromBoss < 0 ) && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on right
+        boss.body.velocity.x = 0;
+        bossTurn(-1, bossOrientation);
+        determineAttack1();
+    } else if (vertFromBoss < 0 && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on left
+        boss.body.velocity.x = 0;
+        bossTurn(1, bossOrientation);
+        determineAttack1();
+    }
+
+    //Perform stomp if further from the player than attack1 range, around every bossSpecialTime seconds
+    else if (currentLvl === 1 && (distanceFromBoss >= 0) && !boss.turning && !boss.walk && !boss.attack1 && !boss.attack2 && (hitPlatform && vertFromBoss >= 0 && currentTime % bossSpecialTime > bossSpecialTime - 1) || (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
+        boss.body.velocity.x = 0;
+        bossTurn(1, bossOrientation);
+        determineAttack2();
+    } else if (currentLvl === 1 && (distanceFromBoss < 0) && !boss.turning && !boss.walk && !boss.attack1 && !boss.attack2 && (hitPlatform && vertFromBoss >= 0 && (currentTime % bossSpecialTime > bossSpecialTime - 1)) || (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
+        boss.body.velocity.x = 0;
+        bossTurn(-1, bossOrientation);
+        determineAttack2();
+    }
+    //Follow player
+    else
+        bossMove(bossOrientation);
 }
 
 function debugF(){

@@ -135,12 +135,14 @@ function update() {//game.debug.body(treeHand);
     });
     
     //To prevent unwanted post victory death, destroy attack objects
-    if(boss.alive){
+    if(boss.alive && knight.alive){
         updateBoss(distanceFromBoss);
     }
     if(!boss.alive){
         spike.kill();//, projectiles.destroy();
     }
+    if(!knight.alive)
+        boss.body.velocity.x = 0;
     
     //Debugging
     //debug.text = 'onBoss '+ onBoss+'\nattack1 '+boss.attack1+'\nattack2 '+boss.attack2;
@@ -229,4 +231,46 @@ function treeProjectile(){
         projectiles.fire(treeHand, knight.body.center.x, knight.body.center.y);
     });
     fireTimer.start();
+}
+
+//Boss AI for tree
+function treeAI(distanceFromBoss){    
+    //Attack1 if in close range
+    if (vertFromBoss < 0 && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss < 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on right
+        boss.body.velocity.x = 0;
+        bossTurn(-1, bossOrientation);
+        determineAttack1();
+    } else if (vertFromBoss < 0 && !boss.turning && !boss.attack1 && !boss.attack2 && (distanceFromBoss > 0) && !(distanceFromBoss > thresholdFromBossWalk) && !(distanceFromBoss < (-1 * thresholdFromBossWalk)) ) { //Player on left
+        boss.body.velocity.x = 0;
+        bossTurn(1, bossOrientation);
+        determineAttack1();
+    }
+
+    //Perform stomp if further from the player than attack1 range, around every bossSpecialTime seconds
+    else if (currentLvl === 1 && !boss.turning && !boss.attack1 && (distanceFromBoss > thresholdFromBossWalk) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Left
+        boss.body.velocity.x = 0;
+        bossTurn(1, bossOrientation);
+        determineAttack2();
+    } else if (currentLvl === 1 && !boss.turning && !boss.attack1 && (distanceFromBoss < (-1 * thresholdFromBossWalk)) && (currentTime % bossSpecialTime > bossSpecialTime - 1)) {//Right
+        boss.body.velocity.x = 0;
+        bossTurn(-1, bossOrientation);
+        determineAttack2();
+    }
+    
+    //Perform projectile if further from the player than attack1 range, around every bossSpecialTime seconds
+    else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) && (distanceFromBoss >= thresholdFromBossWalk)) {//Left
+        boss.body.velocity.x = 0;
+        bossTurn(1, bossOrientation);
+        determineAttack2();
+    } else if (currentLvl === 2 && !boss.turning && !boss.attack1 && (currentTime % bossSpecialTime > bossSpecialTime - 1) 
+              // && (distanceFromBoss < (-1 * thresholdFromBossWalk))
+              ) {//Right
+        boss.body.velocity.x = 0;
+        bossTurn(-1, bossOrientation);
+        determineAttack2();
+    }
+    
+    //Follow player
+    else
+        bossMove(bossOrientation);
 }
