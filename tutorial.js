@@ -63,7 +63,7 @@ function preload(){
     game.load.spritesheet('star', 'Assets/Tutorial/Star Spritesheet.png', 100, 100);
     game.load.audio('starSound', 'Assets/Audio/Star Spawn.wav');
     game.load.spritesheet('sparks', 'Assets/Tutorial/Sparks.png', 140, 140);
-    game.load.audio('pickup', 'Assets/Audio/Electric Woosh.wav');
+    game.load.audio('pickup', 'Assets/Audio/Item pickup.wav');
     
     // blink box
     game.load.spritesheet('blinkflash', 'Assets/Tutorial/Blink Icon Box.png', 1000, 500);
@@ -132,6 +132,7 @@ function create(){
     game.physics.enable(star);
     star.body.immovable = true;
     starSound = game.add.audio('starSound');
+    starSound.volume = 0.6
     pickupSound = game.add.audio('pickup');
     
     // star sparks
