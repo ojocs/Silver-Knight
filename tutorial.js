@@ -71,7 +71,7 @@ function preload(){
     
 }
 
-var steps, tower, stepImage, platforms, towerPlatform;
+var steps, stepImage, platforms, towerPlatform;
 var star, starSound, sparks, sparksCount;
 var sparksPlayed, sparksPlayed2; // Booleans for the animations to only play when these equal false, changes to true after 1 playthrough
 var soundPlayed, soundPlayed2; // Booleans for starSound
@@ -141,8 +141,8 @@ function create(){
     sparksCount = 0;
     sparksPlayed = false, sparksPlayed2 = false;
     
-    moveText = game.add.text(700, 850, text, { font: "65px VT323", fill: "#f76300", align: "center" });
-    nextButton = game.add.button(1600, game.world.centerY + 350, 'backButton', actionOnClick, this);
+    moveText = game.add.text(500, 800, text, { font: "65px VT323", fill: "#f76300", align: "center" });
+    nextButton = game.add.button(1700, game.world.centerY + 350, 'backButton', actionOnClick, this);
     nextButton.frame = 0;
     
     //Boss stuff (placeholders really for blank boss)
@@ -168,17 +168,14 @@ function update() {
     //Collide with steps
     hitPlatform = game.physics.arcade.collide(knight, platforms);
     hitSteps = game.physics.arcade.collide(knight, steps);
-    var towerHit = game.physics.arcade.overlap(knight, towerPlatform);
-    var insideSteps = game.physics.arcade.overlap(knight, platforms);
-    //Collide with tower?
-    game.physics.arcade.collide(knight, tower);
+    var insideSteps = game.physics.arcade.overlap(knight, steps);
     
     // overlap with star
     game.physics.arcade.overlap(knight, star, collectStar, null, this);
     
         
     //Prevent/get out of glitch of going into steps
-    if(insideSteps && !towerHit)
+    if(insideSteps || knight.body.center.y >= game.world.height)
         knight.body.y -= 90;
     
     //update knight
@@ -188,8 +185,6 @@ function update() {
     if (moveBinds.upW.isDown && ((knight.body.touching.down && (hitSteps || hitPlatform)) || touchGround || ground)) {
         knight.body.velocity.y = -1000;
     }
-    //Debug
-    //game.debug.body(knightBox);
 }
 
 function collectStar(knight, star) { 
