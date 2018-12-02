@@ -226,10 +226,10 @@ function createKnight(level){
     grunt = game.add.audio('grunt');
     knightStepSound = game.add.audio('knightStep');
     teleCharge = game.add.audio('teleCharge');
-    //teleCharge.volume = 0.5;
+    teleCharge.volume = 1.3;
     
     teleReady = game.add.audio('teleReady');
-    //teleReady.volume = 0.5;
+    teleReady.volume = 1.3;
 }
 
 //Call in update

@@ -148,7 +148,7 @@ function bossMove(bossOrientation){
 function determineWalk(){
     if(currentLvl === 1){
         boss.animations.play('walk');
-        //bossStep.play();
+        console.log('giant walk');
     }
     if(currentLvl === 2){
         boss.animations.play('treeWalk');
@@ -159,6 +159,7 @@ function determineWalk(){
 function determineAttack1(){
     if(currentLvl === 1){
         giantSwing();
+        console.log('giant swing');
     }
     if(currentLvl === 2){
         treeSpike();
@@ -169,6 +170,7 @@ function determineAttack1(){
 function determineAttack2(){
     if(currentLvl === 1)
         giantStomp();
+        console.log('giant stomp');
     if(currentLvl === 2)
         treeProjectile();
 }

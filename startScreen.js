@@ -97,6 +97,7 @@ function fadeOutIntro(){
 
 //Takes you to Level Select
 function startLevelSelect(){
+    game.camera.shake(0, 0);
     teleMode = false;
     console.log('startLevelSelect');
     fadeAll();
