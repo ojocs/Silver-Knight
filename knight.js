@@ -32,6 +32,7 @@ function preloadKnight(){
     game.load.audio('teleAudio', 'Assets/Audio/Knight Audio/teleport.wav'); 
     game.load.audio('swordHitAudio', 'Assets/Audio/Knight Audio/Sword Hit.wav');
     game.load.audio('swordSlash', 'Assets/Audio/Knight Audio/Sword Slash 1.wav');
+    game.load.audio('grunt', 'Assets/Audio/Knight Audio/grunt.wav');
     game.load.audio('knightStep', 'Assets/Audio/Knight Audio/Knight Step 1.wav');
     game.load.audio('teleCharge', 'Assets/Audio/Knight Audio/Electric Woosh.wav')
     game.load.audio('teleReady', 'Assets/Audio/Knight Audio/Low Quick Charge v2.wav');
@@ -74,7 +75,7 @@ var attack, canAttack, attackTimer;
 var speed, drag = 100, walkSpeed = 600;
 
 //Sounds
-var teleAudio, wooshAudio, swordHitAudio, swordSlash, knightStepSound;
+var teleAudio, wooshAudio, swordHitAudio, swordSlash, knightStepSound, grunt;
 
 //Music
 var levelMusic;
@@ -222,6 +223,7 @@ function createKnight(level){
     //Sounds
     teleAudio = game.add.audio('teleAudio');
     swordHitAudio = game.add.audio('swordHitAudio'), swordSlash = game.add.audio('swordSlash');
+    grunt = game.add.audio('grunt');
     knightStepSound = game.add.audio('knightStep');
     teleCharge = game.add.audio('teleCharge');
     //teleCharge.volume = 0.5;
@@ -601,6 +603,7 @@ function knightDamage() {
     if(knight.hurtOnce){
         knight.hurtOnce = false, hit = true;
         health -= livesTaken;
+        grunt.play();
 
         //make player jump a little when hit
         knight.body.velocity.y  = -knightStaggerJump;
