@@ -16,6 +16,9 @@ function preload() {
     game.load.image('treeProjectile', 'Assets/Level 2/Tree Projectile 2.png');
     game.load.spritesheet('treeSpike', 'Assets/Level 2/Tree Spike.png', 729, 490);
     game.load.spritesheet('tree', 'Assets/Level 2/Tree Spritesheet.png', 219, 300);
+    
+    //Audio
+    game.load.audio('treeSound2', 'Assets/Audio/Tree Audio/Tree Attack 2.wav');
 }
 
 var demo = {};
@@ -25,11 +28,17 @@ var bg, logo, startButton, tutButton, black;
 //Objects for tree's attack
 var spike, spikeDist = 270, projectiles, treeHand;
 
+//Audio variables
+var treeSound2;
+
 var platforms2;
 var debug;
 
 function create() {
     console.log('level 2');
+    
+    level2 = true;
+    level1 = false;
     
     var bg = game.add.image(0, 0, 'background');
     
@@ -96,6 +105,9 @@ function create() {
     treeHand = bossHitboxes.create(0, 0, null), treeHand.body.enable = true;
     treeHand.anchor.setTo(0.5, 0.5), treeHand.body.setSize(10, 10, 10, 10);
     
+    //Tree audio
+    treeSound2 = game.add.audio('treeSound2');
+    
     //Make knight
     createKnight(2);
     
@@ -160,6 +172,13 @@ function treeSpike(){
     if(knight.body.touching.down || touchGround){
         boss.attack1 = true;
         boss.animations.play('treeGroundAttack');
+        
+        var sound2Timer = game.time.create(true);
+        sound2Timer.add(700, function(){
+            treeSound2.play();
+        });
+        sound2Timer.start();
+        
         //Make spike appear next to the tree on the ground
         spike.body.y = game.world.height - spike.body.height;
         //Decide where to appear based on tree orientation
@@ -174,6 +193,7 @@ function treeSpike(){
         var treeSpikeTimer = game.time.create(true);
         treeSpikeTimer.add(800, function(){
             spike.animations.play('spike');
+            
             spike.enableBody = true, spike.visibile = true;
             spike.body.setSize(0, 0, 0, 0);
             //Detect collision with knight, -2 lives

@@ -18,8 +18,10 @@ function preloadKnight(){
     game.load.image('victoryText', 'Assets/Win or Lose/Victory Text.png');
     game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
     game.load.image('nextLevelButton', 'Assets/Win or Lose/Next Lvl Button.png');
+    game.load.image('nextButton', 'Assets/Win or Lose/Next Button.png');
     game.load.image('gameOverText', 'Assets/Win or Lose/Game Over Text.png');
     game.load.image('tryAgainButton', 'Assets/Win or Lose/Try Again Button.png');
+    game.load.image('creditsButton', 'Assets/Win or Lose/Credits Button.png');
     game.load.image('black', 'Assets/Black Screen.png');
     
     //Music
@@ -41,7 +43,8 @@ function preloadKnight(){
 var knight;
 
 //Pause variables
-var pauseButton, pauseMenu, exitButton, restartButton, gameIsOver;
+var pauseButton, pauseMenu, exitButton, restartButton, gameIsOver, needCredits = true;
+var level1, level2;
 
 //Health
 var health, knightHurtTimer = 0, heart1, heart1Half, heart2, heart2Half, heart3, heart3Half, hit; //Knight has 6 lives
@@ -78,8 +81,6 @@ var teleAudio, wooshAudio, swordHitAudio, swordSlash, grunt;
 
 //Music
 var levelMusic;
-var isLevel1; // variable to 
-var isLevel2;
 
 //Boss related variables.
 var distanceFromBoss, vertFromBoss, livesTaken, boss, knightStaggerJump, knightStaggerSlide;
@@ -307,11 +308,6 @@ function playLevelMusic(Level){
         levelMusic.loopFull();
         console.log('playing level2Music');
     }
-//    if (levelMusic.volume < 1){
-////        console.log('intro not palying');
-//        levelMusic.volume = 1;
-//        levelMusic.loopFull();
-//    }
 }
 
 //WASD movement
@@ -653,16 +649,25 @@ function victory(){
 }
 
 function addVictoryButtons(){
-    var mainMenuButton = game.add.button(centerX + 250, centerY+150, 'mainMenuButton', startLevelSelect, this);
+    var mainMenuButton = game.add.button(-1000, centerY+150, 'mainMenuButton', startLevelSelect, this);
     mainMenuButton.scale.setTo(1.3, 1.3);
     mainMenuButton.anchor.setTo(0.5, 0.5);
-
-    //Assign next level button to level 2 if at level 1, otherwise to level 3
-    var nxtLvlButton = (currentLvl === 1) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this) : game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this);
-    //Assign next level button to startscreen (maybe credits later on) if at level 3, else do nothing
-    nxtLvlButton = (currentLvl === 3) ? game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel3, this) : nxtLvlButton;
-    nxtLvlButton.scale.setTo(1.3, 1.3);
-    nxtLvlButton.anchor.setTo(0.5, 0.5);
+    
+    if (level1 == true){ //Next Level + Main Menu
+        mainMenuButton.position.x = centerX+250;
+        
+        //Next Level Button
+        var nxtLvlButton = game.add.button(centerX - 250, centerY+150, 'nextLevelButton', startLevel2, this);
+        nxtLvlButton.scale.setTo(1.3, 1.3);
+        nxtLvlButton.anchor.setTo(0.5, 0.5);
+    } else if (level2 == true && needCredits == true){ //Next
+        needCredits = false;
+        var nxtButton = game.add.button(centerX, centerY+150, 'nextButton', startLevel3, this);
+        nxtButton.scale.setTo(1.3, 1.3);
+        nxtButton.anchor.setTo(0.5, 0.5);
+    } else if(level2 == true && needCredits == false){ //Main Menu
+        mainMenuButton.position.x = centerX;
+    }
 }
 
 function gameOver(){

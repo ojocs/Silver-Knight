@@ -16,6 +16,7 @@ function preload() {
     game.load.image('background', 'Assets/Level 1/Level 1 Background.png');
     game.load.image('ground', 'Assets/Level 1/Platform 1.1.png');
     
+    //Audio
     game.load.audio('level1Music', 'Assets/Audio/Music/Boss 1 Music.wav');
     
 }
@@ -40,6 +41,9 @@ var debug;
 var levelMusic;
 function create() {
     console.log('level 1');
+    
+    level1 = true;
+    level2 = false;
     
     //Initiate game physics
     game.physics.startSystem(Phaser.Physics.ARCADE);

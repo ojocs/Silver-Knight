@@ -19,7 +19,7 @@ var demo = {};
 var centerX = 1000, centerY = 500;
 var shield1, shield2, locked2, shield3, locked3, backButton;
 var creditsMusic;
-var creditsButton, showCredits = false; //boolean to show the credits button upon completion of the game
+var creditsButton;
 
 //Booleans for when to unlock levels 2 and 3
 var level2Locked = true, level3Locked = true;
@@ -75,7 +75,7 @@ function create() {
     backButton.frame = 1;
     backButton.onInputUp.add(returnToMain, this);
     
-    creditsButton = game.add.button(-300, 100, 'creditsButton');
+    creditsButton = game.add.button(1820, 100, 'creditsButton');
     creditsButton.anchor.setTo(0.5);
     creditsButton.scale.setTo(0.4, 0.4);
     creditsButton.frame = 1;
@@ -110,10 +110,6 @@ function update() {
         creditsButton.frame = 0;
     } else{
         creditsButton.frame = 1;
-    }
-    
-    if (showCredits){
-        creditsButton.position.x = 1820;
     }
     
     //Shield1 highlights when hovered over

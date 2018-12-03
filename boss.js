@@ -146,7 +146,7 @@ function determineAttack2(){
 function bossDamage(){
     if(boss.hurtOnce){
         boss.hurtOnce = false, bossHurtOnce = false;
-        boss.health -= 1;
+        boss.health -= 1;      
         
         //Make boss slide in direction of knight hit
         if(knight.body.x < boss.body.x)
