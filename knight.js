@@ -64,7 +64,7 @@ var blinkTimerDisplay;
 
 //Long teleport
 var canTele, teleKey, teleMode, teleTimer = 0, timerSprite, teleCharge, teleReady;
-
+var timerFrame = 0;
 var teleChargePlayed = false, teleReadyPlayed = false; //Boolean so teleCharge and teleReady plays only once
 
 //Attack
@@ -398,28 +398,15 @@ function teleTimers(){
             timerSprite.frame = 16;
         }
 
-    } else if (!canTele && teleTimer < 200) {
+    } else if (!canTele && teleTimer < 800) {
+        timerSprite.frame = timerFrame;
         teleTimer += 1;
         timerSprite.alpha = 0.5;
-        timerSprite.frame = 0;
-
-    } else if (!canTele && teleTimer < 400) {
-
-        teleTimer += 1;
-
-        timerSprite.frame = 4;
-
-    } else if (!canTele && teleTimer < 600) {
-
-        teleTimer += 1;
-
-        timerSprite.frame = 8;      
-
-    } else if (!canTele && teleTimer < 800) {
-
-        teleTimer += 1;
-
-        timerSprite.frame = 12;
+        
+        if (teleTimer % 50 == 0) {
+            timerFrame += 1;
+        }
+        
 
     } else if (!canTele && teleTimer == 800) {
 
