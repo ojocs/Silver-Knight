@@ -95,9 +95,9 @@ function create() {
         boss.attack2 = false;
     });
     //Add projectiles, fires 1 bullet at a time
-    projectiles = game.add.weapon(1, 'treeProjectile'), projectiles.enableBody = true;
+    projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
     //Speed and firerate. Latter is every 1/2 second
-    projectiles.bulletSpeed = 800, projectiles.fireRate = 500;
+    projectiles.bulletSpeed = 800, projectiles.fireRate = 200;
     //Add some extra physics
     projectiles.bulletRotateToVelocity = true, projectiles.bulletGravity = true;
     //Bullets killed if out of bounds
@@ -251,7 +251,8 @@ function treeProjectile(){
     var fireTimer = game.time.create(true);
     fireTimer.add(500, function(){
         projectiles.fire(treeHand, knight.body.center.x, knight.body.center.y);
-        //treeSound1.play();
+        if(!treeSound1.isPlaying)
+            treeSound1.play();
     });
     fireTimer.start();
 }
