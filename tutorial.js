@@ -47,7 +47,7 @@ function preload(){
     preloadKnight();
         
     //Buttons
-    game.load.spritesheet('backButton', 'Assets/Tutorial/Next Button.png', 200, 100);
+    game.load.spritesheet('nextButton', 'Assets/Tutorial/Next Button Orange Txt.png', 200, 100);
     game.load.image('mainMenuButton', 'Assets/Win or Lose/Main Menu Button.png');
     
     //Preload background, ground/steps and tower
@@ -142,7 +142,7 @@ function create(){
     sparksPlayed = false, sparksPlayed2 = false;
     
     moveText = game.add.text(500, 800, text, { font: "65px VT323", fill: "#f76300", align: "center" });
-    nextButton = game.add.button(1700, game.world.centerY + 350, 'backButton', actionOnClick, this);
+    nextButton = game.add.button(1700, game.world.centerY + 350, 'nextButton', actionOnClick, this);
     nextButton.frame = 0;
     
     //Boss stuff (placeholders really for blank boss)
