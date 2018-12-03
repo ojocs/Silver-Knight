@@ -18,6 +18,7 @@ function preload() {
     game.load.spritesheet('tree', 'Assets/Level 2/Tree Spritesheet.png', 219, 300);
     
     //Audio
+    game.load.audio('treeSound1', 'Assets/Audio/Tree Audio/Tree Attack 1.wav');
     game.load.audio('treeSound2', 'Assets/Audio/Tree Audio/Tree Attack 2.wav');
 }
 
@@ -29,7 +30,7 @@ var bg, logo, startButton, tutButton, black;
 var spike, spikeDist = 270, projectiles, treeHand;
 
 //Audio variables
-var treeSound2;
+var treeSound1, treeSound2;
 
 var platforms2;
 var debug;
@@ -106,6 +107,7 @@ function create() {
     treeHand.anchor.setTo(0.5, 0.5), treeHand.body.setSize(10, 10, 10, 10);
     
     //Tree audio
+    treeSound1 = game.add.audio('treeSound1');
     treeSound2 = game.add.audio('treeSound2');
     
     //Make knight
@@ -249,6 +251,7 @@ function treeProjectile(){
     var fireTimer = game.time.create(true);
     fireTimer.add(500, function(){
         projectiles.fire(treeHand, knight.body.center.x, knight.body.center.y);
+        //treeSound1.play();
     });
     fireTimer.start();
 }

@@ -47,19 +47,11 @@ function create() {
     shield1.scale.setTo(2, 2);
     shield1.onInputUp.add(startLevel1, this);
     
-    shield2 = game.add.button(-300, 0, 'shield2', startLevel2, this); //Loads shield but outside of the screen
+        shield2 = game.add.button(-300, 0, 'shield2', startLevel2, this); //Loads shield but outside of the screen
     
     locked2 = game.add.button(centerX+325, centerY-100, 'locked');
     locked2.anchor.setTo(0.5, 0.5);
     locked2.scale.setTo(2, 2);
-    
-/* Hold on Level 3
-    shield3 = game.add.button(-300, 0, 'shield3', startLevel3, this);
-    
-    locked3 = game.add.button(centerX, centerY+200, 'locked');
-    locked3.anchor.setTo(0.5, 0.5);
-    locked3.scale.setTo(1.9, 1.9);
-*/
     
     //Tutorial Button
     tutButton = game.add.button(centerX, 800, 'tutButton');
