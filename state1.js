@@ -94,7 +94,7 @@ function create() {
     boss.treeProjectileAni.onComplete.add(function(){
         boss.attack2 = false;
     });
-    //Add projectiles, fires 1 bullet at a time
+    //Add projectiles, fires 2 bullet at a time
     projectiles = game.add.weapon(2, 'treeProjectile'), projectiles.enableBody = true;
     //Speed and firerate. Latter is every 1/2 second
     projectiles.bulletSpeed = 800, projectiles.fireRate = 200;
