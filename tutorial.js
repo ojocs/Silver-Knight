@@ -105,7 +105,7 @@ function create(){
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1850, 30);
     step = steps.create(467, 800, null);
     step.body.enable = true, step.body.immovable = true, step.body.setSize(1500, 30);
-    
+
     //Add tower
     platforms = game.add.group();
     platforms.enableBody = true, platforms.antiStuck = step.body.height;
@@ -182,7 +182,7 @@ function update() {
     updateKnight(0, 0, null);
         
     //Because bugs, overwrite jump code in knight.js with this
-    if (moveBinds.upW.isDown && ((knight.body.touching.down && (hitSteps || hitPlatform)) || touchGround || ground)) {
+    if (moveBinds.upW.isDown && knight.body.touching.down && (hitSteps || hitPlatform)) {
         knight.body.velocity.y = -1000;
     }
 }
